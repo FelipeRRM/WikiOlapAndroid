@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_charts"
+        icon="@drawable/ic_charts_combo"
+        title="@string/charts_title" />
+    <tab
+        id="@+id/tab_dataset"
+        icon="@drawable/ic_dataset"
+        title="@string/dataset_title" />
+    <tab
+        id="@+id/tab_profile"
+        icon="@drawable/ic_user"
+        title="@string/profile_title" />
+</tabs>

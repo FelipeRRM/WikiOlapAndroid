@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.feliperrm.wikiolap.fragments.ChartsMenuFragment"
+    android:animateLayoutChanges="true"
+    >
+
+    <EditText
+        android:id="@+id/searchEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/rounded_white"
+        android:elevation="3dp"
+        android:hint="@string/search_for_datasets"
+        android:imeOptions="actionSearch"
+        android:lines="1"
+        android:maxLines="1"
+        android:padding="8dp"
+        android:singleLine="true" />
+
+    <android.support.v7.widget.RecyclerView
+        android:visibility="gone"
+        android:id="@+id/recyclerView"
+        android:layout_below="@+id/searchEditText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ProgressBar
+        style="@android:style/Widget.DeviceDefault.ProgressBar"
+        android:visibility="gone"
+        android:id="@+id/progressBar"
+        android:layout_centerInParent="true"
+        android:layout_width="72dp"
+        android:layout_height="72dp" />
+
+</RelativeLayout>
