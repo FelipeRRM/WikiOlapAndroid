@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "896564478654",
+    "firebase_url": "https://wikiolap.firebaseio.com",
+    "project_id": "wikiolap",
+    "storage_bucket": "wikiolap.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:896564478654:android:3ede0dafb3f9a5dc",
+        "android_client_info": {
+          "package_name": "com.feliperrm.wikiolap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "896564478654-odqnkqij8k09smhjgpmtjrt19dmp53ev.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.feliperrm.wikiolap",
+            "certificate_hash": "3fe8ae3a52956ae2d0a44cd539f8879c029053a3"
+          }
+        },
+        {
+          "client_id": "896564478654-uktdtp3mnrvrsu70u00uduvbncib89hg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9-xjXsI3G7v8gZ4XFBosk74ystzscK5s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "896564478654-uktdtp3mnrvrsu70u00uduvbncib89hg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
