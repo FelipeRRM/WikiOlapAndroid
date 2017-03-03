@@ -16,36 +16,43 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.feliperrm.wikiolap.BuildConfig;
 import com.feliperrm.wikiolap.R;
 import com.feliperrm.wikiolap.adapters.DatasetMetadataAdapter;
+import com.feliperrm.wikiolap.interfaces.DatasetMetadataViewCallbacks;
 import com.feliperrm.wikiolap.models.DatasetMetadata;
-import com.feliperrm.wikiolap.network.Network;
+import com.feliperrm.wikiolap.presenters.DatasetMetadataPresenter;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DatasetMenuFragment extends Fragment {
+public class DatasetMenuFragment extends Fragment implements DatasetMetadataViewCallbacks {
 
+    /**
+     * Views
+     */
     EditText searchEditText;
     ProgressBar progressBar;
     RecyclerView recyclerView;
 
+    /**
+     * Attriutes
+     */
+    DatasetMetadataPresenter presenter;
+
     public DatasetMenuFragment() {
-        // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        presenter = new DatasetMetadataPresenter(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_dataset_menu, container, false);
     }
 
@@ -67,39 +74,31 @@ public class DatasetMenuFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    searchMetadataFromApi(searchEditText.getText().toString());
+                    presenter.loadDatasets(searchEditText.getText().toString());
                 }
                 return false;
             }
         });
     }
 
-    private void searchMetadataFromApi(String textToSearch) {
-        progressBar.setVisibility(View.VISIBLE);
-        Network.getApiCalls().searchMetadata(textToSearch).enqueue(new Callback<ArrayList<DatasetMetadata>>() {
-            @Override
-            public void onResponse(Call<ArrayList<DatasetMetadata>> call, Response<ArrayList<DatasetMetadata>> response) {
-                if(response.isSuccessful() && response.body()!=null) {
-                    progressBar.setVisibility(View.GONE);
-                    recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false));
-                    recyclerView.setAdapter(new DatasetMetadataAdapter(response.body()));
-                    recyclerView.setVisibility(View.VISIBLE);
-                }
-                else{
-                    onFailure(call, new Exception("Null Body or Server Error"));
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ArrayList<DatasetMetadata>> call, Throwable t) {
-                progressBar.setVisibility(View.GONE);
-                if (BuildConfig.DEBUG) {
-                    if (t != null) {
-                        t.printStackTrace();
-                    }
-                }
-            }
-        });
+    @Override
+    public void onLoadingStarted() {
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onError(String message) {
+        progressBar.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onDataLoaded(ArrayList<DatasetMetadata> dataSets) {
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(new DatasetMetadataAdapter(dataSets));
+        recyclerView.setVisibility(View.VISIBLE);
+    }
 }
