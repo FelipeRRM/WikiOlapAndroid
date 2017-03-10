@@ -27,7 +27,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DatasetMenuFragment extends Fragment implements DatasetMetadataViewCallbacks {
+public class DatasetMenuFragment extends BaseFrgment implements DatasetMetadataViewCallbacks {
 
     /**
      * Views

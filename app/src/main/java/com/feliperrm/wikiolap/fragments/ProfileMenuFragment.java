@@ -12,7 +12,7 @@ import com.feliperrm.wikiolap.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileMenuFragment extends Fragment {
+public class ProfileMenuFragment extends BaseFrgment {
 
 
     public ProfileMenuFragment() {

@@ -33,10 +33,6 @@ public class ChartsPresenter {
         callbacks.onLoadingStarted();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("charts");
-        Chart chart = new Chart("Felipe", "Teste1", "http://www.excel-easy.com/data-analysis/images/charts/line-chart.png");
-        Map<String, Chart> users = new HashMap<String, Chart>();
-        users.put(chart.getId(), chart);
-        myRef.setValue(users);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

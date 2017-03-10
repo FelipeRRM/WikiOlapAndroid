@@ -15,7 +15,7 @@ import com.roughike.bottombar.OnTabSelectListener;
 
 import java.lang.ref.WeakReference;
 
-public class BottomBarActivity extends AppCompatActivity {
+public class BottomBarActivity extends BaseActivity {
 
     /**
      * Attributes

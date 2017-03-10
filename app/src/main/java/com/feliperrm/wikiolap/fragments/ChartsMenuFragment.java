@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.feliperrm.wikiolap.R;
+import com.feliperrm.wikiolap.activities.ChartActivity;
 import com.feliperrm.wikiolap.adapters.ChartsAdapter;
 import com.feliperrm.wikiolap.interfaces.ChartsViewCallbacks;
 import com.feliperrm.wikiolap.models.Chart;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChartsMenuFragment extends Fragment implements ChartsViewCallbacks {
+public class ChartsMenuFragment extends BaseFrgment implements ChartsViewCallbacks, ChartsAdapter.ChartInterface {
 
     /**
      * Views
@@ -91,7 +92,7 @@ public class ChartsMenuFragment extends Fragment implements ChartsViewCallbacks 
     public void onDataLoaded(ArrayList<Chart> charts) {
         progressBar.setVisibility(View.GONE);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(new ChartsAdapter(charts));
+        recyclerView.setAdapter(new ChartsAdapter(charts, this));
         recyclerView.setVisibility(View.VISIBLE);
     }
 
@@ -99,5 +100,10 @@ public class ChartsMenuFragment extends Fragment implements ChartsViewCallbacks 
     public void onError(String message) {
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onChartClicked(Chart chart) {
+        startActivity(ChartActivity.getIntent(getContext(), chart));
     }
 }

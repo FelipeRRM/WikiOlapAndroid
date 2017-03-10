@@ -19,9 +19,11 @@ import java.util.ArrayList;
 public class ChartsAdapter extends RecyclerView.Adapter<ChartViewHolder> {
 
     ArrayList<Chart> charts;
+    ChartInterface chartInterface;
 
-    public ChartsAdapter(ArrayList<Chart> charts) {
+    public ChartsAdapter(ArrayList<Chart> charts, ChartInterface chartInterface) {
         this.charts = charts;
+        this.chartInterface = chartInterface;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class ChartsAdapter extends RecyclerView.Adapter<ChartViewHolder> {
 
     @Override
     public void onBindViewHolder(ChartViewHolder holder, int position) {
-        holder.bind(charts.get(position));
+        holder.bind(charts.get(position), chartInterface);
     }
 
     @Override
@@ -44,4 +46,9 @@ public class ChartsAdapter extends RecyclerView.Adapter<ChartViewHolder> {
             return 0;
         }
     }
+
+    public interface ChartInterface{
+        public void onChartClicked(Chart chart);
+    }
+
 }
