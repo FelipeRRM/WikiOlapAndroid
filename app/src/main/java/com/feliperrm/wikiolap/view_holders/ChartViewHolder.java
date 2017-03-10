@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.feliperrm.wikiolap.R;
 import com.feliperrm.wikiolap.adapters.ChartsAdapter;
-import com.feliperrm.wikiolap.models.Chart;
+import com.feliperrm.wikiolap.models.ChartMetadata;
 
 /**
  * Created by felip on 23/02/2017.
@@ -29,11 +29,11 @@ public class ChartViewHolder extends RecyclerView.ViewHolder {
         linearToClick = (LinearLayout) itemView.findViewById(R.id.linear_to_click);
     }
 
-    public void bind(final Chart chart, final ChartsAdapter.ChartInterface chartInterface) {
-        title.setText(chart.getTitle());
+    public void bind(final ChartMetadata chartMetadata, final ChartsAdapter.ChartInterface chartInterface) {
+        title.setText(chartMetadata.getTitle());
 
         Glide.with(imageView.getContext())
-                .load(chart.getThumbnail())
+                .load(chartMetadata.getThumbnail())
                 .placeholder(android.R.drawable.ic_menu_gallery)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageView);
@@ -41,7 +41,7 @@ public class ChartViewHolder extends RecyclerView.ViewHolder {
         linearToClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chartInterface.onChartClicked(chart);
+                chartInterface.onChartClicked(chartMetadata);
             }
         });
 

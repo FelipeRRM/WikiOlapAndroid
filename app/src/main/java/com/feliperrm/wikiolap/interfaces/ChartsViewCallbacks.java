@@ -1,6 +1,6 @@
 package com.feliperrm.wikiolap.interfaces;
 
-import com.feliperrm.wikiolap.models.Chart;
+import com.feliperrm.wikiolap.models.ChartMetadata;
 
 import java.util.ArrayList;
 
@@ -9,5 +9,5 @@ import java.util.ArrayList;
  */
 
 public interface ChartsViewCallbacks extends SimpleAsyncCallback{
-    public void onDataLoaded(ArrayList<Chart> charts);
+    public void onDataLoaded(ArrayList<ChartMetadata> chartMetadatas);
 }

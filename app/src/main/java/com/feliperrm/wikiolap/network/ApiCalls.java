@@ -2,6 +2,7 @@ package com.feliperrm.wikiolap.network;
 
 import com.feliperrm.wikiolap.enums.AggregationFunctions;
 import com.feliperrm.wikiolap.models.DatasetMetadata;
+import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,7 @@ public interface ApiCalls {
     Call<ArrayList<DatasetMetadata>> searchMetadata(@Path("search_string") String searchString);
 
     @GET("getdata/{table_id}")
-    Call<ArrayList<Object>> getData(@Path("table_id") String tableId);
+    Call<JsonArray> getData(@Path("table_id") String tableId);
 
     @GET("getdata/{table_id}/{select_columns}")
     Call<ArrayList<Object>> getData(@Path("table_id") String tableId,

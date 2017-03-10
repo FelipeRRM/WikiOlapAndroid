@@ -8,7 +8,7 @@ import android.view.MenuItem;
 
 import com.feliperrm.wikiolap.R;
 import com.feliperrm.wikiolap.fragments.ChartFragment;
-import com.feliperrm.wikiolap.models.Chart;
+import com.feliperrm.wikiolap.models.ChartMetadata;
 
 public class ChartActivity extends BaseActivity {
 
@@ -19,9 +19,9 @@ public class ChartActivity extends BaseActivity {
         setContentView(R.layout.activity_chart);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        Chart chart = (Chart) getIntent().getParcelableExtra(ChartFragment.CHART_KEY);
-        actionBar.setTitle(chart.getTitle());
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, ChartFragment.newInstance(chart)).commitAllowingStateLoss();
+        ChartMetadata chartMetadata = (ChartMetadata) getIntent().getParcelableExtra(ChartFragment.CHART_KEY);
+        actionBar.setTitle(chartMetadata.getTitle());
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, ChartFragment.newInstance(chartMetadata)).commitAllowingStateLoss();
 
     }
 
@@ -35,9 +35,9 @@ public class ChartActivity extends BaseActivity {
         return (super.onOptionsItemSelected(menuItem));
     }
 
-    public static Intent getIntent(Context context, Chart chart) {
+    public static Intent getIntent(Context context, ChartMetadata chartMetadata) {
         Intent intent = new Intent(context, ChartActivity.class);
-        intent.putExtra(ChartFragment.CHART_KEY, chart);
+        intent.putExtra(ChartFragment.CHART_KEY, chartMetadata);
         return intent;
     }
 

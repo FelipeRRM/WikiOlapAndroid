@@ -1,6 +1,6 @@
 package com.feliperrm.wikiolap.utils;
 
-import com.feliperrm.wikiolap.models.Chart;
+import com.feliperrm.wikiolap.models.ChartMetadata;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -13,11 +13,11 @@ import java.util.Map;
 
 public class FirebaseUtil {
 
-    public void createChart(Chart chart){
+    public void createChart(ChartMetadata chartMetadata){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("charts");
-        Map<String, Chart> users = new HashMap<String, Chart>();
-        users.put(chart.getId(), chart);
+        Map<String, ChartMetadata> users = new HashMap<String, ChartMetadata>();
+        users.put(chartMetadata.getId(), chartMetadata);
         myRef.setValue(users);
     }
 

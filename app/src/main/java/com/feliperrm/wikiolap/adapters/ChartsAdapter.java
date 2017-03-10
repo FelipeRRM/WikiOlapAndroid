@@ -6,8 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.feliperrm.wikiolap.R;
-import com.feliperrm.wikiolap.models.Chart;
-import com.feliperrm.wikiolap.models.DatasetMetadata;
+import com.feliperrm.wikiolap.models.ChartMetadata;
 import com.feliperrm.wikiolap.view_holders.ChartViewHolder;
 
 import java.util.ArrayList;
@@ -18,11 +17,11 @@ import java.util.ArrayList;
 
 public class ChartsAdapter extends RecyclerView.Adapter<ChartViewHolder> {
 
-    ArrayList<Chart> charts;
+    ArrayList<ChartMetadata> chartMetadatas;
     ChartInterface chartInterface;
 
-    public ChartsAdapter(ArrayList<Chart> charts, ChartInterface chartInterface) {
-        this.charts = charts;
+    public ChartsAdapter(ArrayList<ChartMetadata> chartMetadatas, ChartInterface chartInterface) {
+        this.chartMetadatas = chartMetadatas;
         this.chartInterface = chartInterface;
     }
 
@@ -35,20 +34,20 @@ public class ChartsAdapter extends RecyclerView.Adapter<ChartViewHolder> {
 
     @Override
     public void onBindViewHolder(ChartViewHolder holder, int position) {
-        holder.bind(charts.get(position), chartInterface);
+        holder.bind(chartMetadatas.get(position), chartInterface);
     }
 
     @Override
     public int getItemCount() {
-        if (charts != null) {
-            return charts.size();
+        if (chartMetadatas != null) {
+            return chartMetadatas.size();
         } else {
             return 0;
         }
     }
 
     public interface ChartInterface{
-        public void onChartClicked(Chart chart);
+        public void onChartClicked(ChartMetadata chartMetadata);
     }
 
 }

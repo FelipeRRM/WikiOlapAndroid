@@ -1,6 +1,5 @@
 package com.feliperrm.wikiolap.interfaces;
 
-import com.feliperrm.wikiolap.models.Chart;
 import com.feliperrm.wikiolap.models.DatasetMetadata;
 
 import java.util.ArrayList;

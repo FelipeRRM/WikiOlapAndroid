@@ -3,13 +3,11 @@ package com.feliperrm.wikiolap.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Date;
-
 /**
  * Created by felip on 02/03/2017.
  */
 
-public class Chart implements Parcelable {
+public class ChartMetadata implements Parcelable {
 
     private static final String CHART_KEY = "CHART";
     private String craator_id;
@@ -17,8 +15,26 @@ public class Chart implements Parcelable {
     private String title;
     private String thumbnail;
     private String tableId;
+    private String xColumnId;
+    private String yColumnId;
 
-    public Chart() {
+    public ChartMetadata() {
+    }
+
+    public String getxColumnId() {
+        return xColumnId;
+    }
+
+    public void setxColumnId(String xColumnId) {
+        this.xColumnId = xColumnId;
+    }
+
+    public String getyColumnId() {
+        return yColumnId;
+    }
+
+    public void setyColumnId(String yColumnId) {
+        this.yColumnId = yColumnId;
     }
 
     public String getTableId() {
@@ -75,25 +91,29 @@ public class Chart implements Parcelable {
         dest.writeString(this.title);
         dest.writeString(this.thumbnail);
         dest.writeString(this.tableId);
+        dest.writeString(this.xColumnId);
+        dest.writeString(this.yColumnId);
     }
 
-    protected Chart(Parcel in) {
+    protected ChartMetadata(Parcel in) {
         this.craator_id = in.readString();
         this.id = in.readString();
         this.title = in.readString();
         this.thumbnail = in.readString();
         this.tableId = in.readString();
+        this.xColumnId = in.readString();
+        this.yColumnId = in.readString();
     }
 
-    public static final Parcelable.Creator<Chart> CREATOR = new Parcelable.Creator<Chart>() {
+    public static final Creator<ChartMetadata> CREATOR = new Creator<ChartMetadata>() {
         @Override
-        public Chart createFromParcel(Parcel source) {
-            return new Chart(source);
+        public ChartMetadata createFromParcel(Parcel source) {
+            return new ChartMetadata(source);
         }
 
         @Override
-        public Chart[] newArray(int size) {
-            return new Chart[size];
+        public ChartMetadata[] newArray(int size) {
+            return new ChartMetadata[size];
         }
     };
 }

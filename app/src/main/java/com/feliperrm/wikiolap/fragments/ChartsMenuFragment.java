@@ -20,7 +20,7 @@ import com.feliperrm.wikiolap.R;
 import com.feliperrm.wikiolap.activities.ChartActivity;
 import com.feliperrm.wikiolap.adapters.ChartsAdapter;
 import com.feliperrm.wikiolap.interfaces.ChartsViewCallbacks;
-import com.feliperrm.wikiolap.models.Chart;
+import com.feliperrm.wikiolap.models.ChartMetadata;
 import com.feliperrm.wikiolap.presenters.ChartsPresenter;
 
 import java.util.ArrayList;
@@ -89,10 +89,10 @@ public class ChartsMenuFragment extends BaseFrgment implements ChartsViewCallbac
     }
 
     @Override
-    public void onDataLoaded(ArrayList<Chart> charts) {
+    public void onDataLoaded(ArrayList<ChartMetadata> chartMetadatas) {
         progressBar.setVisibility(View.GONE);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(new ChartsAdapter(charts, this));
+        recyclerView.setAdapter(new ChartsAdapter(chartMetadatas, this));
         recyclerView.setVisibility(View.VISIBLE);
     }
 
@@ -103,7 +103,7 @@ public class ChartsMenuFragment extends BaseFrgment implements ChartsViewCallbac
     }
 
     @Override
-    public void onChartClicked(Chart chart) {
-        startActivity(ChartActivity.getIntent(getContext(), chart));
+    public void onChartClicked(ChartMetadata chartMetadata) {
+        startActivity(ChartActivity.getIntent(getContext(), chartMetadata));
     }
 }

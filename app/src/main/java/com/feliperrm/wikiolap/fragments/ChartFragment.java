@@ -7,12 +7,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.feliperrm.wikiolap.R;
 import com.feliperrm.wikiolap.interfaces.DatasetViewCallbacks;
-import com.feliperrm.wikiolap.models.Chart;
+import com.feliperrm.wikiolap.models.ChartMetadata;
+import com.feliperrm.wikiolap.models.XYHolder;
 import com.feliperrm.wikiolap.presenters.DatasetPresenter;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 
 import java.util.ArrayList;
 
@@ -31,17 +37,19 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks {
      * Views
      */
     BarChart barChart;
+    ProgressBar progressBar;
+    TextView errorTextView;
 
     /**
      * Attributes
      */
-    private Chart chart;
+    private ChartMetadata chartMetadata;
     private DatasetPresenter presenter;
 
-    public static ChartFragment newInstance(Chart chart) {
+    public static ChartFragment newInstance(ChartMetadata chartMetadata) {
 
         Bundle args = new Bundle();
-        args.putParcelable(CHART_KEY, chart);
+        args.putParcelable(CHART_KEY, chartMetadata);
         ChartFragment fragment = new ChartFragment();
         fragment.setArguments(args);
         return fragment;
@@ -68,35 +76,58 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         recoverBundle();
-        presenter.loadDataset(chart.getTableId());
         findViews(view);
         setUpViews();
+        presenter.loadDataset(chartMetadata);
     }
 
     private void recoverBundle(){
-        chart = getArguments().getParcelable(CHART_KEY);
+        chartMetadata = getArguments().getParcelable(CHART_KEY);
     }
 
     private void findViews(View v){
         barChart = (BarChart) v.findViewById(R.id.chart);
+        progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+        errorTextView = (TextView) v.findViewById(R.id.errorTextView);
     }
 
     private void setUpViews(){
-
+        errorTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.loadDataset(chartMetadata);
+            }
+        });
     }
 
     @Override
     public void onLoadingStarted() {
-
+        progressBar.setVisibility(View.VISIBLE);
+        barChart.setVisibility(View.GONE);
+        errorTextView.setVisibility(View.GONE);
     }
 
     @Override
     public void onError(String message) {
-
+        progressBar.setVisibility(View.GONE);
+        errorTextView.setVisibility(View.VISIBLE);
+        errorTextView.setText(message);
     }
 
     @Override
-    public void onDataLoaded(ArrayList<Object> dataset) {
+    public void onDataLoaded(ArrayList<XYHolder> dataset) {
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        for(XYHolder xyHolder : dataset){
+            entries.add(new BarEntry((float)(xyHolder.getX()), (float)(xyHolder.getY()) ));
+        }
 
+        BarDataSet barDataSet = new BarDataSet(entries, chartMetadata.getyColumnId());
+
+        BarData barData = new BarData(barDataSet);
+
+        barChart.setData(barData);
+        barChart.invalidate();
+        barChart.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 }
