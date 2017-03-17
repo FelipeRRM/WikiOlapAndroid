@@ -16,9 +16,11 @@ import com.feliperrm.wikiolap.models.ChartMetadata;
 import com.feliperrm.wikiolap.models.XYHolder;
 import com.feliperrm.wikiolap.presenters.DatasetPresenter;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.util.ArrayList;
 
@@ -117,17 +119,27 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks {
     @Override
     public void onDataLoaded(ArrayList<XYHolder> dataset) {
         ArrayList<BarEntry> entries = new ArrayList<>();
+        ArrayList<String> labels = new ArrayList<>();
         for(XYHolder xyHolder : dataset){
-            entries.add(new BarEntry((float)(xyHolder.getX()), (float)(xyHolder.getY()) ));
+            BarEntry barEntry = new BarEntry((float)(xyHolder.getX()), (float)(xyHolder.getY()), xyHolder.getLabel() );
+            entries.add(barEntry);
+            labels.add(xyHolder.getLabel());
         }
 
-        BarDataSet barDataSet = new BarDataSet(entries, chartMetadata.getyColumnId());
+        BarDataSet barDataSet = new BarDataSet(entries, chartMetadata.getYColumnId());
 
         BarData barData = new BarData(barDataSet);
 
         barChart.setData(barData);
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setGranularity(1f);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawLabels(true);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
         barChart.invalidate();
         barChart.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
     }
+
 }

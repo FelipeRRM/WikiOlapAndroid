@@ -10,10 +10,20 @@ import android.os.Parcelable;
 public class XYHolder implements Parcelable {
     double x;
     double y;
+    String label;
 
-    public XYHolder(double x, double y) {
+    public XYHolder(double x, double y, String label) {
         this.x = x;
         this.y = y;
+        this.label = label;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public double getX() {

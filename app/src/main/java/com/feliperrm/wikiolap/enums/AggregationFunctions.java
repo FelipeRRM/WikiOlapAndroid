@@ -5,6 +5,8 @@ package com.feliperrm.wikiolap.enums;
  */
 
 public enum AggregationFunctions {
+
+
     FunctionAverage("avg"),
     FunctionSum("sum");
 
@@ -14,6 +16,15 @@ public enum AggregationFunctions {
         this.apiString = apiString;
     }
 
+    public static AggregationFunctions getFunctionFromString(String function) {
+        if (function.equalsIgnoreCase(FunctionAverage.apiString)) {
+            return FunctionAverage;
+        } else if (function.equalsIgnoreCase(FunctionSum.apiString)) {
+            return FunctionSum;
+        } else {
+            return null;
+        }
+    }
 
     @Override
     public String toString() {

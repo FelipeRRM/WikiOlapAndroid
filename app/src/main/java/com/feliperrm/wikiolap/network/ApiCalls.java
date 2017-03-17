@@ -31,8 +31,14 @@ public interface ApiCalls {
                                     @Path("select_columns") String columns,
                                     @Path("limit") Integer limit);
 
+    @GET("getdata/{table_id}/{group_by}/{agg_func}/{agg_columns}")
+    Call<JsonArray> getDataAggregated(@Path("table_id") String tableId,
+                                      @Path("group_by") String groupBy,
+                                      @Path("agg_func") AggregationFunctions aggregationFunction,
+                                      @Path("agg_columns") String columns);
+
     @GET("getdata/{table_id}/{group_by}/{agg_func}/{agg_columns}/{limit}")
-    Call<ArrayList<Object>> getDataAggregated(@Path("table_id") String tableId,
+    Call<JsonArray> getDataAggregated(@Path("table_id") String tableId,
                                               @Path("group_by") String groupBy,
                                               @Path("agg_func") AggregationFunctions aggregationFunction,
                                               @Path("agg_columns") String columns,
