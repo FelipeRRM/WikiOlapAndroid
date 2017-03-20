@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.feliperrm.wikiolap.R;
 import com.feliperrm.wikiolap.interfaces.DatasetViewCallbacks;
 import com.feliperrm.wikiolap.models.ChartMetadata;
+import com.feliperrm.wikiolap.models.DatasetMetadata;
 import com.feliperrm.wikiolap.models.XYHolder;
 import com.feliperrm.wikiolap.presenters.DatasetPresenter;
 import com.github.mikephil.charting.charts.BarChart;
@@ -23,17 +24,17 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks {
-
+public class SetUpVisualizationFragment extends Fragment implements DatasetViewCallbacks{
 
     /**
      * Contants
      */
-    public static final String CHART_KEY = "chartkey";
+    public static final String DATASET_KEY = "datasetkey";
 
     /**
      * Views
@@ -45,31 +46,32 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks {
     /**
      * Attributes
      */
+    private DatasetMetadata datasetMetadata;
     private ChartMetadata chartMetadata;
     private DatasetPresenter presenter;
 
-    public static ChartFragment newInstance(ChartMetadata chartMetadata) {
-
+    public static SetUpVisualizationFragment newInstance(DatasetMetadata datasetMetadata) {
         Bundle args = new Bundle();
-        args.putParcelable(CHART_KEY, chartMetadata);
-        ChartFragment fragment = new ChartFragment();
+        args.putSerializable(DATASET_KEY, datasetMetadata);
+        SetUpVisualizationFragment fragment = new SetUpVisualizationFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
-    public ChartFragment() {
+    public SetUpVisualizationFragment() {
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new DatasetPresenter(this);
+        chartMetadata = new ChartMetadata();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_chart, container, false);
+        return inflater.inflate(R.layout.fragment_set_up_visualization, container, false);
     }
 
     @Override
@@ -82,7 +84,10 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks {
     }
 
     private void recoverBundle(){
-        chartMetadata = getArguments().getParcelable(CHART_KEY);
+        datasetMetadata = (DatasetMetadata) getArguments().getSerializable(DATASET_KEY);
+        chartMetadata.setTableId(datasetMetadata.getTableId());
+        chartMetadata.setTitle(datasetMetadata.getTitle());
+        chartMetadata.setId(String.valueOf(new Date().getTime()));
     }
 
     private void findViews(View v){

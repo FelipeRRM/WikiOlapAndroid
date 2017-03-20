@@ -8,9 +8,11 @@ import android.view.MenuItem;
 
 import com.feliperrm.wikiolap.R;
 import com.feliperrm.wikiolap.fragments.ChartFragment;
+import com.feliperrm.wikiolap.fragments.SetUpVisualizationFragment;
 import com.feliperrm.wikiolap.models.ChartMetadata;
+import com.feliperrm.wikiolap.models.DatasetMetadata;
 
-public class ChartActivity extends BaseActivity {
+public class SetUpVisualizationActivity extends BaseActivity {
 
 
     @Override
@@ -19,9 +21,9 @@ public class ChartActivity extends BaseActivity {
         setContentView(R.layout.activity_fragment);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        ChartMetadata chartMetadata = (ChartMetadata) getIntent().getParcelableExtra(ChartFragment.CHART_KEY);
-        actionBar.setTitle(chartMetadata.getTitle());
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, ChartFragment.newInstance(chartMetadata)).commitAllowingStateLoss();
+        DatasetMetadata datasetMetadata = (DatasetMetadata) getIntent().getParcelableExtra(SetUpVisualizationFragment.DATASET_KEY);
+        actionBar.setTitle(datasetMetadata.getTitle());
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, SetUpVisualizationFragment.newInstance(datasetMetadata)).commitAllowingStateLoss();
 
     }
 
@@ -35,9 +37,9 @@ public class ChartActivity extends BaseActivity {
         return (super.onOptionsItemSelected(menuItem));
     }
 
-    public static Intent getIntent(Context context, ChartMetadata chartMetadata) {
-        Intent intent = new Intent(context, ChartActivity.class);
-        intent.putExtra(ChartFragment.CHART_KEY, chartMetadata);
+    public static Intent getIntent(Context context, DatasetMetadata datasetMetadata) {
+        Intent intent = new Intent(context, SetUpVisualizationActivity.class);
+        intent.putExtra(SetUpVisualizationFragment.DATASET_KEY, datasetMetadata);
         return intent;
     }
 
