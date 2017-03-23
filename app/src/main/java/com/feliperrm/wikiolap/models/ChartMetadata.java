@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.feliperrm.wikiolap.enums.AggregationFunctions;
+import com.feliperrm.wikiolap.interfaces.ChartUpdateInterface;
 import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ public class ChartMetadata implements Parcelable {
     private ArrayList<String> xColumnIds;
     private String yColumnId;
     private AggregationFunctions aggregationFunction;
+    private int chartType;
+    private transient ChartUpdateInterface updateInterface;
 
     public ChartMetadata() {
     }
@@ -32,6 +35,12 @@ public class ChartMetadata implements Parcelable {
         return aggregationFunction;
     }
 
+    @Exclude
+    public void setAggregationFunctionAsEnum(AggregationFunctions aggregationFunction){
+        this.aggregationFunction = aggregationFunction;
+        update();
+    }
+
 
     public void setAggregationFunction(String aggregationFunctionString) {
         if (aggregationFunctionString == null) {
@@ -39,6 +48,7 @@ public class ChartMetadata implements Parcelable {
         } else {
             this.aggregationFunction = AggregationFunctions.getFunctionFromString(aggregationFunctionString);
         }
+        update();
     }
 
     public String getAggregationFunction() {
@@ -47,6 +57,15 @@ public class ChartMetadata implements Parcelable {
         } else {
             return aggregationFunction.toString();
         }
+    }
+
+    public int getChartType() {
+        return chartType;
+    }
+
+    public void setChartType(int chartType) {
+        this.chartType = chartType;
+        update();
     }
 
     public ArrayList<String> getxColumnIds() {
@@ -59,6 +78,7 @@ public class ChartMetadata implements Parcelable {
 
     public void setYColumnId(String yColumnId) {
         this.yColumnId = yColumnId;
+        update();
     }
 
     public String getTableId() {
@@ -67,6 +87,7 @@ public class ChartMetadata implements Parcelable {
 
     public void setTableId(String tableId) {
         this.tableId = tableId;
+        update();
     }
 
     public String getThumbnail() {
@@ -75,6 +96,7 @@ public class ChartMetadata implements Parcelable {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+        update();
     }
 
     public String getTitle() {
@@ -83,6 +105,7 @@ public class ChartMetadata implements Parcelable {
 
     public void setTitle(String title) {
         this.title = title;
+        update();
     }
 
 
@@ -92,6 +115,7 @@ public class ChartMetadata implements Parcelable {
 
     public void setCreator_id(String creator_id) {
         this.creator_id = creator_id;
+        update();
     }
 
     public String getId() {
@@ -100,8 +124,25 @@ public class ChartMetadata implements Parcelable {
 
     public void setId(String id) {
         this.id = id;
+        update();
     }
 
+    @Exclude
+    private void update(){
+        if(updateInterface!=null){
+            updateInterface.onChartUpdated();
+        }
+    }
+
+    @Exclude
+    public ChartUpdateInterface getUpdateInterface() {
+        return updateInterface;
+    }
+
+    @Exclude
+    public void setUpdateInterface(ChartUpdateInterface updateInterface) {
+        this.updateInterface = updateInterface;
+    }
 
     @Override
     public int describeContents() {

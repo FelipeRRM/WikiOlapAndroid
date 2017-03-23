@@ -7,15 +7,21 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.feliperrm.wikiolap.R;
+import com.feliperrm.wikiolap.interfaces.ChartUpdateInterface;
 import com.feliperrm.wikiolap.interfaces.DatasetViewCallbacks;
 import com.feliperrm.wikiolap.models.ChartMetadata;
 import com.feliperrm.wikiolap.models.DatasetMetadata;
 import com.feliperrm.wikiolap.models.XYHolder;
 import com.feliperrm.wikiolap.presenters.DatasetPresenter;
+import com.feliperrm.wikiolap.utils.ChartUtil;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -29,7 +35,7 @@ import java.util.Date;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SetUpVisualizationFragment extends Fragment implements DatasetViewCallbacks{
+public class SetUpVisualizationFragment extends Fragment implements DatasetViewCallbacks, ChartUpdateInterface{
 
     /**
      * Contants
@@ -39,9 +45,10 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
     /**
      * Views
      */
-    BarChart barChart;
+    FrameLayout chartHolder;
     ProgressBar progressBar;
     TextView errorTextView;
+    Spinner chartTypeSpinner;
 
     /**
      * Attributes
@@ -91,9 +98,10 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
     }
 
     private void findViews(View v){
-        barChart = (BarChart) v.findViewById(R.id.chart);
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         errorTextView = (TextView) v.findViewById(R.id.errorTextView);
+        chartHolder = (FrameLayout) v.findViewById(R.id.chartHolder);
+        chartTypeSpinner = (Spinner) v.findViewById(R.id.chartTypeSpinner);
     }
 
     private void setUpViews(){
@@ -103,12 +111,25 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
                 presenter.loadDataset(chartMetadata);
             }
         });
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, ChartUtil.getChartTypes(getContext()));
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        chartTypeSpinner.setAdapter(arrayAdapter);
+        chartTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                chartMetadata.setChartType(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     @Override
     public void onLoadingStarted() {
         progressBar.setVisibility(View.VISIBLE);
-        barChart.setVisibility(View.GONE);
         errorTextView.setVisibility(View.GONE);
     }
 
@@ -121,28 +142,14 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
 
     @Override
     public void onDataLoaded(ArrayList<XYHolder> dataset) {
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        ArrayList<String> labels = new ArrayList<>();
-        for(XYHolder xyHolder : dataset){
-            BarEntry barEntry = new BarEntry((float)(xyHolder.getX()), (float)(xyHolder.getY()), xyHolder.getLabel() );
-            entries.add(barEntry);
-            labels.add(xyHolder.getLabel());
-        }
-
-        BarDataSet barDataSet = new BarDataSet(entries, chartMetadata.getYColumnId());
-
-        BarData barData = new BarData(barDataSet);
-
-        barChart.setData(barData);
-        XAxis xAxis = barChart.getXAxis();
-        xAxis.setGranularity(1f);
-        xAxis.setGranularityEnabled(true);
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawLabels(true);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
-        barChart.invalidate();
-        barChart.setVisibility(View.VISIBLE);
+        chartHolder.removeAllViews();
+        chartHolder.addView(ChartUtil.buildChart(getContext(), dataset, chartMetadata));
+        chartHolder.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onChartUpdated() {
+        presenter.loadDataset(chartMetadata);
+    }
 }
