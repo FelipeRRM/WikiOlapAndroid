@@ -10,4 +10,10 @@
     <string name="search_for_charts">Search for charts...</string>
     <string name="bar_chart">Bar Chart</string>
     <string name="line_chart">Line Chart</string>
+    <string name="chart_type">Chart Type:</string>
+    <string name="y_axis">Y Axis:</string>
+    <string name="x_axis">X Axis:</string>
+    <string name="aggregation_function">Aggregation Function:</string>
+    <string name="sum">Sum</string>
+    <string name="average">Average</string>
 </resources>

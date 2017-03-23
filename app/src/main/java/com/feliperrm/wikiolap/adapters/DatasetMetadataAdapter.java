@@ -18,9 +18,11 @@ import java.util.ArrayList;
 public class DatasetMetadataAdapter extends RecyclerView.Adapter<DatasetMetadataViewHolder> {
 
     ArrayList<DatasetMetadata> datasets;
+    DatasetInterface datasetInterface;
 
-    public DatasetMetadataAdapter(ArrayList<DatasetMetadata> datasets) {
+    public DatasetMetadataAdapter(ArrayList<DatasetMetadata> datasets, DatasetInterface datasetInterface) {
         this.datasets = datasets;
+        this.datasetInterface = datasetInterface;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class DatasetMetadataAdapter extends RecyclerView.Adapter<DatasetMetadata
 
     @Override
     public void onBindViewHolder(DatasetMetadataViewHolder holder, int position) {
-        holder.bind(datasets.get(position));
+        holder.bind(datasets.get(position), datasetInterface);
     }
 
     @Override
@@ -43,4 +45,9 @@ public class DatasetMetadataAdapter extends RecyclerView.Adapter<DatasetMetadata
             return 0;
         }
     }
+
+    public interface DatasetInterface{
+        public void onDatasetClicked(DatasetMetadata datasetMetadata);
+    }
+
 }

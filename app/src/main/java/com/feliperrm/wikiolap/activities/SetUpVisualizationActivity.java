@@ -21,7 +21,7 @@ public class SetUpVisualizationActivity extends BaseActivity {
         setContentView(R.layout.activity_fragment);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        DatasetMetadata datasetMetadata = (DatasetMetadata) getIntent().getParcelableExtra(SetUpVisualizationFragment.DATASET_KEY);
+        DatasetMetadata datasetMetadata = (DatasetMetadata) getIntent().getSerializableExtra(SetUpVisualizationFragment.DATASET_KEY);
         actionBar.setTitle(datasetMetadata.getTitle());
         getSupportFragmentManager().beginTransaction().replace(R.id.container, SetUpVisualizationFragment.newInstance(datasetMetadata)).commitAllowingStateLoss();
 

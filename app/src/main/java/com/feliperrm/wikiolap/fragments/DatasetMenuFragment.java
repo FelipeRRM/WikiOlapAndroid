@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.feliperrm.wikiolap.R;
+import com.feliperrm.wikiolap.activities.SetUpVisualizationActivity;
 import com.feliperrm.wikiolap.adapters.DatasetMetadataAdapter;
 import com.feliperrm.wikiolap.interfaces.DatasetMetadataViewCallbacks;
 import com.feliperrm.wikiolap.models.DatasetMetadata;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DatasetMenuFragment extends BaseFrgment implements DatasetMetadataViewCallbacks {
+public class DatasetMenuFragment extends BaseFrgment implements DatasetMetadataViewCallbacks, DatasetMetadataAdapter.DatasetInterface {
 
     /**
      * Views
@@ -98,7 +99,12 @@ public class DatasetMenuFragment extends BaseFrgment implements DatasetMetadataV
     public void onDataLoaded(ArrayList<DatasetMetadata> dataSets) {
         progressBar.setVisibility(View.GONE);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(new DatasetMetadataAdapter(dataSets));
+        recyclerView.setAdapter(new DatasetMetadataAdapter(dataSets, this));
         recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onDatasetClicked(DatasetMetadata datasetMetadata) {
+        startActivity(SetUpVisualizationActivity.getIntent(getContext(), datasetMetadata));
     }
 }

@@ -14,7 +14,7 @@ public class DatasetMetadata implements Serializable {
     ArrayList<String> aliasColumns;
     String email;
     // TODO: 23/02/2017 Verificar qual é o tipo desse array.
-    ArrayList<Object> hierarchies;
+    ArrayList<Hierarchy> hierarchies;
     String source;
     ArrayList<String> originalColumns;
     // TODO: 23/02/2017 Verificar qual é o tipo desse array.
@@ -53,11 +53,11 @@ public class DatasetMetadata implements Serializable {
         this.email = email;
     }
 
-    public ArrayList<Object> getHierarchies() {
+    public ArrayList<Hierarchy> getHierarchies() {
         return hierarchies;
     }
 
-    public void setHierarchies(ArrayList<Object> hierarchies) {
+    public void setHierarchies(ArrayList<Hierarchy> hierarchies) {
         this.hierarchies = hierarchies;
     }
 

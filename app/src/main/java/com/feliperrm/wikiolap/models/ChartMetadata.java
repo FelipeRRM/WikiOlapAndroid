@@ -72,6 +72,11 @@ public class ChartMetadata implements Parcelable {
         return xColumnIds;
     }
 
+    public void setxColumnIds(ArrayList<String> xColumnIds) {
+        this.xColumnIds = xColumnIds;
+        update();
+    }
+
     public String getYColumnId() {
         return yColumnId;
     }
@@ -126,6 +131,8 @@ public class ChartMetadata implements Parcelable {
         this.id = id;
         update();
     }
+
+
 
     @Exclude
     private void update(){
