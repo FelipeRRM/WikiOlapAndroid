@@ -3,6 +3,7 @@
     <string name="charts_title">Charts</string>
     <string name="dataset_title">Dataset</string>
     <string name="profile_title">Profile</string>
+    <string name="facebook_app_id">1489404787760189</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     tools:context="com.feliperrm.wikiolap.fragments.ChartsMenuFragment">
 
-    <TextView
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebook_login"
         android:layout_gravity="center"
         android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello profile fragment!" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </FrameLayout>
