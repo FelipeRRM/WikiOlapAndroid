@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.feliperrm.wikiolap.fragments.ChartsMenuFragment">
 
     <com.facebook.login.widget.LoginButton
@@ -10,5 +11,49 @@
         android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_width="70dp"
+        android:layout_height="70dp" />
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:id="@+id/readyLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        >
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:id="@+id/profile_image"
+            android:src="@drawable/profile_placeholder"
+            app:civ_border_color="#EEEEEE"
+            app:civ_border_width="2dp"
+            app:civ_shadow="true"
+            app:civ_shadow_radius="4"
+            app:civ_shadow_color="#232323"
+            />
+
+        <TextView
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_centerHorizontal="true"
+            android:text="Welcome Felipe"
+            android:id="@+id/welcome_text"
+            android:layout_below="@+id/profile_image"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </RelativeLayout>
 
 </FrameLayout>

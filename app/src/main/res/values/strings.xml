@@ -17,4 +17,7 @@
     <string name="aggregation_function">Aggregation Function:</string>
     <string name="sum">Sum</string>
     <string name="average">Average</string>
+    <string name="logging_in">Logging in...</string>
+    <string name="facebook_email_error">Error getting email from Facebook.</string>
+    <string name="welcome_text">Welcome %1$s</string>
 </resources>

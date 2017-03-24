@@ -28,7 +28,7 @@ public class ChartsPresenter {
         this.callbacks = callbacks;
     }
 
-    public void loadCharts(String search){
+    public void loadCharts(String search) {
         callbacks.onLoadingStarted();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("charts");
@@ -36,14 +36,15 @@ public class ChartsPresenter {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 myRef.removeEventListener(this);
-                GenericTypeIndicator<HashMap<String, ChartMetadata>> t = new GenericTypeIndicator<HashMap<String, ChartMetadata>>() {};
-                HashMap<String,ChartMetadata> charts = dataSnapshot.getValue(t);
+                GenericTypeIndicator<HashMap<String, ChartMetadata>> t = new GenericTypeIndicator<HashMap<String, ChartMetadata>>() {
+                };
+                HashMap<String, ChartMetadata> charts = dataSnapshot.getValue(t);
                 callbacks.onDataLoaded(new ArrayList<ChartMetadata>(charts.values()));
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                if(error!=null) {
+                if (error != null) {
                     Log.w(TAG, "Failed to read value.", error.toException());
                 }
                 callbacks.onError("");
