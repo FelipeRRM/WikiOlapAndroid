@@ -171,7 +171,11 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
         welcomeText.setText(getString(R.string.welcome_text, user.getName()));
         userLoader.setVisibility(View.GONE);
         readyLayout.setVisibility(View.VISIBLE);
-        Glide.with(getContext()).load(user.getPicture()).diskCacheStrategy(DiskCacheStrategy.ALL).into(profileImage);
+        Glide.with(getContext()).load(user.getPicture())
+                .placeholder(R.drawable.profile_placeholder)
+                .dontAnimate()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(profileImage);
     }
 
 }

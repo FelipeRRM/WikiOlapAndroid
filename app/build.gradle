@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.1"
+    buildToolsVersion '25.0.2'
     defaultConfig {
         applicationId "com.feliperrm.wikiolap"
         minSdkVersion 16
@@ -35,7 +35,6 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.google.firebase:firebase-database:10.2.0'
     compile 'com.android.support:cardview-v7:25.2.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta2'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.mikhaellopez:circularimageview:3.0.2'

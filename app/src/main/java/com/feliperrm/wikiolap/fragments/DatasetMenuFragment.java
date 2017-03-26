@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,7 +99,7 @@ public class DatasetMenuFragment extends BaseFrgment implements DatasetMetadataV
     @Override
     public void onDataLoaded(ArrayList<DatasetMetadata> dataSets) {
         progressBar.setVisibility(View.GONE);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(new DatasetMetadataAdapter(dataSets, this));
         recyclerView.setVisibility(View.VISIBLE);
     }

@@ -20,4 +20,7 @@
     <string name="logging_in">Logging in...</string>
     <string name="facebook_email_error">Error getting email from Facebook.</string>
     <string name="welcome_text">Welcome %1$s</string>
+    <string name="columns">Columns:</string>
+    <string name="dataset">Dataset</string>
+    <string name="visualization">Visualization</string>
 </resources>
