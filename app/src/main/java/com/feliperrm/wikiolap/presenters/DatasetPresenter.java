@@ -3,6 +3,7 @@ package com.feliperrm.wikiolap.presenters;
 import com.feliperrm.wikiolap.BuildConfig;
 import com.feliperrm.wikiolap.interfaces.DatasetViewCallbacks;
 import com.feliperrm.wikiolap.models.ChartMetadata;
+import com.feliperrm.wikiolap.models.DatasetMetadata;
 import com.feliperrm.wikiolap.models.XYHolder;
 import com.feliperrm.wikiolap.network.Network;
 import com.google.gson.JsonArray;
@@ -20,19 +21,44 @@ import retrofit2.Response;
 
 public class DatasetPresenter {
 
+    private static final int PREVIEW_QUANTITY = 10;
     DatasetViewCallbacks callbacks;
 
     public DatasetPresenter(DatasetViewCallbacks callbacks) {
         this.callbacks = callbacks;
     }
 
-    public void loadDataset(final ChartMetadata chartMetadata) {
+    public void loadDatasetFormatted(final ChartMetadata chartMetadata) {
         callbacks.onLoadingStarted();
         Network.getApiCalls().getDataAggregated(chartMetadata.getTableId(),chartMetadata.getGroupByString(),chartMetadata.getAggregationAsEnum(), chartMetadata.getYColumnId()).enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     callbacks.onDataLoaded(formatChartData(chartMetadata, response.body()));
+                } else {
+                    onFailure(call, new Exception("Null Body or Server Error"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonArray> call, Throwable t) {
+                if (BuildConfig.DEBUG) {
+                    if (t != null) {
+                        t.printStackTrace();
+                    }
+                }
+                callbacks.onError("Error while loading dataset, tap to try again!");
+            }
+        });
+    }
+
+    public void loadDatasetRaw(final DatasetMetadata datasetMetadata){
+        callbacks.onLoadingStarted();
+        Network.getApiCalls().getData(datasetMetadata.getTableId(), PREVIEW_QUANTITY).enqueue(new Callback<JsonArray>() {
+            @Override
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callbacks.onDataLoaded(getRawValuesAsArray(datasetMetadata, response.body()));
                 } else {
                     onFailure(call, new Exception("Null Body or Server Error"));
                 }
@@ -72,6 +98,16 @@ public class DatasetPresenter {
             i++;
         }
         return returnArray;
+    }
+
+    private static ArrayList<ArrayList<String>> getRawValuesAsArray(DatasetMetadata datasetMetadata, JsonArray jsonArray){
+        ArrayList<ArrayList<String>> returnValues = new ArrayList<>(PREVIEW_QUANTITY);
+        int i = 0;
+        int rowSize = datasetMetadata.getOriginalColumns().size();
+        while (i<PREVIEW_QUANTITY){
+            ArrayList<String> row = new ArrayList<>(rowSize);
+        }
+        return returnValues;
     }
 
 }

@@ -94,7 +94,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         setUpViews();
         setUpInitialValues();
         chartMetadata.setUpdateInterface(this);
-        presenter.loadDataset(chartMetadata);
+        presenter.loadDatasetFormatted(chartMetadata);
     }
 
     private void recoverBundle(){
@@ -119,7 +119,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         errorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.loadDataset(chartMetadata);
+                presenter.loadDatasetFormatted(chartMetadata);
             }
         });
         ArrayAdapter<String> chartTypesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, ChartUtil.getChartTypes(getContext()));
@@ -207,7 +207,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
 
     @Override
     public void onChartUpdated() {
-        presenter.loadDataset(chartMetadata);
+        presenter.loadDatasetFormatted(chartMetadata);
     }
 
     @Override
