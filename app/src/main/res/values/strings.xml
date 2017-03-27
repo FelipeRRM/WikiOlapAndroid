@@ -23,4 +23,5 @@
     <string name="columns">Columns:</string>
     <string name="dataset">Dataset</string>
     <string name="visualization">Visualization</string>
+    <string name="dataset_description">Daset Description:</string>
 </resources>

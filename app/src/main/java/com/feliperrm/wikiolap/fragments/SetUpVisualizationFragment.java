@@ -206,6 +206,11 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
     }
 
     @Override
+    public void onRawDataLoaded(ArrayList<ArrayList<String>> values) {
+
+    }
+
+    @Override
     public void onChartUpdated() {
         presenter.loadDatasetFormatted(chartMetadata);
     }

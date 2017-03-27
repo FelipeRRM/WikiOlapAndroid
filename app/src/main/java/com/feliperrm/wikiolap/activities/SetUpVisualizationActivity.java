@@ -14,6 +14,7 @@ import android.view.MenuItem;
 
 import com.feliperrm.wikiolap.R;
 import com.feliperrm.wikiolap.fragments.ChartFragment;
+import com.feliperrm.wikiolap.fragments.DatasetPreviewFragment;
 import com.feliperrm.wikiolap.fragments.SetUpVisualizationFragment;
 import com.feliperrm.wikiolap.models.ChartMetadata;
 import com.feliperrm.wikiolap.models.DatasetMetadata;
@@ -71,7 +72,7 @@ public class SetUpVisualizationActivity extends BaseActivity {
 
     class Adapter extends FragmentPagerAdapter {
 
-        SetUpVisualizationFragment frag1;
+        DatasetPreviewFragment frag1;
         SetUpVisualizationFragment frag2;
 
         public Adapter(FragmentManager fm) {
@@ -83,7 +84,7 @@ public class SetUpVisualizationActivity extends BaseActivity {
             switch (position){
                 case 0:{
                     if(frag1 == null){
-                        frag1 = SetUpVisualizationFragment.newInstance(datasetMetadata);
+                        frag1 = DatasetPreviewFragment.newInstance(datasetMetadata);
                     }
                     return frag1;
                 }

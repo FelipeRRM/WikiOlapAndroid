@@ -118,4 +118,9 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks {
         progressBar.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onRawDataLoaded(ArrayList<ArrayList<String>> values) {
+        // Not used
+    }
+
 }

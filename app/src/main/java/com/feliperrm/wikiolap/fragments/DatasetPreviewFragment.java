@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.feliperrm.wikiolap.R;
+import com.feliperrm.wikiolap.adapters.DatasetPreviewAdapter;
 import com.feliperrm.wikiolap.adapters.XValuesAdapter;
 import com.feliperrm.wikiolap.enums.AggregationFunctions;
 import com.feliperrm.wikiolap.interfaces.ChartUpdateInterface;
@@ -29,6 +30,7 @@ import com.feliperrm.wikiolap.models.DatasetMetadata;
 import com.feliperrm.wikiolap.models.XYHolder;
 import com.feliperrm.wikiolap.presenters.DatasetPresenter;
 import com.feliperrm.wikiolap.utils.ChartUtil;
+import com.feliperrm.wikiolap.utils.FixedGridLayoutManager;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,6 +51,7 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
     private ProgressBar progressBar;
     private TextView errorTextView;
     private RecyclerView recyclerView;
+    private TextView description;
 
     /**
      * Attributes
@@ -85,6 +88,7 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
         recoverBundle();
         findViews(view);
         setUpViews();
+        presenter.loadDatasetRaw(datasetMetadata);
     }
 
     private void recoverBundle(){
@@ -95,14 +99,20 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         errorTextView = (TextView) v.findViewById(R.id.errorTextView);
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+        description = (TextView) v.findViewById(R.id.description);
     }
 
     private void setUpViews(){
         errorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                presenter.loadDatasetRaw(datasetMetadata);
             }
         });
+        FixedGridLayoutManager fixedGridLayoutManager = new FixedGridLayoutManager();
+        fixedGridLayoutManager.setTotalColumnCount(datasetMetadata.getOriginalColumns().size());
+        recyclerView.setLayoutManager(fixedGridLayoutManager);
+        description.setText(datasetMetadata.getDescription());
     }
 
     @Override
@@ -122,6 +132,12 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
 
     @Override
     public void onDataLoaded(ArrayList<XYHolder> dataset) {
+        // NOT USED
+    }
+
+    @Override
+    public void onRawDataLoaded(ArrayList<ArrayList<String>> values) {
+        recyclerView.setAdapter(new DatasetPreviewAdapter(values, datasetMetadata));
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
     }

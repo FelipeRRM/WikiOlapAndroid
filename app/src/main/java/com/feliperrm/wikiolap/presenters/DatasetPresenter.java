@@ -30,7 +30,7 @@ public class DatasetPresenter {
 
     public void loadDatasetFormatted(final ChartMetadata chartMetadata) {
         callbacks.onLoadingStarted();
-        Network.getApiCalls().getDataAggregated(chartMetadata.getTableId(),chartMetadata.getGroupByString(),chartMetadata.getAggregationAsEnum(), chartMetadata.getYColumnId()).enqueue(new Callback<JsonArray>() {
+        Network.getApiCalls().getDataAggregated(chartMetadata.getTableId(), chartMetadata.getGroupByString(), chartMetadata.getAggregationAsEnum(), chartMetadata.getYColumnId()).enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -52,7 +52,7 @@ public class DatasetPresenter {
         });
     }
 
-    public void loadDatasetRaw(final DatasetMetadata datasetMetadata){
+    public void loadDatasetRaw(final DatasetMetadata datasetMetadata) {
         callbacks.onLoadingStarted();
         Network.getApiCalls().getData(datasetMetadata.getTableId(), PREVIEW_QUANTITY).enqueue(new Callback<JsonArray>() {
             @Override
@@ -76,7 +76,7 @@ public class DatasetPresenter {
         });
     }
 
-    private static ArrayList<XYHolder> formatChartData(ChartMetadata chartMetadata, JsonArray jsonArray){
+    private static ArrayList<XYHolder> formatChartData(ChartMetadata chartMetadata, JsonArray jsonArray) {
         ArrayList<XYHolder> returnArray = new ArrayList<>();
         int size = jsonArray.size();
         int i = 0;
@@ -87,26 +87,39 @@ public class DatasetPresenter {
             Double y = object.get(yColunmName).getAsDouble();
             String label = "";
             StringBuilder builder = new StringBuilder(label);
-            for(String groupByX : chartMetadata.getxColumnIds()){
+            for (String groupByX : chartMetadata.getxColumnIds()) {
                 builder.append(object.get(groupByX).getAsString());
                 builder.append("/");
             }
             label = builder.toString();
-            label = label.substring(0, label.length()-1);
-            XYHolder holder = new XYHolder(x,y, label);
+            label = label.substring(0, label.length() - 1);
+            XYHolder holder = new XYHolder(x, y, label);
             returnArray.add(holder);
             i++;
         }
         return returnArray;
     }
 
-    private static ArrayList<ArrayList<String>> getRawValuesAsArray(DatasetMetadata datasetMetadata, JsonArray jsonArray){
+    private static ArrayList<ArrayList<String>> getRawValuesAsArray(DatasetMetadata datasetMetadata, JsonArray jsonArray) {
         int size = jsonArray.size();
         ArrayList<ArrayList<String>> returnValues = new ArrayList<>(size);
+        returnValues.add(datasetMetadata.getAliasColumns());
         int i = 0;
         int rowSize = datasetMetadata.getOriginalColumns().size();
-        while (i<size){
+        while (i < size) {
             ArrayList<String> row = new ArrayList<>(rowSize);
+            JsonObject object = jsonArray.get(i).getAsJsonObject();
+            for (String column : datasetMetadata.getOriginalColumns()) {
+                String strToAdd;
+                try {
+                    strToAdd = object.get(column).toString();
+                } catch (Exception e) {
+                    strToAdd = "ERROR";
+                }
+                row.add(strToAdd);
+            }
+            returnValues.add(row);
+            i++;
         }
         return returnValues;
     }
