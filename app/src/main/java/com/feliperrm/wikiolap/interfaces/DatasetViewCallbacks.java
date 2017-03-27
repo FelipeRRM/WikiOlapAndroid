@@ -10,4 +10,5 @@ import java.util.ArrayList;
 
 public interface DatasetViewCallbacks extends SimpleAsyncCallback {
     public void onDataLoaded(ArrayList<XYHolder> dataset);
+    public void onRawDataLoaded(ArrayList<ArrayList<String>> values);
 }

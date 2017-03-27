@@ -58,7 +58,7 @@ public class DatasetPresenter {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    callbacks.onDataLoaded(getRawValuesAsArray(datasetMetadata, response.body()));
+                    callbacks.onRawDataLoaded(getRawValuesAsArray(datasetMetadata, response.body()));
                 } else {
                     onFailure(call, new Exception("Null Body or Server Error"));
                 }
@@ -101,10 +101,11 @@ public class DatasetPresenter {
     }
 
     private static ArrayList<ArrayList<String>> getRawValuesAsArray(DatasetMetadata datasetMetadata, JsonArray jsonArray){
-        ArrayList<ArrayList<String>> returnValues = new ArrayList<>(PREVIEW_QUANTITY);
+        int size = jsonArray.size();
+        ArrayList<ArrayList<String>> returnValues = new ArrayList<>(size);
         int i = 0;
         int rowSize = datasetMetadata.getOriginalColumns().size();
-        while (i<PREVIEW_QUANTITY){
+        while (i<size){
             ArrayList<String> row = new ArrayList<>(rowSize);
         }
         return returnValues;

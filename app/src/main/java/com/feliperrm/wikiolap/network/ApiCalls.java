@@ -23,15 +23,15 @@ public interface ApiCalls {
     Call<JsonArray> getData(@Path("table_id") String tableId);
 
     @GET("getdata/{table_id}/{limit}")
-    Call<ArrayList<Object>> getData(@Path("table_id") String tableId,
+    Call<JsonArray> getData(@Path("table_id") String tableId,
                                     @Path("limit") Integer limit);
 
     @GET("getdata/{table_id}/{select_columns}")
-    Call<ArrayList<Object>> getData(@Path("table_id") String tableId,
+    Call<JsonArray> getData(@Path("table_id") String tableId,
                                     @Path("select_columns") String columns);
 
     @GET("getdata/{table_id}/{select_columns}/{limit}")
-    Call<ArrayList<Object>> getData(@Path("table_id") String tableId,
+    Call<JsonArray> getData(@Path("table_id") String tableId,
                                     @Path("select_columns") String columns,
                                     @Path("limit") Integer limit);
 
