@@ -36,7 +36,7 @@ import java.util.Date;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SetUpVisualizationFragment extends Fragment implements DatasetViewCallbacks, ChartUpdateInterface, XValuesAdapter.XValuesInterface{
+public class SetUpVisualizationFragment extends Fragment implements DatasetViewCallbacks, ChartUpdateInterface{
 
     /**
      * Contants
@@ -49,11 +49,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
     private FrameLayout chartHolder;
     private ProgressBar progressBar;
     private TextView errorTextView;
-    private Spinner chartTypeSpinner;
-    private Spinner yAxisValueSpinner;
-    private RecyclerView xRecyclerView;
-    private RadioButton radioSum;
-    private RadioButton radioAverage;
+
 
     /**
      * Attributes
@@ -108,11 +104,6 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         errorTextView = (TextView) v.findViewById(R.id.errorTextView);
         chartHolder = (FrameLayout) v.findViewById(R.id.chartHolder);
-        chartTypeSpinner = (Spinner) v.findViewById(R.id.chartTypeSpinner);
-        yAxisValueSpinner = (Spinner) v.findViewById(R.id.yValueSpinner);
-        xRecyclerView = (RecyclerView) v.findViewById(R.id.xRecyclerView);
-        radioSum = (RadioButton) v.findViewById(R.id.radio_sum);
-        radioAverage = (RadioButton) v.findViewById(R.id.radio_average);
     }
 
     private void setUpViews(){
@@ -120,56 +111,6 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
             @Override
             public void onClick(View view) {
                 presenter.loadDatasetFormatted(chartMetadata);
-            }
-        });
-        ArrayAdapter<String> chartTypesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, ChartUtil.getChartTypes(getContext()));
-        chartTypesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        chartTypeSpinner.setAdapter(chartTypesAdapter);
-        chartTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                chartMetadata.setChartType(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        ArrayAdapter<String> yValuesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, datasetMetadata.getOriginalColumns());
-        yValuesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        yAxisValueSpinner.setAdapter(yValuesAdapter);
-        yAxisValueSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                chartMetadata.setYColumnId(datasetMetadata.getOriginalColumns().get(position));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        yAxisValueSpinner.setSelection(yValuesAdapter.getCount()-1);
-
-        xRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        xRecyclerView.setAdapter(new XValuesAdapter(ColumnHolder.getColumnHoldersFromStrings(datasetMetadata.getOriginalColumns()), this));
-
-        radioSum.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked){
-                    chartMetadata.setAggregationFunctionAsEnum(AggregationFunctions.FunctionSum);
-                }
-            }
-        });
-
-        radioAverage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if(checked) {
-                    chartMetadata.setAggregationFunctionAsEnum(AggregationFunctions.FunctionAverage);
-                }
             }
         });
     }
@@ -215,8 +156,4 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         presenter.loadDatasetFormatted(chartMetadata);
     }
 
-    @Override
-    public void onXValuesChanged(ArrayList<String> xValues) {
-        chartMetadata.setxColumnIds(xValues);
-    }
 }

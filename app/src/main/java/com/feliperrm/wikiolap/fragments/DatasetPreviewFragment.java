@@ -32,8 +32,10 @@ import com.feliperrm.wikiolap.presenters.DatasetPresenter;
 import com.feliperrm.wikiolap.utils.ChartUtil;
 import com.feliperrm.wikiolap.utils.FixedGridLayoutManager;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,8 +52,12 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
      */
     private ProgressBar progressBar;
     private TextView errorTextView;
+    private TextView title;
     private RecyclerView recyclerView;
     private TextView description;
+    private TextView source;
+    private TextView email;
+    private TextView date;
 
     /**
      * Attributes
@@ -99,7 +105,11 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         errorTextView = (TextView) v.findViewById(R.id.errorTextView);
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+        title = (TextView) v.findViewById(R.id.title);
         description = (TextView) v.findViewById(R.id.description);
+        source = (TextView) v.findViewById(R.id.source);
+        email = (TextView) v.findViewById(R.id.email);
+        date = (TextView) v.findViewById(R.id.date);
     }
 
     private void setUpViews(){
@@ -109,10 +119,16 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
                 presenter.loadDatasetRaw(datasetMetadata);
             }
         });
+        title.setText(datasetMetadata.getTitle());
         FixedGridLayoutManager fixedGridLayoutManager = new FixedGridLayoutManager();
         fixedGridLayoutManager.setTotalColumnCount(datasetMetadata.getOriginalColumns().size());
         recyclerView.setLayoutManager(fixedGridLayoutManager);
         description.setText(datasetMetadata.getDescription());
+        source.setText(datasetMetadata.getSource());
+        email.setText(datasetMetadata.getEmail());
+        Date createdDate = new Date(datasetMetadata.getCreated_at().get$date());
+        DateFormat df = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
+        date.setText(df.format(createdDate));
     }
 
     @Override

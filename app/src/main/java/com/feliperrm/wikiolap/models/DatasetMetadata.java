@@ -13,13 +13,30 @@ public class DatasetMetadata implements Serializable {
     String description;
     ArrayList<String> aliasColumns;
     String email;
-    // TODO: 23/02/2017 Verificar qual é o tipo desse array.
     ArrayList<Hierarchy> hierarchies;
     String source;
     ArrayList<String> originalColumns;
     // TODO: 23/02/2017 Verificar qual é o tipo desse array.
     ArrayList<Object> tags;
+    TimeStamp created_at;
+    TimeStamp updated_at;
     String tableId;
+
+    public TimeStamp getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(TimeStamp created_at) {
+        this.created_at = created_at;
+    }
+
+    public TimeStamp getUpdated_at() {
+        return updated_at;
+    }
+
+    public void setUpdated_at(TimeStamp updated_at) {
+        this.updated_at = updated_at;
+    }
 
     public String getTitle() {
         return title;

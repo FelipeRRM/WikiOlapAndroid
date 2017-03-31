@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">WikiOlap</string>
     <string name="charts_title">Charts</string>
-    <string name="dataset_title">Dataset</string>
+    <string name="dataset_title">Dataset Title:</string>
     <string name="profile_title">Profile</string>
     <string name="facebook_app_id">1489404787760189</string>
 
@@ -24,4 +24,8 @@
     <string name="dataset">Dataset</string>
     <string name="visualization">Visualization</string>
     <string name="dataset_description">Daset Description:</string>
+    <string name="dataset_source">Source:</string>
+    <string name="dataset_email">E-mail:</string>
+    <string name="dataset_date">Uploaded at:</string>
+    <string name="data_preview">Data Preview:</string>
 </resources>

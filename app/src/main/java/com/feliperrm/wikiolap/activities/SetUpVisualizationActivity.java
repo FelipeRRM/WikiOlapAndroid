@@ -7,16 +7,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.feliperrm.wikiolap.R;
-import com.feliperrm.wikiolap.fragments.ChartFragment;
 import com.feliperrm.wikiolap.fragments.DatasetPreviewFragment;
 import com.feliperrm.wikiolap.fragments.SetUpVisualizationFragment;
-import com.feliperrm.wikiolap.models.ChartMetadata;
 import com.feliperrm.wikiolap.models.DatasetMetadata;
 
 public class SetUpVisualizationActivity extends BaseActivity {
@@ -26,6 +24,7 @@ public class SetUpVisualizationActivity extends BaseActivity {
      */
     TabLayout tabLayout;
     ViewPager viewPager;
+    ImageView back;
 
     /**
      * Attributes
@@ -35,23 +34,27 @@ public class SetUpVisualizationActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
+        setContentView(R.layout.activity_set_up_visualization);
         datasetMetadata = (DatasetMetadata) getIntent().getSerializableExtra(SetUpVisualizationFragment.DATASET_KEY);
         findViews();
         setUpViews();
     }
 
-    private void findViews(){
+    private void findViews() {
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         viewPager = (ViewPager) findViewById(R.id.container);
+        back = (ImageView) findViewById(R.id.back);
     }
 
-    private void setUpViews(){
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle(datasetMetadata.getTitle());
+    private void setUpViews() {
         viewPager.setAdapter(new Adapter(getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager, true);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override
@@ -81,15 +84,15 @@ public class SetUpVisualizationActivity extends BaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-            switch (position){
-                case 0:{
-                    if(frag1 == null){
+            switch (position) {
+                case 0: {
+                    if (frag1 == null) {
                         frag1 = DatasetPreviewFragment.newInstance(datasetMetadata);
                     }
                     return frag1;
                 }
-                case 1:{
-                    if(frag2 == null){
+                case 1: {
+                    if (frag2 == null) {
                         frag2 = SetUpVisualizationFragment.newInstance(datasetMetadata);
                     }
                     return frag2;
@@ -105,14 +108,14 @@ public class SetUpVisualizationActivity extends BaseActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position){
-                case 0:{
+            switch (position) {
+                case 0: {
                     return getString(R.string.dataset);
                 }
-                case 1:{
+                case 1: {
                     return getString(R.string.visualization);
                 }
-                default:{
+                default: {
                     return "";
                 }
             }

@@ -26,7 +26,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.ChartActivity"></activity>
-        <activity android:name=".activities.SetUpVisualizationActivity"></activity>
+        <activity
+            android:name=".activities.SetUpVisualizationActivity"
+            android:theme="@style/NoActionBar"></activity>
 
     </application>
 
