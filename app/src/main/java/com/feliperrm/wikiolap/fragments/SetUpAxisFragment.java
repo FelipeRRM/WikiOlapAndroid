@@ -1,6 +1,7 @@
 package com.feliperrm.wikiolap.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.widget.Spinner;
 import com.feliperrm.wikiolap.R;
 import com.feliperrm.wikiolap.adapters.XValuesAdapter;
 import com.feliperrm.wikiolap.enums.AggregationFunctions;
+import com.feliperrm.wikiolap.interfaces.MetadataProvider;
 import com.feliperrm.wikiolap.models.ChartMetadata;
 import com.feliperrm.wikiolap.models.ColumnHolder;
 import com.feliperrm.wikiolap.models.DatasetMetadata;
@@ -42,13 +44,17 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
     /**
      * Attributes
      */
-    private DatasetMetadata datasetMetadata;
-    private ChartMetadata chartMetadata;
+    private MetadataProvider metadataProvider;
 
 
     public SetUpAxisFragment() {
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        metadataProvider = (MetadataProvider) context;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -78,7 +84,7 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
         chartTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                chartMetadata.setChartType(position);
+                metadataProvider.getChartMetadata().setChartType(position);
             }
 
             @Override
@@ -86,13 +92,13 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
 
             }
         });
-        ArrayAdapter<String> yValuesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, datasetMetadata.getOriginalColumns());
+        ArrayAdapter<String> yValuesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, metadataProvider.getDatasetMetada().getOriginalColumns());
         yValuesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         yAxisValueSpinner.setAdapter(yValuesAdapter);
         yAxisValueSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                chartMetadata.setYColumnId(datasetMetadata.getOriginalColumns().get(position));
+                metadataProvider.getChartMetadata().setYColumnId(metadataProvider.getDatasetMetada().getOriginalColumns().get(position));
             }
 
             @Override
@@ -103,13 +109,13 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
         yAxisValueSpinner.setSelection(yValuesAdapter.getCount()-1);
 
         xRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        xRecyclerView.setAdapter(new XValuesAdapter(ColumnHolder.getColumnHoldersFromStrings(datasetMetadata.getOriginalColumns()), this));
+        xRecyclerView.setAdapter(new XValuesAdapter(ColumnHolder.getColumnHoldersFromStrings(metadataProvider.getDatasetMetada().getOriginalColumns()), this));
 
         radioSum.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if(checked){
-                    chartMetadata.setAggregationFunctionAsEnum(AggregationFunctions.FunctionSum);
+                    metadataProvider.getChartMetadata().setAggregationFunctionAsEnum(AggregationFunctions.FunctionSum);
                 }
             }
         });
@@ -118,7 +124,7 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 if(checked) {
-                    chartMetadata.setAggregationFunctionAsEnum(AggregationFunctions.FunctionAverage);
+                    metadataProvider.getChartMetadata().setAggregationFunctionAsEnum(AggregationFunctions.FunctionAverage);
                 }
             }
         });
@@ -126,6 +132,6 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
 
     @Override
     public void onXValuesChanged(ArrayList<String> xValues) {
-        chartMetadata.setxColumnIds(xValues);
+        metadataProvider.getChartMetadata().setxColumnIds(xValues);
     }
 }

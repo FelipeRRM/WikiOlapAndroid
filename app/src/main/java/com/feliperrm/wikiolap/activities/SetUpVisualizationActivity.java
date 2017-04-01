@@ -15,21 +15,24 @@ import android.widget.ImageView;
 import com.feliperrm.wikiolap.R;
 import com.feliperrm.wikiolap.fragments.DatasetPreviewFragment;
 import com.feliperrm.wikiolap.fragments.SetUpVisualizationFragment;
+import com.feliperrm.wikiolap.interfaces.MetadataProvider;
+import com.feliperrm.wikiolap.models.ChartMetadata;
 import com.feliperrm.wikiolap.models.DatasetMetadata;
 
-public class SetUpVisualizationActivity extends BaseActivity {
+public class SetUpVisualizationActivity extends BaseActivity implements MetadataProvider {
 
     /**
      * Views
      */
-    TabLayout tabLayout;
-    ViewPager viewPager;
-    ImageView back;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private ImageView back;
 
     /**
      * Attributes
      */
-    DatasetMetadata datasetMetadata;
+    private DatasetMetadata datasetMetadata;
+    private Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,8 @@ public class SetUpVisualizationActivity extends BaseActivity {
     }
 
     private void setUpViews() {
-        viewPager.setAdapter(new Adapter(getSupportFragmentManager()));
+        adapter = new Adapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager, true);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +75,16 @@ public class SetUpVisualizationActivity extends BaseActivity {
         Intent intent = new Intent(context, SetUpVisualizationActivity.class);
         intent.putExtra(SetUpVisualizationFragment.DATASET_KEY, datasetMetadata);
         return intent;
+    }
+
+    @Override
+    public DatasetMetadata getDatasetMetada() {
+        return adapter.frag2.getDatasetMetadata();
+    }
+
+    @Override
+    public ChartMetadata getChartMetadata() {
+        return adapter.frag2.getChartMetadata();
     }
 
     class Adapter extends FragmentPagerAdapter {
@@ -121,5 +135,6 @@ public class SetUpVisualizationActivity extends BaseActivity {
             }
         }
     }
+
 
 }

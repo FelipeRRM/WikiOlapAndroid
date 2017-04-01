@@ -3,13 +3,13 @@
     <tab
         id="@+id/tab_charts"
         icon="@drawable/ic_charts_combo"
-        title="@string/charts_title" />
+        title="@string/charts_menu_title" />
     <tab
         id="@+id/tab_dataset"
         icon="@drawable/ic_dataset"
-        title="@string/dataset_title" />
+        title="@string/dataset_menu_title" />
     <tab
         id="@+id/tab_profile"
         icon="@drawable/ic_user"
-        title="@string/profile_title" />
+        title="@string/profile_menu_title" />
 </tabs>

@@ -1,11 +1,10 @@
 <resources>
     <string name="app_name">WikiOlap</string>
-    <string name="charts_title">Charts</string>
+    <string name="charts_menu_title">Charts</string>
     <string name="dataset_title">Dataset Title:</string>
-    <string name="profile_title">Profile</string>
+    <string name="dataset_menu_title">Datasets</string>
+    <string name="profile_menu_title">Profile</string>
     <string name="facebook_app_id">1489404787760189</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_for_datasets">Search for datasets...</string>
     <string name="search_for_charts">Search for charts...</string>
@@ -28,4 +27,6 @@
     <string name="dataset_email">E-mail:</string>
     <string name="dataset_date">Uploaded at:</string>
     <string name="data_preview">Data Preview:</string>
+    <string name="axis_settings">Axis Settings</string>
+    <string name="visualization_settings">Visualization Settings</string>
 </resources>

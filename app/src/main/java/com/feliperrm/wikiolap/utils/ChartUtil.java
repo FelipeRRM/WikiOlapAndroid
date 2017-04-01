@@ -10,6 +10,7 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -47,11 +48,18 @@ public class ChartUtil {
 
             barChart.setData(barData);
             XAxis xAxis = barChart.getXAxis();
+            xAxis.setDrawGridLines(chartMetadata.isDrawXLines());
             xAxis.setGranularity(1f);
             xAxis.setGranularityEnabled(true);
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
             xAxis.setDrawLabels(true);
             xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+
+            YAxis yAxis1 = barChart.getAxisLeft();
+            YAxis yAxis2 = barChart.getAxisRight();
+            yAxis1.setDrawGridLines(chartMetadata.isDrawYLines());
+            yAxis2.setDrawGridLines(chartMetadata.isDrawYLines());
+
             barChart.invalidate();
             barChart.setVisibility(View.VISIBLE);
             return barChart;
@@ -71,11 +79,18 @@ public class ChartUtil {
 
             lineChart.setData(lineData);
             XAxis xAxis = lineChart.getXAxis();
+            xAxis.setDrawGridLines(chartMetadata.isDrawXLines());
             xAxis.setGranularity(1f);
             xAxis.setGranularityEnabled(true);
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
             xAxis.setDrawLabels(true);
             xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+
+            YAxis yAxis1 = lineChart.getAxisLeft();
+            YAxis yAxis2 = lineChart.getAxisRight();
+            yAxis1.setDrawGridLines(chartMetadata.isDrawYLines());
+            yAxis2.setDrawGridLines(chartMetadata.isDrawYLines());
+
             lineChart.invalidate();
             lineChart.setVisibility(View.VISIBLE);
             return lineChart;

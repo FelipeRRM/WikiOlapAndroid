@@ -3,28 +3,23 @@ package com.feliperrm.wikiolap.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.feliperrm.wikiolap.R;
-import com.feliperrm.wikiolap.adapters.XValuesAdapter;
 import com.feliperrm.wikiolap.enums.AggregationFunctions;
 import com.feliperrm.wikiolap.interfaces.ChartUpdateInterface;
 import com.feliperrm.wikiolap.interfaces.DatasetViewCallbacks;
 import com.feliperrm.wikiolap.models.ChartMetadata;
-import com.feliperrm.wikiolap.models.ColumnHolder;
 import com.feliperrm.wikiolap.models.DatasetMetadata;
 import com.feliperrm.wikiolap.models.XYHolder;
 import com.feliperrm.wikiolap.presenters.DatasetPresenter;
@@ -36,7 +31,7 @@ import java.util.Date;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SetUpVisualizationFragment extends Fragment implements DatasetViewCallbacks, ChartUpdateInterface{
+public class SetUpVisualizationFragment extends Fragment implements DatasetViewCallbacks, ChartUpdateInterface {
 
     /**
      * Contants
@@ -49,6 +44,8 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
     private FrameLayout chartHolder;
     private ProgressBar progressBar;
     private TextView errorTextView;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
 
     /**
@@ -57,6 +54,14 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
     private DatasetMetadata datasetMetadata;
     private ChartMetadata chartMetadata;
     private DatasetPresenter presenter;
+
+    public DatasetMetadata getDatasetMetadata() {
+        return datasetMetadata;
+    }
+
+    public ChartMetadata getChartMetadata() {
+        return chartMetadata;
+    }
 
     public static SetUpVisualizationFragment newInstance(DatasetMetadata datasetMetadata) {
         Bundle args = new Bundle();
@@ -93,33 +98,37 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         presenter.loadDatasetFormatted(chartMetadata);
     }
 
-    private void recoverBundle(){
+    private void recoverBundle() {
         datasetMetadata = (DatasetMetadata) getArguments().getSerializable(DATASET_KEY);
         chartMetadata.setTableId(datasetMetadata.getTableId());
         chartMetadata.setTitle(datasetMetadata.getTitle());
         chartMetadata.setId(String.valueOf(new Date().getTime()));
     }
 
-    private void findViews(View v){
+    private void findViews(View v) {
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         errorTextView = (TextView) v.findViewById(R.id.errorTextView);
         chartHolder = (FrameLayout) v.findViewById(R.id.chartHolder);
+        tabLayout = (TabLayout) v.findViewById(R.id.tab_layout);
+        viewPager = (ViewPager) v.findViewById(R.id.view_pager);
     }
 
-    private void setUpViews(){
+    private void setUpViews() {
         errorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.loadDatasetFormatted(chartMetadata);
             }
         });
+        viewPager.setAdapter(new SetUpVisualizationAdapter(getChildFragmentManager()));
+        tabLayout.setupWithViewPager(viewPager);
     }
 
-    private void setUpInitialValues(){
+    private void setUpInitialValues() {
         ArrayList<String> xValues = new ArrayList<>();
         xValues.add(datasetMetadata.getOriginalColumns().get(0));
         chartMetadata.setxColumnIds(xValues);
-        chartMetadata.setYColumnId(datasetMetadata.getOriginalColumns().get(datasetMetadata.getOriginalColumns().size()-1));
+        chartMetadata.setYColumnId(datasetMetadata.getOriginalColumns().get(datasetMetadata.getOriginalColumns().size() - 1));
         chartMetadata.setAggregationFunctionAsEnum(AggregationFunctions.FunctionSum);
     }
 
@@ -154,6 +163,50 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
     @Override
     public void onChartUpdated() {
         presenter.loadDatasetFormatted(chartMetadata);
+    }
+
+    private class SetUpVisualizationAdapter extends FragmentPagerAdapter {
+
+        SetUpAxisFragment frag1;
+        SetUpAxisFragment frag2;
+
+        public SetUpVisualizationAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                if (frag1 == null) {
+                    frag1 = new SetUpAxisFragment();
+                }
+                return frag1;
+            }
+            if (position == 1) {
+                if (frag2 == null) {
+                    frag2 = new SetUpAxisFragment();
+                }
+                return frag2;
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            if (position == 0) {
+                return getContext().getString(R.string.axis_settings);
+            } else if (position == 1) {
+                return getContext().getString(R.string.visualization_settings);
+            } else {
+                return "";
+            }
+        }
+
     }
 
 }

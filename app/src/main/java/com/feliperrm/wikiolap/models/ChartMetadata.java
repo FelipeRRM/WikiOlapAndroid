@@ -26,6 +26,26 @@ public class ChartMetadata implements Parcelable {
     private AggregationFunctions aggregationFunction;
     private int chartType;
     private transient ChartUpdateInterface updateInterface;
+    private boolean drawXLines;
+    private boolean drawYLines;
+
+    public boolean isDrawXLines() {
+        return drawXLines;
+    }
+
+    public void setDrawXLines(boolean drawXLines) {
+        this.drawXLines = drawXLines;
+        update();
+    }
+
+    public boolean isDrawYLines() {
+        return drawYLines;
+    }
+
+    public void setDrawYLines(boolean drawYLines) {
+        this.drawYLines = drawYLines;
+        update();
+    }
 
     public ChartMetadata() {
     }
@@ -36,7 +56,7 @@ public class ChartMetadata implements Parcelable {
     }
 
     @Exclude
-    public void setAggregationFunctionAsEnum(AggregationFunctions aggregationFunction){
+    public void setAggregationFunctionAsEnum(AggregationFunctions aggregationFunction) {
         this.aggregationFunction = aggregationFunction;
         update();
     }
@@ -133,10 +153,9 @@ public class ChartMetadata implements Parcelable {
     }
 
 
-
     @Exclude
-    private void update(){
-        if(updateInterface!=null){
+    private void update() {
+        if (updateInterface != null) {
             updateInterface.onChartUpdated();
         }
     }
@@ -149,6 +168,21 @@ public class ChartMetadata implements Parcelable {
     @Exclude
     public void setUpdateInterface(ChartUpdateInterface updateInterface) {
         this.updateInterface = updateInterface;
+    }
+
+    public String getGroupByString() {
+        String returnString = "";
+        try {
+            StringBuilder builder = new StringBuilder(returnString);
+            for (String str : xColumnIds) {
+                builder.append(str);
+                builder.append(",");
+            }
+            returnString = builder.toString();
+            return returnString.substring(0, returnString.length() - 1);
+        } catch (Exception e) {
+            return returnString;
+        }
     }
 
     @Override
@@ -166,6 +200,9 @@ public class ChartMetadata implements Parcelable {
         dest.writeStringList(this.xColumnIds);
         dest.writeString(this.yColumnId);
         dest.writeInt(this.aggregationFunction == null ? -1 : this.aggregationFunction.ordinal());
+        dest.writeInt(this.chartType);
+        dest.writeByte(this.drawXLines ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.drawYLines ? (byte) 1 : (byte) 0);
     }
 
     protected ChartMetadata(Parcel in) {
@@ -178,6 +215,9 @@ public class ChartMetadata implements Parcelable {
         this.yColumnId = in.readString();
         int tmpAggregationFunction = in.readInt();
         this.aggregationFunction = tmpAggregationFunction == -1 ? null : AggregationFunctions.values()[tmpAggregationFunction];
+        this.chartType = in.readInt();
+        this.drawXLines = in.readByte() != 0;
+        this.drawYLines = in.readByte() != 0;
     }
 
     public static final Creator<ChartMetadata> CREATOR = new Creator<ChartMetadata>() {
@@ -191,20 +231,4 @@ public class ChartMetadata implements Parcelable {
             return new ChartMetadata[size];
         }
     };
-
-    public String getGroupByString() {
-        String returnString = "";
-        try{
-            StringBuilder builder = new StringBuilder(returnString);
-            for(String str : xColumnIds){
-                builder.append(str);
-                builder.append(",");
-            }
-            returnString = builder.toString();
-            return returnString.substring(0, returnString.length()-1);
-        }
-        catch (Exception e){
-            return returnString;
-        }
-    }
 }

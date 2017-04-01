@@ -25,9 +25,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".activities.ChartActivity"></activity>
+
         <activity
             android:name=".activities.SetUpVisualizationActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/NoActionBar"></activity>
 
     </application>
