@@ -168,7 +168,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
     private class SetUpVisualizationAdapter extends FragmentPagerAdapter {
 
         SetUpAxisFragment frag1;
-        SetUpAxisFragment frag2;
+        SetUpAppearanceFragment frag2;
 
         public SetUpVisualizationAdapter(FragmentManager fm) {
             super(fm);
@@ -184,7 +184,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
             }
             if (position == 1) {
                 if (frag2 == null) {
-                    frag2 = new SetUpAxisFragment();
+                    frag2 = new SetUpAppearanceFragment();
                 }
                 return frag2;
             }
@@ -201,7 +201,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
             if (position == 0) {
                 return getContext().getString(R.string.axis_settings);
             } else if (position == 1) {
-                return getContext().getString(R.string.visualization_settings);
+                return getContext().getString(R.string.appearance_settings);
             } else {
                 return "";
             }

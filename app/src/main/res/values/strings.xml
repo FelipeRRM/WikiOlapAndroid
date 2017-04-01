@@ -28,5 +28,7 @@
     <string name="dataset_date">Uploaded at:</string>
     <string name="data_preview">Data Preview:</string>
     <string name="axis_settings">Axis Settings</string>
-    <string name="visualization_settings">Visualization Settings</string>
+    <string name="appearance_settings">Appearance Settings</string>
+    <string name="draw_x_lines">Draw X Lines</string>
+    <string name="draw_y_lines">Draw Y Lines</string>
 </resources>

@@ -1,0 +1,32 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/top_layout">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_draw_x_lines"
+            style="@style/create_chart_items_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/draw_x_lines"
+            />
+
+        <android.support.v7.widget.AppCompatCheckBox
+            android:id="@+id/checkbox_draw_y_lines"
+            style="@style/create_chart_items_style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/draw_y_lines"
+            />
+
+    </LinearLayout>
+
+</ScrollView>
+
