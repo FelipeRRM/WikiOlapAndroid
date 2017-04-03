@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.feliperrm.wikiolap.R;
-import com.feliperrm.wikiolap.fragments.DatasetPreviewFragment;
+import com.feliperrm.wikiolap.fragments.DatasetPreviewPagerFragment;
 import com.feliperrm.wikiolap.fragments.SetUpVisualizationFragment;
 import com.feliperrm.wikiolap.interfaces.MetadataProvider;
 import com.feliperrm.wikiolap.models.ChartMetadata;
@@ -89,7 +89,7 @@ public class SetUpVisualizationActivity extends BaseActivity implements Metadata
 
     class Adapter extends FragmentPagerAdapter {
 
-        DatasetPreviewFragment frag1;
+        DatasetPreviewPagerFragment frag1;
         SetUpVisualizationFragment frag2;
 
         public Adapter(FragmentManager fm) {
@@ -101,7 +101,7 @@ public class SetUpVisualizationActivity extends BaseActivity implements Metadata
             switch (position) {
                 case 0: {
                     if (frag1 == null) {
-                        frag1 = DatasetPreviewFragment.newInstance(datasetMetadata);
+                        frag1 = DatasetPreviewPagerFragment.newInstance(datasetMetadata, datasetMetadata);
                     }
                     return frag1;
                 }

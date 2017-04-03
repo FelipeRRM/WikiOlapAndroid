@@ -31,4 +31,5 @@
     <string name="appearance_settings">Appearance Settings</string>
     <string name="draw_x_lines">Draw X Lines</string>
     <string name="draw_y_lines">Draw Y Lines</string>
+    <string name="dataset_number">Dataset %1$d</string>
 </resources>
