@@ -121,7 +121,7 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
                     @Override
                     public void onCompleted(JSONObject me, GraphResponse response) {
                         if (response.getError() != null) {
-                            onError(getString(R.string.facebook_email_error));
+                            onUserError(getString(R.string.facebook_email_error));
                         } else {
                             String email = me.optString("email");
                             String id = me.optString("id");
@@ -142,7 +142,7 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
     }
 
     @Override
-    public void onLoadingStarted() {
+    public void onUserLoadingStarted() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
@@ -151,7 +151,7 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
     }
 
     @Override
-    public void onError(String message) {
+    public void onUserError(String message) {
 
     }
 

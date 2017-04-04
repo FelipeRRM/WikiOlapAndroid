@@ -32,7 +32,7 @@ public class UserPresenter {
     }
 
     public void loadUser(final String email) {
-        callbacks.onLoadingStarted();
+        callbacks.onUserLoadingStarted();
         try {
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             final DatabaseReference myRef = database.getReference("users");
@@ -59,7 +59,7 @@ public class UserPresenter {
                     if (error != null) {
                         Log.w(TAG, "Failed to read value.", error.toException());
                     }
-                    callbacks.onError("");
+                    callbacks.onUserError("");
                 }
             });
         }

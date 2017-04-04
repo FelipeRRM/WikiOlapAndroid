@@ -9,6 +9,8 @@ import java.util.ArrayList;
  * Created by felip on 02/03/2017.
  */
 
-public interface UserViewCallbacks extends SimpleAsyncCallback{
+public interface UserViewCallbacks {
     public void onDataLoaded(User user, String requestEmail);
+    public void onUserLoadingStarted();
+    public void onUserError(String message);
 }

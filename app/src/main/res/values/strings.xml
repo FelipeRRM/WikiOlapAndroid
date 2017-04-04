@@ -33,4 +33,7 @@
     <string name="draw_y_lines">Draw Y Lines</string>
     <string name="dataset_number">Dataset %1$d</string>
     <string name="chose_dataset_to_join">Chose a dataset to join</string>
+    <string name="visualization_creator">Visualization creator:</string>
+    <string name="description">Description:</string>
+    <string name="view_dataset_used">View dataset used</string>
 </resources>
