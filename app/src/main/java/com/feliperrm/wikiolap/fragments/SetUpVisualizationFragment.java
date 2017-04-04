@@ -36,7 +36,9 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
     /**
      * Contants
      */
-    public static final String DATASET_KEY = "datasetkey";
+    private static final String DATASET1_KEY = "dataset1key";
+    private static final String DATASET2_KEY = "dataset2key";
+
 
     /**
      * Views
@@ -51,24 +53,38 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
     /**
      * Attributes
      */
-    private DatasetMetadata datasetMetadata;
+    private DatasetMetadata dataset1;
+    private DatasetMetadata dataset2;
     private ChartMetadata chartMetadata;
     private DatasetPresenter presenter;
 
-    public DatasetMetadata getDatasetMetadata() {
-        return datasetMetadata;
+    public DatasetMetadata getDataset1() {
+        return dataset1;
     }
 
     public ChartMetadata getChartMetadata() {
         return chartMetadata;
     }
 
-    public static SetUpVisualizationFragment newInstance(DatasetMetadata datasetMetadata) {
+    public static SetUpVisualizationFragment newInstance(DatasetMetadata dataset1, @Nullable DatasetMetadata dataset2) {
         Bundle args = new Bundle();
-        args.putSerializable(DATASET_KEY, datasetMetadata);
+        args.putSerializable(DATASET1_KEY, dataset1);
+        args.putSerializable(DATASET2_KEY, dataset2);
         SetUpVisualizationFragment fragment = new SetUpVisualizationFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public void setDataset1(DatasetMetadata dataset1) {
+        this.dataset1 = dataset1;
+    }
+
+    public DatasetMetadata getDataset2() {
+        return dataset2;
+    }
+
+    public void setDataset2(DatasetMetadata dataset2) {
+        this.dataset2 = dataset2;
     }
 
     public SetUpVisualizationFragment() {
@@ -99,9 +115,10 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
     }
 
     private void recoverBundle() {
-        datasetMetadata = (DatasetMetadata) getArguments().getSerializable(DATASET_KEY);
-        chartMetadata.setTableId(datasetMetadata.getTableId());
-        chartMetadata.setTitle(datasetMetadata.getTitle());
+        dataset1 = (DatasetMetadata) getArguments().getSerializable(DATASET1_KEY);
+        dataset2 = (DatasetMetadata) getArguments().getSerializable(DATASET1_KEY);
+        chartMetadata.setTableId(dataset1.getTableId());
+        chartMetadata.setTitle(dataset1.getTitle());
         chartMetadata.setId(String.valueOf(new Date().getTime()));
     }
 
@@ -126,9 +143,9 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
 
     private void setUpInitialValues() {
         ArrayList<String> xValues = new ArrayList<>();
-        xValues.add(datasetMetadata.getOriginalColumns().get(0));
+        xValues.add(dataset1.getOriginalColumns().get(0));
         chartMetadata.setxColumnIds(xValues);
-        chartMetadata.setYColumnId(datasetMetadata.getOriginalColumns().get(datasetMetadata.getOriginalColumns().size() - 1));
+        chartMetadata.setYColumnId(dataset1.getOriginalColumns().get(dataset1.getOriginalColumns().size() - 1));
         chartMetadata.setAggregationFunctionAsEnum(AggregationFunctions.FunctionSum);
     }
 

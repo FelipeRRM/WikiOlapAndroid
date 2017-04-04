@@ -3,6 +3,8 @@ package com.feliperrm.wikiolap.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,23 +24,33 @@ import com.feliperrm.wikiolap.models.DatasetMetadata;
 public class SetUpVisualizationActivity extends BaseActivity implements MetadataProvider {
 
     /**
+     * Constants
+     */
+    private static final String DATASET1_KEY = "dataset1key";
+    private static final String DATASET2_KEY = "dataset2key";
+    private static final int ADD_DATASET_REQUEST_CODE = 66;
+
+    /**
      * Views
      */
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ImageView back;
+    private FloatingActionButton fab;
 
     /**
      * Attributes
      */
-    private DatasetMetadata datasetMetadata;
+    private DatasetMetadata dataset1;
+    private DatasetMetadata dataset2;
     private Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_up_visualization);
-        datasetMetadata = (DatasetMetadata) getIntent().getSerializableExtra(SetUpVisualizationFragment.DATASET_KEY);
+        dataset1 = (DatasetMetadata) getIntent().getSerializableExtra(DATASET1_KEY);
+        dataset2 = (DatasetMetadata) getIntent().getSerializableExtra(DATASET2_KEY);
         findViews();
         setUpViews();
     }
@@ -47,6 +59,7 @@ public class SetUpVisualizationActivity extends BaseActivity implements Metadata
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         viewPager = (ViewPager) findViewById(R.id.container);
         back = (ImageView) findViewById(R.id.back);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
     }
 
     private void setUpViews() {
@@ -57,6 +70,13 @@ public class SetUpVisualizationActivity extends BaseActivity implements Metadata
             @Override
             public void onClick(View v) {
                 onBackPressed();
+            }
+        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent addDataSet = new Intent(SetUpVisualizationActivity.this, AddDatasetActivity.class);
+                startActivityForResult(addDataSet, ADD_DATASET_REQUEST_CODE);
             }
         });
     }
@@ -71,15 +91,16 @@ public class SetUpVisualizationActivity extends BaseActivity implements Metadata
         return (super.onOptionsItemSelected(menuItem));
     }
 
-    public static Intent getIntent(Context context, DatasetMetadata datasetMetadata) {
+    public static Intent getIntent(Context context, DatasetMetadata dataset1, @Nullable DatasetMetadata dataset2) {
         Intent intent = new Intent(context, SetUpVisualizationActivity.class);
-        intent.putExtra(SetUpVisualizationFragment.DATASET_KEY, datasetMetadata);
+        intent.putExtra(DATASET1_KEY, dataset1);
+        intent.putExtra(DATASET2_KEY, dataset2);
         return intent;
     }
 
     @Override
     public DatasetMetadata getDatasetMetada() {
-        return adapter.frag2.getDatasetMetadata();
+        return adapter.frag2.getDataset1();
     }
 
     @Override
@@ -101,13 +122,13 @@ public class SetUpVisualizationActivity extends BaseActivity implements Metadata
             switch (position) {
                 case 0: {
                     if (frag1 == null) {
-                        frag1 = DatasetPreviewPagerFragment.newInstance(datasetMetadata, datasetMetadata);
+                        frag1 = DatasetPreviewPagerFragment.newInstance(dataset1, dataset2);
                     }
                     return frag1;
                 }
                 case 1: {
                     if (frag2 == null) {
-                        frag2 = SetUpVisualizationFragment.newInstance(datasetMetadata);
+                        frag2 = SetUpVisualizationFragment.newInstance(dataset1, dataset2);
                     }
                     return frag2;
                 }
@@ -136,5 +157,23 @@ public class SetUpVisualizationActivity extends BaseActivity implements Metadata
         }
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK) {
+            if (requestCode == ADD_DATASET_REQUEST_CODE){
+                if(data != null){
+                    dataset2 = (DatasetMetadata) data.getSerializableExtra(AddDatasetActivity.SELECTED_DATASET_KEY);
+                    if(adapter!=null){
+                        if(adapter.frag1 != null){
+                            adapter.frag1.setDataset2(dataset2);
+                        }
+                        if(adapter.frag2 != null){
+                            adapter.frag2.setDataset2(dataset2);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

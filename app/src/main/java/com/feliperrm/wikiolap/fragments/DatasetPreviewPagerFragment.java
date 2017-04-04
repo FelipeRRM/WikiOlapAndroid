@@ -53,6 +53,33 @@ public class DatasetPreviewPagerFragment extends Fragment {
 
     }
 
+    public DatasetMetadata getDataset1() {
+        return dataset1;
+    }
+
+    public void setDataset1(DatasetMetadata dataset1) {
+        this.dataset1 = dataset1;
+        if(adapter!=null){
+            if(adapter.frag1!=null){
+                adapter.frag1.setDatasetMetadata(this.dataset1);
+            }
+        }
+        setUpViews();
+    }
+
+    public DatasetMetadata getDataset2() {
+        return dataset2;
+    }
+
+    public void setDataset2(DatasetMetadata dataset2) {
+        this.dataset2 = dataset2;
+        if(adapter!=null){
+            if(adapter.frag2!=null){
+                adapter.frag2.setDatasetMetadata(this.dataset2);
+            }
+        }
+        setUpViews();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

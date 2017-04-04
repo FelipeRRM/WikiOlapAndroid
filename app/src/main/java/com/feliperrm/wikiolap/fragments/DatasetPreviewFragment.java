@@ -76,6 +76,16 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
     public DatasetPreviewFragment() {
     }
 
+    public DatasetMetadata getDatasetMetadata() {
+        return datasetMetadata;
+    }
+
+    public void setDatasetMetadata(DatasetMetadata datasetMetadata) {
+        this.datasetMetadata = datasetMetadata;
+        setUpViews();
+        presenter.loadDatasetRaw(this.datasetMetadata);
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

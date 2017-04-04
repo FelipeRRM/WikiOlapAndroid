@@ -7,10 +7,11 @@ import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
 
 import com.feliperrm.wikiolap.R;
+import com.feliperrm.wikiolap.adapters.ChartsAdapter;
 import com.feliperrm.wikiolap.fragments.ChartFragment;
 import com.feliperrm.wikiolap.models.ChartMetadata;
 
-public class ChartActivity extends BaseActivity {
+public class ChartActivity extends BaseActivity{
 
 
     @Override

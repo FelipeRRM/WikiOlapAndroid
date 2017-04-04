@@ -1,6 +1,7 @@
 package com.feliperrm.wikiolap.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -42,6 +43,7 @@ public class DatasetMenuFragment extends BaseFrgment implements DatasetMetadataV
      * Attriutes
      */
     DatasetMetadataPresenter presenter;
+    DatasetMetadataAdapter.DatasetInterface datasetInterface;
 
     public DatasetMenuFragment() {
     }
@@ -50,6 +52,12 @@ public class DatasetMenuFragment extends BaseFrgment implements DatasetMetadataV
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new DatasetMetadataPresenter(this);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        datasetInterface = (DatasetMetadataAdapter.DatasetInterface) context;
     }
 
     @Override
@@ -106,6 +114,6 @@ public class DatasetMenuFragment extends BaseFrgment implements DatasetMetadataV
 
     @Override
     public void onDatasetClicked(DatasetMetadata datasetMetadata) {
-        startActivity(SetUpVisualizationActivity.getIntent(getContext(), datasetMetadata));
+        datasetInterface.onDatasetClicked(datasetMetadata);
     }
 }
