@@ -19,6 +19,8 @@ public class ChartMetadata implements Parcelable {
     private String creator_id;
     private String id;
     private String title;
+    private String description;
+    private String ownerId;
     private String thumbnail;
     private String tableId;
     private ArrayList<String> xColumnIds;
@@ -28,6 +30,22 @@ public class ChartMetadata implements Parcelable {
     private transient ChartUpdateInterface updateInterface;
     private boolean drawXLines;
     private boolean drawYLines;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
 
     public boolean isDrawXLines() {
         return drawXLines;
@@ -97,11 +115,12 @@ public class ChartMetadata implements Parcelable {
         update();
     }
 
-    public String getYColumnId() {
+
+    public String getyColumnId() {
         return yColumnId;
     }
 
-    public void setYColumnId(String yColumnId) {
+    public void setyColumnId(String yColumnId) {
         this.yColumnId = yColumnId;
         update();
     }
@@ -195,6 +214,8 @@ public class ChartMetadata implements Parcelable {
         dest.writeString(this.creator_id);
         dest.writeString(this.id);
         dest.writeString(this.title);
+        dest.writeString(this.description);
+        dest.writeString(this.ownerId);
         dest.writeString(this.thumbnail);
         dest.writeString(this.tableId);
         dest.writeStringList(this.xColumnIds);
@@ -209,6 +230,8 @@ public class ChartMetadata implements Parcelable {
         this.creator_id = in.readString();
         this.id = in.readString();
         this.title = in.readString();
+        this.description = in.readString();
+        this.ownerId = in.readString();
         this.thumbnail = in.readString();
         this.tableId = in.readString();
         this.xColumnIds = in.createStringArrayList();

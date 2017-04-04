@@ -42,7 +42,7 @@ public class ChartUtil {
                 labels.add(xyHolder.getLabel());
             }
 
-            BarDataSet barDataSet = new BarDataSet(entries, chartMetadata.getYColumnId());
+            BarDataSet barDataSet = new BarDataSet(entries, chartMetadata.getyColumnId());
 
             BarData barData = new BarData(barDataSet);
 
@@ -73,7 +73,7 @@ public class ChartUtil {
                 labels.add(xyHolder.getLabel());
             }
 
-            LineDataSet lineDataSet = new LineDataSet(entries, chartMetadata.getYColumnId());
+            LineDataSet lineDataSet = new LineDataSet(entries, chartMetadata.getyColumnId());
 
             LineData lineData = new LineData(lineDataSet);
 

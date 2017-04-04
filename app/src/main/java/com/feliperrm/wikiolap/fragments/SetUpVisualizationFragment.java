@@ -145,7 +145,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         ArrayList<String> xValues = new ArrayList<>();
         xValues.add(dataset1.getOriginalColumns().get(0));
         chartMetadata.setxColumnIds(xValues);
-        chartMetadata.setYColumnId(dataset1.getOriginalColumns().get(dataset1.getOriginalColumns().size() - 1));
+        chartMetadata.setyColumnId(dataset1.getOriginalColumns().get(dataset1.getOriginalColumns().size() - 1));
         chartMetadata.setAggregationFunctionAsEnum(AggregationFunctions.FunctionSum);
     }
 

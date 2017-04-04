@@ -20,9 +20,7 @@ import com.feliperrm.wikiolap.R;
 import com.feliperrm.wikiolap.adapters.XValuesAdapter;
 import com.feliperrm.wikiolap.enums.AggregationFunctions;
 import com.feliperrm.wikiolap.interfaces.MetadataProvider;
-import com.feliperrm.wikiolap.models.ChartMetadata;
 import com.feliperrm.wikiolap.models.ColumnHolder;
-import com.feliperrm.wikiolap.models.DatasetMetadata;
 import com.feliperrm.wikiolap.utils.ChartUtil;
 
 import java.util.ArrayList;
@@ -98,7 +96,7 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
         yAxisValueSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                metadataProvider.getChartMetadata().setYColumnId(metadataProvider.getDatasetMetada().getOriginalColumns().get(position));
+                metadataProvider.getChartMetadata().setyColumnId(metadataProvider.getDatasetMetada().getOriginalColumns().get(position));
             }
 
             @Override
