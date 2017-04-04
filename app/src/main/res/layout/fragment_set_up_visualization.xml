@@ -2,57 +2,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.feliperrm.wikiolap.fragments.ChartFragment"
     android:animateLayoutChanges="true"
-    >
+    tools:context="com.feliperrm.wikiolap.fragments.ChartFragment">
 
     <RelativeLayout
         android:id="@+id/top_layout"
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:gravity="center"
-        android:background="@color/light_gray"
-        >
+        android:background="@android:color/white"
+        android:elevation="3dp"
+        android:gravity="center">
 
         <FrameLayout
             android:id="@+id/chartHolder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible"
-            />
+            android:layout_margin="8dp"
+            android:visibility="invisible" />
 
         <ProgressBar
-            android:layout_marginTop="100dp"
-            android:layout_centerHorizontal="true"
-            style="@android:style/Widget.DeviceDefault.ProgressBar"
             android:id="@+id/progressBar"
+            style="@android:style/Widget.DeviceDefault.ProgressBar"
             android:layout_width="70dp"
-            android:layout_height="70dp" />
+            android:layout_height="70dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp" />
 
         <TextView
-            android:gravity="center"
-            android:visibility="gone"
-            android:layout_margin="24dp"
             android:id="@+id/errorTextView"
-            android:layout_centerInParent="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="24dp"
+            android:gravity="center"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
     <android.support.design.widget.TabLayout
-        android:elevation="3dp"
-        android:background="@android:color/white"
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:layout_below="@id/top_layout"/>
+        android:layout_below="@id/top_layout"
+        android:background="@android:color/white"
+        android:elevation="3dp" />
 
     <android.support.v4.view.ViewPager
-        android:layout_below="@+id/tab_layout"
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tab_layout"
+        android:background="@color/light_gray" />
 
 
 </RelativeLayout>

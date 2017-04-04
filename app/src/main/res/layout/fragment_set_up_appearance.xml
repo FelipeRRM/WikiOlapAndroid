@@ -14,8 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/draw_x_lines"
-            />
+            android:text="@string/draw_x_lines" />
 
         <android.support.v7.widget.AppCompatCheckBox
             android:id="@+id/checkbox_draw_y_lines"
@@ -23,8 +22,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/draw_y_lines"
-            />
+            android:text="@string/draw_y_lines" />
+
+        <android.support.design.widget.TextInputLayout
+            style="@style/create_chart_items_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/x_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/x_label"
+                android:lines="1"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            style="@style/create_chart_items_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/y_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/y_label"
+                android:lines="1"
+                android:maxLines="1"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
 

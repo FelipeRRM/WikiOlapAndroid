@@ -4,10 +4,13 @@ package com.feliperrm.wikiolap.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +39,8 @@ public class SetUpAppearanceFragment extends Fragment implements XValuesAdapter.
      */
     private AppCompatCheckBox drawXLines;
     private AppCompatCheckBox drawYLines;
+    private TextInputEditText xLabel;
+    private TextInputEditText yLabel;
 
     /**
      * Attributes
@@ -68,6 +73,8 @@ public class SetUpAppearanceFragment extends Fragment implements XValuesAdapter.
     private void findViews(View v){
         drawXLines = (AppCompatCheckBox) v.findViewById(R.id.checkbox_draw_x_lines);
         drawYLines = (AppCompatCheckBox) v.findViewById(R.id.checkbox_draw_y_lines);
+        xLabel = (TextInputEditText) v.findViewById(R.id.x_label);
+        yLabel = (TextInputEditText) v.findViewById(R.id.y_label);
     }
 
     private void setUpViews(){
@@ -82,6 +89,40 @@ public class SetUpAppearanceFragment extends Fragment implements XValuesAdapter.
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 metadataProvider.getChartMetadata().setDrawYLines(b);
+            }
+        });
+
+        xLabel.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                metadataProvider.getChartMetadata().setxTitle(editable.toString());
+            }
+        });
+
+        yLabel.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                metadataProvider.getChartMetadata().setyTitle(editable.toString());
             }
         });
     }

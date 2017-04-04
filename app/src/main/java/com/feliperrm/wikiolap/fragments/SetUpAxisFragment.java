@@ -97,6 +97,7 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 metadataProvider.getChartMetadata().setyColumnId(metadataProvider.getDatasetMetada().getOriginalColumns().get(position));
+                metadataProvider.getChartMetadata().setyColumnAlias(metadataProvider.getDatasetMetada().getAliasColumns().get(position));
             }
 
             @Override

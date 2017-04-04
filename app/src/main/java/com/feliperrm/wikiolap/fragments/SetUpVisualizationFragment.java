@@ -24,6 +24,8 @@ import com.feliperrm.wikiolap.models.DatasetMetadata;
 import com.feliperrm.wikiolap.models.XYHolder;
 import com.feliperrm.wikiolap.presenters.DatasetPresenter;
 import com.feliperrm.wikiolap.utils.ChartUtil;
+import com.feliperrm.wikiolap.utils.FirebaseUtil;
+import com.feliperrm.wikiolap.utils.MyApp;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -119,7 +121,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         dataset2 = (DatasetMetadata) getArguments().getSerializable(DATASET1_KEY);
         chartMetadata.setTableId(dataset1.getTableId());
         chartMetadata.setTitle(dataset1.getTitle());
-        chartMetadata.setId(String.valueOf(new Date().getTime()));
+        chartMetadata.setId(FirebaseUtil.encodeForFirebaseKey(MyApp.app.getLoggedUser().getEmail())+String.valueOf(new Date().getTime()));
     }
 
     private void findViews(View v) {
@@ -146,6 +148,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         xValues.add(dataset1.getOriginalColumns().get(0));
         chartMetadata.setxColumnIds(xValues);
         chartMetadata.setyColumnId(dataset1.getOriginalColumns().get(dataset1.getOriginalColumns().size() - 1));
+        chartMetadata.setyColumnAlias(dataset1.getAliasColumns().get(dataset1.getAliasColumns().size() - 1));
         chartMetadata.setAggregationFunctionAsEnum(AggregationFunctions.FunctionSum);
     }
 

@@ -92,7 +92,7 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks, 
         findViews(view);
         setUpViews();
         datasetPresenter.loadDatasetFormatted(chartMetadata);
-        userPresenter.loadUser(chartMetadata.getOwnerId());
+        userPresenter.loadUser(chartMetadata.getCreator_id());
     }
 
     private void recoverBundle(){
@@ -175,7 +175,7 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks, 
         creatorName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userPresenter.loadUser(chartMetadata.getOwnerId());
+                userPresenter.loadUser(chartMetadata.getCreator_id());
             }
         });
     }

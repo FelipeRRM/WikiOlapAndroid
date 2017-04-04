@@ -28,7 +28,9 @@
         <activity
             android:name=".activities.SetUpVisualizationActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/NoActionBar" />
+            android:theme="@style/NoActionBar"
+            android:windowSoftInputMode="adjustPan"
+            />
         <activity android:name=".activities.AddDatasetActivity"></activity>
     </application>
 

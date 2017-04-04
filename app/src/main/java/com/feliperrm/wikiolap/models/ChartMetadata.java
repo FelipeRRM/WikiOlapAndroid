@@ -20,16 +20,45 @@ public class ChartMetadata implements Parcelable {
     private String id;
     private String title;
     private String description;
-    private String ownerId;
     private String thumbnail;
     private String tableId;
     private ArrayList<String> xColumnIds;
     private String yColumnId;
+    private String yColumnAlias;
     private AggregationFunctions aggregationFunction;
     private int chartType;
     private transient ChartUpdateInterface updateInterface;
     private boolean drawXLines;
     private boolean drawYLines;
+    private String xTitle;
+    private String yTitle;
+
+    public String getyColumnAlias() {
+        return yColumnAlias;
+    }
+
+    public void setyColumnAlias(String yColumnAlias) {
+        this.yColumnAlias = yColumnAlias;
+        update();
+    }
+
+    public String getxTitle() {
+        return xTitle;
+    }
+
+    public void setxTitle(String xTitle) {
+        this.xTitle = xTitle;
+        update();
+    }
+
+    public String getyTitle() {
+        return yTitle;
+    }
+
+    public void setyTitle(String yTitle) {
+        this.yTitle = yTitle;
+        update();
+    }
 
     public String getDescription() {
         return description;
@@ -37,14 +66,6 @@ public class ChartMetadata implements Parcelable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
     }
 
     public boolean isDrawXLines() {
@@ -215,15 +236,17 @@ public class ChartMetadata implements Parcelable {
         dest.writeString(this.id);
         dest.writeString(this.title);
         dest.writeString(this.description);
-        dest.writeString(this.ownerId);
         dest.writeString(this.thumbnail);
         dest.writeString(this.tableId);
         dest.writeStringList(this.xColumnIds);
         dest.writeString(this.yColumnId);
+        dest.writeString(this.yColumnAlias);
         dest.writeInt(this.aggregationFunction == null ? -1 : this.aggregationFunction.ordinal());
         dest.writeInt(this.chartType);
         dest.writeByte(this.drawXLines ? (byte) 1 : (byte) 0);
         dest.writeByte(this.drawYLines ? (byte) 1 : (byte) 0);
+        dest.writeString(this.xTitle);
+        dest.writeString(this.yTitle);
     }
 
     protected ChartMetadata(Parcel in) {
@@ -231,16 +254,18 @@ public class ChartMetadata implements Parcelable {
         this.id = in.readString();
         this.title = in.readString();
         this.description = in.readString();
-        this.ownerId = in.readString();
         this.thumbnail = in.readString();
         this.tableId = in.readString();
         this.xColumnIds = in.createStringArrayList();
         this.yColumnId = in.readString();
+        this.yColumnAlias = in.readString();
         int tmpAggregationFunction = in.readInt();
         this.aggregationFunction = tmpAggregationFunction == -1 ? null : AggregationFunctions.values()[tmpAggregationFunction];
         this.chartType = in.readInt();
         this.drawXLines = in.readByte() != 0;
         this.drawYLines = in.readByte() != 0;
+        this.xTitle = in.readString();
+        this.yTitle = in.readString();
     }
 
     public static final Creator<ChartMetadata> CREATOR = new Creator<ChartMetadata>() {

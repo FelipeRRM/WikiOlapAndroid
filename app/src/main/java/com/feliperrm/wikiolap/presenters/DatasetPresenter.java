@@ -28,52 +28,93 @@ public class DatasetPresenter {
         this.callbacks = callbacks;
     }
 
+
+    private Call<JsonArray> loadDatasetFormattedCall;
+    Response<JsonArray> responseCache;
+    String lastSuccessfulRequest;
+
     public void loadDatasetFormatted(final ChartMetadata chartMetadata) {
         callbacks.onLoadingStarted();
-        Network.getApiCalls().getDataAggregated(chartMetadata.getTableId(), chartMetadata.getGroupByString(), chartMetadata.getAggregationAsEnum(), chartMetadata.getyColumnId()).enqueue(new Callback<JsonArray>() {
-            @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callbacks.onDataLoaded(formatChartData(chartMetadata, response.body()));
-                } else {
-                    onFailure(call, new Exception("Null Body or Server Error"));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
-                if (BuildConfig.DEBUG) {
-                    if (t != null) {
-                        t.printStackTrace();
+        if (loadDatasetFormattedCall != null) {
+            loadDatasetFormattedCall.cancel();
+        }
+        if (responseCache != null && lastSuccessfulRequest.equals(chartMetadata.getTableId() + chartMetadata.getGroupByString() + chartMetadata.getAggregationFunction() + chartMetadata.getyColumnId())) {
+            callbacks.onDataLoaded(formatChartData(chartMetadata, responseCache.body()));
+        } else {
+            loadDatasetFormattedCall = Network.getApiCalls().getDataAggregated(chartMetadata.getTableId(), chartMetadata.getGroupByString(), chartMetadata.getAggregationAsEnum(), chartMetadata.getyColumnId());
+            loadDatasetFormattedCall.enqueue(new Callback<JsonArray>() {
+                @Override
+                public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        responseCache = response;
+                        lastSuccessfulRequest = chartMetadata.getTableId() + chartMetadata.getGroupByString() + chartMetadata.getAggregationFunction() + chartMetadata.getyColumnId();
+                        callbacks.onDataLoaded(formatChartData(chartMetadata, response.body()));
+                    } else {
+                        onFailure(call, new Exception("Null Body or Server Error"));
                     }
+                    loadDatasetFormattedCall = null;
                 }
-                callbacks.onError("Error while loading dataset, tap to try again!");
-            }
-        });
+
+                @Override
+                public void onFailure(Call<JsonArray> call, Throwable t) {
+                    responseCache = null;
+                    lastSuccessfulRequest = null;
+                    if (!call.isCanceled()) {
+                        if (BuildConfig.DEBUG) {
+                            if (t != null) {
+                                t.printStackTrace();
+                            }
+                        }
+                        callbacks.onError("Error while loading dataset, tap to try again!");
+                    }
+                    loadDatasetFormattedCall = null;
+                }
+            });
+        }
     }
+
+    private Call<JsonArray> loadDatasetRawCall;
+    Response<JsonArray> rawResponseCache;
+    String rawLastSuccessfulRequest;
 
     public void loadDatasetRaw(final DatasetMetadata datasetMetadata) {
         callbacks.onLoadingStarted();
-        Network.getApiCalls().getData(datasetMetadata.getTableId(), PREVIEW_QUANTITY).enqueue(new Callback<JsonArray>() {
-            @Override
-            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    callbacks.onRawDataLoaded(getRawValuesAsArray(datasetMetadata, response.body()));
-                } else {
-                    onFailure(call, new Exception("Null Body or Server Error"));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonArray> call, Throwable t) {
-                if (BuildConfig.DEBUG) {
-                    if (t != null) {
-                        t.printStackTrace();
+        if (loadDatasetRawCall != null) {
+            loadDatasetRawCall.cancel();
+        }
+        if (rawResponseCache != null && rawLastSuccessfulRequest.equals(datasetMetadata.getTableId() + PREVIEW_QUANTITY)) {
+            callbacks.onRawDataLoaded(getRawValuesAsArray(datasetMetadata, rawResponseCache.body()));
+        } else {
+            loadDatasetRawCall = Network.getApiCalls().getData(datasetMetadata.getTableId(), PREVIEW_QUANTITY);
+            loadDatasetRawCall.enqueue(new Callback<JsonArray>() {
+                @Override
+                public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        rawResponseCache = response;
+                        rawLastSuccessfulRequest = datasetMetadata.getTableId() + PREVIEW_QUANTITY;
+                        callbacks.onRawDataLoaded(getRawValuesAsArray(datasetMetadata, response.body()));
+                    } else {
+                        onFailure(call, new Exception("Null Body or Server Error"));
                     }
+                    loadDatasetRawCall = null;
                 }
-                callbacks.onError("Error while loading dataset, tap to try again!");
-            }
-        });
+
+                @Override
+                public void onFailure(Call<JsonArray> call, Throwable t) {
+                    rawResponseCache = null;
+                    rawLastSuccessfulRequest = null;
+                    if (!call.isCanceled()) {
+                        if (BuildConfig.DEBUG) {
+                            if (t != null) {
+                                t.printStackTrace();
+                            }
+                        }
+                        callbacks.onError("Error while loading dataset, tap to try again!");
+                    }
+                    loadDatasetRawCall = null;
+                }
+            });
+        }
     }
 
     private static ArrayList<XYHolder> formatChartData(ChartMetadata chartMetadata, JsonArray jsonArray) {

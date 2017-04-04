@@ -1,7 +1,10 @@
 package com.feliperrm.wikiolap.utils;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.feliperrm.wikiolap.R;
 import com.feliperrm.wikiolap.models.ChartMetadata;
@@ -9,6 +12,7 @@ import com.feliperrm.wikiolap.models.XYHolder;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -30,7 +34,15 @@ public class ChartUtil {
     public static final int BAR_CHART = 0;
     public static final int LINE_CHART = 1;
 
-    public static Chart buildChart(Context context, ArrayList<XYHolder> dataset, ChartMetadata chartMetadata) {
+    public static View buildChart(Context context, ArrayList<XYHolder> dataset, ChartMetadata chartMetadata) {
+
+        View viewToReturn = LayoutInflater.from(context).inflate(R.layout.chart_with_titles, null);
+        TextView xTitle = (TextView) viewToReturn.findViewById(R.id.xTitle);
+        TextView yTitle = (TextView) viewToReturn.findViewById(R.id.yTitle);
+        xTitle.setText(chartMetadata.getxTitle());
+        yTitle.setText(chartMetadata.getyTitle());
+        FrameLayout container = (FrameLayout) viewToReturn.findViewById(R.id.container);
+        View chartView;
 
         if (chartMetadata.getChartType() == BAR_CHART) {
             BarChart barChart = new BarChart(context);
@@ -42,7 +54,7 @@ public class ChartUtil {
                 labels.add(xyHolder.getLabel());
             }
 
-            BarDataSet barDataSet = new BarDataSet(entries, chartMetadata.getyColumnId());
+            BarDataSet barDataSet = new BarDataSet(entries, (chartMetadata.getyColumnAlias() == null || chartMetadata.getyColumnAlias().isEmpty()) ? chartMetadata.getyColumnId() : chartMetadata.getyColumnAlias());
 
             BarData barData = new BarData(barDataSet);
 
@@ -60,9 +72,10 @@ public class ChartUtil {
             yAxis1.setDrawGridLines(chartMetadata.isDrawYLines());
             yAxis2.setDrawGridLines(chartMetadata.isDrawYLines());
 
+            barChart.getDescription().setText("");
             barChart.invalidate();
             barChart.setVisibility(View.VISIBLE);
-            return barChart;
+            chartView = barChart;
         } else {
             LineChart lineChart = new LineChart(context);
             ArrayList<Entry> entries = new ArrayList<>();
@@ -73,7 +86,7 @@ public class ChartUtil {
                 labels.add(xyHolder.getLabel());
             }
 
-            LineDataSet lineDataSet = new LineDataSet(entries, chartMetadata.getyColumnId());
+            LineDataSet lineDataSet = new LineDataSet(entries, (chartMetadata.getyColumnAlias() == null || chartMetadata.getyColumnAlias().isEmpty()) ? chartMetadata.getyColumnId() : chartMetadata.getyColumnAlias());
 
             LineData lineData = new LineData(lineDataSet);
 
@@ -91,10 +104,14 @@ public class ChartUtil {
             yAxis1.setDrawGridLines(chartMetadata.isDrawYLines());
             yAxis2.setDrawGridLines(chartMetadata.isDrawYLines());
 
+            lineChart.getDescription().setText("");
             lineChart.invalidate();
             lineChart.setVisibility(View.VISIBLE);
-            return lineChart;
+            chartView = lineChart;
         }
+
+        container.addView(chartView);
+        return viewToReturn;
     }
 
     public static ArrayList<String> getChartTypes(Context context) {

@@ -1,5 +1,7 @@
 package com.feliperrm.wikiolap.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -17,10 +19,10 @@ import com.feliperrm.wikiolap.fragments.ChartsMenuFragment;
 import com.feliperrm.wikiolap.fragments.DatasetMenuFragment;
 import com.feliperrm.wikiolap.fragments.ProfileMenuFragment;
 import com.feliperrm.wikiolap.models.DatasetMetadata;
+import com.feliperrm.wikiolap.utils.MyApp;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
-import java.lang.ref.WeakReference;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -29,9 +31,9 @@ public class BottomBarActivity extends BaseActivity implements DatasetMetadataAd
     /**
      * Attributes
      */
-    WeakReference<ChartsMenuFragment> chartsMenuFragment;
-    WeakReference<DatasetMenuFragment> datasetMenuFragment;
-    WeakReference<ProfileMenuFragment> profileMenuFragment;
+    ChartsMenuFragment chartsMenuFragment;
+    DatasetMenuFragment datasetMenuFragment;
+    ProfileMenuFragment profileMenuFragment;
 
     /**
      * Views
@@ -61,20 +63,20 @@ public class BottomBarActivity extends BaseActivity implements DatasetMetadataAd
             @Override
             public void onTabSelected(@IdRes int tabId) {
                 if (tabId == R.id.tab_charts) {
-                    if (chartsMenuFragment == null || chartsMenuFragment.get() == null) {
-                        chartsMenuFragment = new WeakReference<ChartsMenuFragment>(new ChartsMenuFragment());
+                    if (chartsMenuFragment == null) {
+                        chartsMenuFragment = (new ChartsMenuFragment());
                     }
-                    changeContentView(chartsMenuFragment.get());
+                    changeContentView(chartsMenuFragment);
                 } else if (tabId == R.id.tab_dataset) {
-                    if (datasetMenuFragment == null || datasetMenuFragment.get() == null) {
-                        datasetMenuFragment = new WeakReference<DatasetMenuFragment>(new DatasetMenuFragment());
+                    if (datasetMenuFragment == null) {
+                        datasetMenuFragment = (new DatasetMenuFragment());
                     }
-                    changeContentView(datasetMenuFragment.get());
+                    changeContentView(datasetMenuFragment);
                 } else {
-                    if (profileMenuFragment == null || profileMenuFragment.get() == null) {
-                        profileMenuFragment = new WeakReference<ProfileMenuFragment>(new ProfileMenuFragment());
+                    if (profileMenuFragment == null) {
+                        profileMenuFragment = (new ProfileMenuFragment());
                     }
-                    changeContentView(profileMenuFragment.get());
+                    changeContentView(profileMenuFragment);
                 }
             }
         });
@@ -103,6 +105,23 @@ public class BottomBarActivity extends BaseActivity implements DatasetMetadataAd
 
     @Override
     public void onDatasetClicked(DatasetMetadata datasetMetadata) {
-        startActivity(SetUpVisualizationActivity.getIntent(BottomBarActivity.this, datasetMetadata, null));
+        if (MyApp.app.getLoggedUser() == null) {
+            new AlertDialog.Builder(BottomBarActivity.this).setTitle(getString(R.string.login_required)).setMessage(getString(R.string.login_required_message))
+                    .setPositiveButton(getString(R.string.login), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            bottomBar.selectTabAtPosition(2, true);
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    }).show();
+        } else {
+            startActivity(SetUpVisualizationActivity.getIntent(BottomBarActivity.this, datasetMetadata, null));
+        }
     }
 }

@@ -3,7 +3,7 @@
     <string name="charts_menu_title">Charts</string>
     <string name="dataset_title">Dataset Title:</string>
     <string name="dataset_menu_title">Datasets</string>
-    <string name="profile_menu_title">Profile</string>
+    <string name="profile_menu_title">Account</string>
     <string name="facebook_app_id">1489404787760189</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search_for_datasets">Search for datasets...</string>
@@ -36,4 +36,11 @@
     <string name="visualization_creator">Visualization creator:</string>
     <string name="description">Description:</string>
     <string name="view_dataset_used">View dataset used</string>
+    <string name="y_label">Y Label</string>
+    <string name="x_label">X Label</string>
+    <string name="login_required_message">You need to login to be able to view datasets and create visualizations.</string>
+    <string name="login_required">Login Required</string>
+    <string name="login">Login</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout">Logout</string>
 </resources>

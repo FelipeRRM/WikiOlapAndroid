@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.feliperrm.wikiolap.BuildConfig;
@@ -51,6 +53,7 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
     TextView welcomeText;
     CircularImageView profileImage;
     RelativeLayout readyLayout;
+    Button logout;
 
     public ProfileMenuFragment() {
     }
@@ -80,6 +83,7 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
         readyLayout = (RelativeLayout) v.findViewById(R.id.readyLayout);
         welcomeText = (TextView) v.findViewById(R.id.welcome_text);
         profileImage = (CircularImageView) v.findViewById(R.id.profile_image);
+        logout = (Button) v.findViewById(R.id.btn_logout);
     }
 
     private void setUpViews() {
@@ -109,6 +113,21 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
             }
         });
 
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LoginManager.getInstance().logOut();
+                user = null;
+                MyApp.app.setLoggedUser(null);
+                readyLayout.setVisibility(View.GONE);
+                loginButton.setVisibility(View.VISIBLE);
+            }
+        });
+
+        this.user = MyApp.app.getLoggedUser();
+        if(this.user!=null){
+            onUserDefined();
+        }
 
     }
 
@@ -171,6 +190,7 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
         welcomeText.setText(getString(R.string.welcome_text, user.getName()));
         userLoader.setVisibility(View.GONE);
         readyLayout.setVisibility(View.VISIBLE);
+        loginButton.setVisibility(View.GONE);
         Glide.with(getContext()).load(user.getPicture())
                 .placeholder(R.drawable.profile_placeholder)
                 .dontAnimate()
