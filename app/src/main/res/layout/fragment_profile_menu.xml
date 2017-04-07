@@ -66,6 +66,7 @@
             android:id="@+id/my_vis_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_logout"
             android:layout_marginLeft="16dp"
             android:text="@string/my_visualizations" />
 
@@ -73,26 +74,30 @@
             android:id="@+id/recyclerView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_below="@id/my_vis_txt" />
+            android:layout_below="@id/my_vis_txt"
+            android:clipToPadding="false"
+            android:paddingBottom="8dp"
+            android:paddingRight="8dp" />
 
         <ProgressBar
             android:id="@+id/my_vis_loader"
             style="@android:style/Widget.DeviceDefault.ProgressBar"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
             android:layout_below="@+id/my_vis_txt"
             android:layout_centerHorizontal="true"
             android:layout_margin="16dp" />
 
         <TextView
-            android:visibility="gone"
-            android:layout_marginLeft="32dp"
-            android:layout_marginRight="32dp"
             android:id="@+id/my_vis_error"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/my_vis_txt"
-            android:gravity="center" />
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:gravity="center"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

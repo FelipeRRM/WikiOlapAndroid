@@ -122,7 +122,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         dataset1 = (DatasetMetadata) getArguments().getSerializable(DATASET1_KEY);
         dataset2 = (DatasetMetadata) getArguments().getSerializable(DATASET1_KEY);
         chartMetadata.setTableId(dataset1.getTableId());
-        chartMetadata.setId(FirebaseUtil.encodeForFirebaseKey(MyApp.app.getLoggedUser().getEmail())+String.valueOf(new Date().getTime()));
+        chartMetadata.setId(FirebaseUtil.encodeForFirebaseKey(MyApp.app.getLoggedUser().getEmail()) + String.valueOf(new Date().getTime()));
     }
 
     private void findViews(View v) {
@@ -176,9 +176,11 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         progressBar.setVisibility(View.GONE);
     }
 
-    public Bitmap getChartSnapshot(){
+    public Bitmap getChartSnapshot() {
         return ChartUtil.getChartSnapshot(chartHolder.getChildAt(0));
-    };
+    }
+
+    ;
 
     @Override
     public void onRawDataLoaded(ArrayList<ArrayList<String>> values) {

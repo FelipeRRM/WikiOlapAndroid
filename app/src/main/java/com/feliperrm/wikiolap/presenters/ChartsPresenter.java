@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.feliperrm.wikiolap.interfaces.ChartsViewCallbacks;
 import com.feliperrm.wikiolap.models.ChartMetadata;
+import com.feliperrm.wikiolap.models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +30,31 @@ public class ChartsPresenter {
     }
 
     public void loadCharts(String search) {
+        callbacks.onLoadingStarted();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference myRef = database.getReference("charts");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                myRef.removeEventListener(this);
+                GenericTypeIndicator<HashMap<String, ChartMetadata>> t = new GenericTypeIndicator<HashMap<String, ChartMetadata>>() {
+                };
+                HashMap<String, ChartMetadata> charts = dataSnapshot.getValue(t);
+                callbacks.onDataLoaded(new ArrayList<ChartMetadata>(charts.values()));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                if (error != null) {
+                    Log.w(TAG, "Failed to read value.", error.toException());
+                }
+                callbacks.onError("");
+            }
+        });
+
+    }
+
+    public void loadCharts(User user) {
         callbacks.onLoadingStarted();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("charts");

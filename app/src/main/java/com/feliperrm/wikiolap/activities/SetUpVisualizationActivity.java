@@ -127,15 +127,14 @@ public class SetUpVisualizationActivity extends BaseActivity implements Metadata
             }
         });
 
-        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                if(position == 0){
+                if (position == 0) {
                     addDataset.show();
                     saveVisualization.hide();
-                }
-                else{
+                } else {
                     addDataset.hide();
                     AnimaitonUtil.showFabWithAnimation(saveVisualization, 50);
                 }
@@ -143,7 +142,7 @@ public class SetUpVisualizationActivity extends BaseActivity implements Metadata
         });
     }
 
-    public void createVisualization(){
+    public void createVisualization() {
         progressDialog = new ProgressDialog(SetUpVisualizationActivity.this);
         progressDialog.setTitle(getString(R.string.uploading));
         progressDialog.setMessage(getString(R.string.uploading_visualization));
@@ -157,7 +156,7 @@ public class SetUpVisualizationActivity extends BaseActivity implements Metadata
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                if(BuildConfig.DEBUG) {
+                if (BuildConfig.DEBUG) {
                     Log.d("Upload Failed", "Visualization Thumb");
                     progressDialog.dismiss();
                     new AlertDialog.Builder(SetUpVisualizationActivity.this).setTitle(getString(R.string.error))
@@ -261,15 +260,15 @@ public class SetUpVisualizationActivity extends BaseActivity implements Metadata
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK) {
-            if (requestCode == ADD_DATASET_REQUEST_CODE){
-                if(data != null){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == ADD_DATASET_REQUEST_CODE) {
+                if (data != null) {
                     dataset2 = (DatasetMetadata) data.getSerializableExtra(AddDatasetActivity.SELECTED_DATASET_KEY);
-                    if(adapter!=null){
-                        if(adapter.frag1 != null){
+                    if (adapter != null) {
+                        if (adapter.frag1 != null) {
                             adapter.frag1.setDataset2(dataset2);
                         }
-                        if(adapter.frag2 != null){
+                        if (adapter.frag2 != null) {
                             adapter.frag2.setDataset2(dataset2);
                         }
                     }

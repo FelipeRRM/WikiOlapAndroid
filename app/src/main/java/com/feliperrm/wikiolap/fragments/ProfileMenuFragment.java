@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +30,13 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.feliperrm.wikiolap.BuildConfig;
 import com.feliperrm.wikiolap.R;
+import com.feliperrm.wikiolap.activities.ChartActivity;
+import com.feliperrm.wikiolap.adapters.ChartsAdapter;
+import com.feliperrm.wikiolap.interfaces.ChartsViewCallbacks;
 import com.feliperrm.wikiolap.interfaces.UserViewCallbacks;
+import com.feliperrm.wikiolap.models.ChartMetadata;
 import com.feliperrm.wikiolap.models.User;
+import com.feliperrm.wikiolap.presenters.ChartsPresenter;
 import com.feliperrm.wikiolap.presenters.UserPresenter;
 import com.feliperrm.wikiolap.utils.FirebaseUtil;
 import com.feliperrm.wikiolap.utils.MyApp;
@@ -38,12 +44,13 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileMenuFragment extends BaseFrgment implements UserViewCallbacks {
+public class ProfileMenuFragment extends BaseFrgment implements UserViewCallbacks, ChartsViewCallbacks, ChartsAdapter.ChartInterface {
 
 
     /**
@@ -65,7 +72,8 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
      * Attributes
      */
     private CallbackManager callbackManager;
-    private UserPresenter presenter;
+    private UserPresenter userPresenter;
+    private ChartsPresenter chartsPresenter;
     private User user;
 
     public ProfileMenuFragment() {
@@ -74,7 +82,8 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new UserPresenter(this);
+        userPresenter = new UserPresenter(this);
+        chartsPresenter = new ChartsPresenter(this);
     }
 
     @Override
@@ -142,9 +151,18 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
         });
 
         this.user = MyApp.app.getLoggedUser();
-        if(this.user!=null){
+        if (this.user != null) {
             onUserDefined();
         }
+
+        myVisError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chartsPresenter.loadCharts(user);
+            }
+        });
+
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
 
     }
 
@@ -161,7 +179,7 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
                         } else {
                             String email = me.optString("email");
                             String id = me.optString("id");
-                            presenter.loadUser(email);
+                            userPresenter.loadUser(email);
                         }
                     }
                 });
@@ -213,6 +231,33 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
                 .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(profileImage);
+        chartsPresenter.loadCharts(user);
     }
 
+    @Override
+    public void onLoadingStarted() {
+        myVisProgress.setVisibility(View.VISIBLE);
+        myVisError.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onError(String message) {
+        myVisProgress.setVisibility(View.GONE);
+        myVisError.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onDataLoaded(ArrayList<ChartMetadata> chartMetadatas) {
+        myVisProgress.setVisibility(View.GONE);
+        myVisError.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        recyclerView.setAdapter(new ChartsAdapter(chartMetadatas, this));
+    }
+
+    @Override
+    public void onChartClicked(ChartMetadata chartMetadata) {
+        startActivity(ChartActivity.getIntent(getContext(), chartMetadata));
+    }
 }
