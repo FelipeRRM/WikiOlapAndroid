@@ -5,4 +5,6 @@
     <color name="colorAccent">#1773e4</color>
     <color name="light_gray">#e8e8e8</color>
     <color name="profile_shadow_color">#333333</color>
+    <color name="purple">#6a1b9a</color>
+    <color name="green">#2e7d32</color>
 </resources>

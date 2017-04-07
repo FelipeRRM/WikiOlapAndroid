@@ -1,5 +1,8 @@
 package com.feliperrm.wikiolap.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -7,7 +10,7 @@ import java.util.ArrayList;
  * Created by felip on 23/02/2017.
  */
 
-public class DatasetMetadata implements Serializable {
+public class DatasetMetadata implements Serializable, Parcelable {
 
     String title;
     String description;
@@ -109,4 +112,55 @@ public class DatasetMetadata implements Serializable {
     public void setTableId(String tableId) {
         this.tableId = tableId;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.title);
+        dest.writeString(this.description);
+        dest.writeStringList(this.aliasColumns);
+        dest.writeString(this.email);
+        dest.writeList(this.hierarchies);
+        dest.writeString(this.source);
+        dest.writeStringList(this.originalColumns);
+        dest.writeList(this.tags);
+        dest.writeSerializable(this.created_at);
+        dest.writeSerializable(this.updated_at);
+        dest.writeString(this.tableId);
+    }
+
+    public DatasetMetadata() {
+    }
+
+    protected DatasetMetadata(Parcel in) {
+        this.title = in.readString();
+        this.description = in.readString();
+        this.aliasColumns = in.createStringArrayList();
+        this.email = in.readString();
+        this.hierarchies = new ArrayList<Hierarchy>();
+        in.readList(this.hierarchies, Hierarchy.class.getClassLoader());
+        this.source = in.readString();
+        this.originalColumns = in.createStringArrayList();
+        this.tags = new ArrayList<Object>();
+        in.readList(this.tags, Object.class.getClassLoader());
+        this.created_at = (TimeStamp) in.readSerializable();
+        this.updated_at = (TimeStamp) in.readSerializable();
+        this.tableId = in.readString();
+    }
+
+    public static final Parcelable.Creator<DatasetMetadata> CREATOR = new Parcelable.Creator<DatasetMetadata>() {
+        @Override
+        public DatasetMetadata createFromParcel(Parcel source) {
+            return new DatasetMetadata(source);
+        }
+
+        @Override
+        public DatasetMetadata[] newArray(int size) {
+            return new DatasetMetadata[size];
+        }
+    };
 }

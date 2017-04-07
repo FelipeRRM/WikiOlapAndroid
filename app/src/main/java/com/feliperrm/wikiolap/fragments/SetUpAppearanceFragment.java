@@ -41,6 +41,8 @@ public class SetUpAppearanceFragment extends Fragment implements XValuesAdapter.
     private AppCompatCheckBox drawYLines;
     private TextInputEditText xLabel;
     private TextInputEditText yLabel;
+    private TextInputEditText title;
+    private TextInputEditText description;
 
     /**
      * Attributes
@@ -75,6 +77,8 @@ public class SetUpAppearanceFragment extends Fragment implements XValuesAdapter.
         drawYLines = (AppCompatCheckBox) v.findViewById(R.id.checkbox_draw_y_lines);
         xLabel = (TextInputEditText) v.findViewById(R.id.x_label);
         yLabel = (TextInputEditText) v.findViewById(R.id.y_label);
+        title = (TextInputEditText) v.findViewById(R.id.title);
+        description = (TextInputEditText) v.findViewById(R.id.description);
     }
 
     private void setUpViews(){
@@ -123,6 +127,40 @@ public class SetUpAppearanceFragment extends Fragment implements XValuesAdapter.
             @Override
             public void afterTextChanged(Editable editable) {
                 metadataProvider.getChartMetadata().setyTitle(editable.toString());
+            }
+        });
+
+        title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                metadataProvider.getChartMetadata().setTitle(editable.toString());
+            }
+        });
+
+        description.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                metadataProvider.getChartMetadata().setDescription(editable.toString());
             }
         });
     }

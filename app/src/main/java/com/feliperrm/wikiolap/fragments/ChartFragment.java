@@ -155,11 +155,13 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks, 
 
     @Override
     public void onDataLoaded(User user, String requestEmail) {
-        profilePicture.setVisibility(View.VISIBLE);
-        Glide.with(getContext()).load(user.getPicture()).placeholder(R.drawable.profile_placeholder).dontAnimate().diskCacheStrategy(DiskCacheStrategy.ALL).into(profilePicture);
-        creatorName.setText(user.getName());
         creatorLoader.setVisibility(View.GONE);
-        creatorName.setOnClickListener(null);
+        if(user!=null) {
+            profilePicture.setVisibility(View.VISIBLE);
+            Glide.with(getContext()).load(user.getPicture()).placeholder(R.drawable.profile_placeholder).dontAnimate().diskCacheStrategy(DiskCacheStrategy.ALL).into(profilePicture);
+            creatorName.setText(user.getName());
+            creatorName.setOnClickListener(null);
+        }
     }
 
     @Override

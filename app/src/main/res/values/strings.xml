@@ -43,4 +43,14 @@
     <string name="login">Login</string>
     <string name="cancel">Cancel</string>
     <string name="logout">Logout</string>
+    <string name="title">Title</string>
+    <string name="description_no_dots">Description</string>
+    <string name="create_new_vis_dialog_title">Create and Close</string>
+    <string name="create_new_vis_dialog_body">Are you sure you want to create this visualization? Changes aren\'t possible once it\'s been created.</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="uploading">Uploading</string>
+    <string name="uploading_visualization">Uploading visualization...</string>
+    <string name="error">Error</string>
+    <string name="uploading_error">An error happened while uploading your visualization. Please verify your connection and try again.</string>
 </resources>

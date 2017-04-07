@@ -13,6 +13,8 @@ import com.feliperrm.wikiolap.fragments.DatasetMenuFragment;
 import com.feliperrm.wikiolap.models.ChartMetadata;
 import com.feliperrm.wikiolap.models.DatasetMetadata;
 
+import java.io.Serializable;
+
 public class AddDatasetActivity extends BaseActivity implements DatasetMetadataAdapter.DatasetInterface{
 
     public static final String SELECTED_DATASET_KEY = "selecteddataset";
@@ -41,7 +43,7 @@ public class AddDatasetActivity extends BaseActivity implements DatasetMetadataA
     @Override
     public void onDatasetClicked(DatasetMetadata datasetMetadata) {
         Intent intent = new Intent();
-        intent.putExtra(SELECTED_DATASET_KEY, datasetMetadata);
+        intent.putExtra(SELECTED_DATASET_KEY, (Serializable) datasetMetadata);
         setResult(RESULT_OK, intent);
         finish();
     }

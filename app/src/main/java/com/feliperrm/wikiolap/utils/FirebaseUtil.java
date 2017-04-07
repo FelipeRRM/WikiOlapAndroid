@@ -16,10 +16,9 @@ public class FirebaseUtil {
 
     public static void createChart(ChartMetadata chartMetadata){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference("charts");
-        Map<String, ChartMetadata> charts = new HashMap<String, ChartMetadata>();
-        charts.put(chartMetadata.getId(), chartMetadata);
-        myRef.setValue(charts);
+        final DatabaseReference chartsRef = database.getReference("charts");
+        final DatabaseReference newChartRef = chartsRef.child(chartMetadata.getId());
+        newChartRef.setValue(chartMetadata);
     }
 
     public static void createUser(User user){

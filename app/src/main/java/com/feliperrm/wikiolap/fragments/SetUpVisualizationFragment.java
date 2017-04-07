@@ -1,6 +1,7 @@
 package com.feliperrm.wikiolap.fragments;
 
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -97,6 +98,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         super.onCreate(savedInstanceState);
         presenter = new DatasetPresenter(this);
         chartMetadata = new ChartMetadata();
+        chartMetadata.setCreator_id(MyApp.app.getLoggedUser().getEmail());
     }
 
     @Override
@@ -120,7 +122,6 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         dataset1 = (DatasetMetadata) getArguments().getSerializable(DATASET1_KEY);
         dataset2 = (DatasetMetadata) getArguments().getSerializable(DATASET1_KEY);
         chartMetadata.setTableId(dataset1.getTableId());
-        chartMetadata.setTitle(dataset1.getTitle());
         chartMetadata.setId(FirebaseUtil.encodeForFirebaseKey(MyApp.app.getLoggedUser().getEmail())+String.valueOf(new Date().getTime()));
     }
 
@@ -174,6 +175,10 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         chartHolder.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
     }
+
+    public Bitmap getChartSnapshot(){
+        return ChartUtil.getChartSnapshot(chartHolder.getChildAt(0));
+    };
 
     @Override
     public void onRawDataLoaded(ArrayList<ArrayList<String>> values) {

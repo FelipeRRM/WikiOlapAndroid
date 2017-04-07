@@ -44,17 +44,36 @@
         android:layout_below="@+id/top_layout" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/add_dataset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
         android:clickable="true"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@drawable/ic_add_dataset"
         android:tint="@android:color/white"
         app:elevation="4dp"
         app:pressedTranslationZ="8dp"
-        app:rippleColor="@android:color/white" />
+        app:rippleColor="@android:color/white"
+        app:backgroundTint="@color/purple"
+        />
+
+    <android.support.design.widget.FloatingActionButton
+        android:visibility="invisible"
+        android:id="@+id/save_visualization"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:src="@drawable/ic_positive"
+        android:tint="@android:color/white"
+        app:elevation="4dp"
+        app:pressedTranslationZ="8dp"
+        app:rippleColor="@android:color/white"
+        app:backgroundTint="@color/green"
+        />
 
 </RelativeLayout>

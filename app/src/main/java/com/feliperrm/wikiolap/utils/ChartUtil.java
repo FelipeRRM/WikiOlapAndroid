@@ -1,6 +1,7 @@
 package com.feliperrm.wikiolap.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -119,6 +120,12 @@ public class ChartUtil {
         types.add(context.getString(R.string.bar_chart));
         types.add(context.getString(R.string.line_chart));
         return types;
+    }
+
+    public static Bitmap getChartSnapshot(View chartHolder){
+        FrameLayout container = (FrameLayout) chartHolder.findViewById(R.id.container);
+        Chart chart = (Chart) container.getChildAt(0);
+        return chart.getChartBitmap();
     }
 
 }
