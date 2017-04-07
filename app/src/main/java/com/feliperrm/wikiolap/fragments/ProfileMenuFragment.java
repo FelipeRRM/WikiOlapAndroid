@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,16 +45,28 @@ import java.util.Arrays;
  */
 public class ProfileMenuFragment extends BaseFrgment implements UserViewCallbacks {
 
-    LoginButton loginButton;
-    CallbackManager callbackManager;
-    UserPresenter presenter;
-    ProgressDialog progressDialog;
-    User user;
-    ProgressBar userLoader;
-    TextView welcomeText;
-    CircularImageView profileImage;
-    RelativeLayout readyLayout;
-    Button logout;
+
+    /**
+     * Views
+     */
+    private LoginButton loginButton;
+    private ProgressBar userLoader;
+    private TextView welcomeText;
+    private CircularImageView profileImage;
+    private RelativeLayout readyLayout;
+    private ProgressDialog progressDialog;
+    private Button logout;
+    private RecyclerView recyclerView;
+    private TextView myVisTxt;
+    private ProgressBar myVisProgress;
+    private TextView myVisError;
+
+    /**
+     * Attributes
+     */
+    private CallbackManager callbackManager;
+    private UserPresenter presenter;
+    private User user;
 
     public ProfileMenuFragment() {
     }
@@ -84,6 +97,10 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
         welcomeText = (TextView) v.findViewById(R.id.welcome_text);
         profileImage = (CircularImageView) v.findViewById(R.id.profile_image);
         logout = (Button) v.findViewById(R.id.btn_logout);
+        myVisTxt = (TextView) v.findViewById(R.id.my_vis_txt);
+        recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+        myVisProgress = (ProgressBar) v.findViewById(R.id.my_vis_loader);
+        myVisError = (TextView) v.findViewById(R.id.my_vis_error);
     }
 
     private void setUpViews() {

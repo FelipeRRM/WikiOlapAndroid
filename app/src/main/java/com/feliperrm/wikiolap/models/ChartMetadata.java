@@ -32,23 +32,23 @@ public class ChartMetadata implements Parcelable {
     private boolean drawYLines;
     private String xTitle;
     private String yTitle;
-    private DatasetMetadata dataset1;
-    private DatasetMetadata dataset2;
+    private String dataset1;
+    private String dataset2;
 
 
-    public DatasetMetadata getDataset1() {
+    public String getDataset1() {
         return dataset1;
     }
 
-    public void setDataset1(DatasetMetadata dataset1) {
+    public void setDataset1(String dataset1) {
         this.dataset1 = dataset1;
     }
 
-    public DatasetMetadata getDataset2() {
+    public String getDataset2() {
         return dataset2;
     }
 
-    public void setDataset2(DatasetMetadata dataset2) {
+    public void setDataset2(String dataset2) {
         this.dataset2 = dataset2;
     }
 
@@ -265,8 +265,8 @@ public class ChartMetadata implements Parcelable {
         dest.writeByte(this.drawYLines ? (byte) 1 : (byte) 0);
         dest.writeString(this.xTitle);
         dest.writeString(this.yTitle);
-        dest.writeParcelable(this.dataset1, flags);
-        dest.writeParcelable(this.dataset2, flags);
+        dest.writeString(this.dataset1);
+        dest.writeString(this.dataset2);
     }
 
     protected ChartMetadata(Parcel in) {
@@ -286,8 +286,8 @@ public class ChartMetadata implements Parcelable {
         this.drawYLines = in.readByte() != 0;
         this.xTitle = in.readString();
         this.yTitle = in.readString();
-        this.dataset1 = in.readParcelable(DatasetMetadata.class.getClassLoader());
-        this.dataset2 = in.readParcelable(DatasetMetadata.class.getClassLoader());
+        this.dataset1 = in.readString();
+        this.dataset2 = in.readString();
     }
 
     public static final Creator<ChartMetadata> CREATOR = new Creator<ChartMetadata>() {

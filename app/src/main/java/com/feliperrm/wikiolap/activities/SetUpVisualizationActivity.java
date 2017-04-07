@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
@@ -168,8 +169,9 @@ public class SetUpVisualizationActivity extends BaseActivity implements Metadata
             @SuppressWarnings("VisibleForTests")
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                getChartMetadata().setDataset1(dataset1);
-                getChartMetadata().setDataset2(dataset2);
+                Gson gson = new Gson();
+                getChartMetadata().setDataset1(gson.toJson(dataset1));
+                getChartMetadata().setDataset2(gson.toJson(dataset2));
                 progressDialog.dismiss();
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();

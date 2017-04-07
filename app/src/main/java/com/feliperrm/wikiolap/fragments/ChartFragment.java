@@ -20,11 +20,13 @@ import com.feliperrm.wikiolap.activities.SetUpVisualizationActivity;
 import com.feliperrm.wikiolap.interfaces.DatasetViewCallbacks;
 import com.feliperrm.wikiolap.interfaces.UserViewCallbacks;
 import com.feliperrm.wikiolap.models.ChartMetadata;
+import com.feliperrm.wikiolap.models.DatasetMetadata;
 import com.feliperrm.wikiolap.models.User;
 import com.feliperrm.wikiolap.models.XYHolder;
 import com.feliperrm.wikiolap.presenters.DatasetPresenter;
 import com.feliperrm.wikiolap.presenters.UserPresenter;
 import com.feliperrm.wikiolap.utils.ChartUtil;
+import com.google.gson.Gson;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.ArrayList;
@@ -121,7 +123,10 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks, 
         btnDataset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Gson gson = new Gson();
+                DatasetMetadata dataset1 = gson.fromJson(chartMetadata.getDataset1(), DatasetMetadata.class);
+                DatasetMetadata dataset2 = gson.fromJson(chartMetadata.getDataset2(), DatasetMetadata.class);
+                startActivity(SetUpVisualizationActivity.getIntent(getContext(), dataset1, dataset2));
             }
         });
     }
