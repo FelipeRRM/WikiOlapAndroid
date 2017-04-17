@@ -2,6 +2,7 @@ package com.feliperrm.wikiolap.fragments;
 
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -30,6 +31,7 @@ import com.feliperrm.wikiolap.utils.MyApp;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +63,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
     private ChartMetadata chartMetadata;
     private DatasetPresenter presenter;
     private SetUpVisualizationAdapter adapter;
+    private Random random;
 
     public DatasetMetadata getDataset1() {
         return dataset1;
@@ -108,6 +111,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        random = new Random(System.currentTimeMillis());
         presenter = new DatasetPresenter(this);
         chartMetadata = new ChartMetadata();
         chartMetadata.setCreator_id(MyApp.app.getLoggedUser().getEmail());
@@ -167,6 +171,9 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         ArrayList<String> yColumnsAlias = new ArrayList<>();
         yColumnsAlias.add(dataset1.getAliasColumns().get(dataset1.getAliasColumns().size() - 1));
         chartMetadata.setyAlias(yColumnsAlias);
+        ArrayList<Integer> yColors = new ArrayList<>();
+        yColors.add(Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+        chartMetadata.setyColors(yColors);
         chartMetadata.setAggregationFunctionAsEnum(AggregationFunctions.FunctionSum);
     }
 

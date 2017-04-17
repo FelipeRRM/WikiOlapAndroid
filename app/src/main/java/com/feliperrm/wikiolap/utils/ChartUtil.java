@@ -66,7 +66,9 @@ public class ChartUtil {
                 else{
                     lbl = chartMetadata.getyColumnIds().get(i);
                 }
-                sets.add(new BarDataSet(entries, lbl));
+                BarDataSet set = new BarDataSet(entries, lbl);
+                set.setColor(chartMetadata.getyColors().get(i));
+                sets.add(set);
             }
             BarData barData = new BarData(sets);
 

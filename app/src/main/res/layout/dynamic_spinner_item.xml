@@ -1,12 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <Spinner
-        style="@style/create_chart_items_style"
         android:id="@+id/yValueSpinner"
+        style="@style/create_chart_items_style"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/btnColor" />
 
-</LinearLayout>
+    <android.support.v7.widget.AppCompatButton
+        android:layout_alignWithParentIfMissing="true"
+        android:id="@+id/btnColor"
+        android:layout_toLeftOf="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/color"
+        android:textColor="@android:color/white" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:visibility="visible"
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="8dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/remove"
+        android:textColor="@android:color/white" />
+
+</RelativeLayout>

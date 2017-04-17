@@ -2,6 +2,7 @@ package com.feliperrm.wikiolap.fragments;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import com.feliperrm.wikiolap.R;
+import com.feliperrm.wikiolap.adapters.DynamicSpinnerAdapter;
 import com.feliperrm.wikiolap.adapters.XValuesAdapter;
 import com.feliperrm.wikiolap.enums.AggregationFunctions;
 import com.feliperrm.wikiolap.interfaces.ChartUpdateInterface;
@@ -26,6 +28,7 @@ import com.feliperrm.wikiolap.models.ColumnHolder;
 import com.feliperrm.wikiolap.utils.ChartUtil;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,8 +39,6 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
      * Views
      */
     private Spinner chartTypeSpinner;
-    private ArrayList<Spinner> yAxisSpinners;
-    private Spinner yAxisValueSpinner;
     private RecyclerView xRecyclerView;
     private RadioButton radioSum;
     private RadioButton radioAverage;
@@ -48,9 +49,18 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
      * Attributes
      */
     private MetadataProvider metadataProvider;
+    private DynamicSpinnerAdapter adapter;
+    private Random random;
 
 
     public SetUpAxisFragment() {
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        random = new Random(System.currentTimeMillis());
     }
 
     @Override
@@ -74,7 +84,6 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
 
     private void findViews(View v) {
         chartTypeSpinner = (Spinner) v.findViewById(R.id.chartTypeSpinner);
-        yAxisValueSpinner = (Spinner) v.findViewById(R.id.yValueSpinner);
         xRecyclerView = (RecyclerView) v.findViewById(R.id.xRecyclerView);
         radioSum = (RadioButton) v.findViewById(R.id.radio_sum);
         radioAverage = (RadioButton) v.findViewById(R.id.radio_average);
@@ -113,6 +122,21 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
                 }
             }
         });
+
+        addYAxis.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                metadataProvider.getChartMetadata().getyColumnIds().add(metadataProvider.getDataset1Metadata().getDbColumns().get(0));
+                metadataProvider.getChartMetadata().getyAlias().add(metadataProvider.getDataset1Metadata().getAliasColumns().get(0));
+                metadataProvider.getChartMetadata().getyColors().add(Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+                adapter.notifyDataSetChanged();
+                metadataProvider.getChartMetadata().getUpdateInterface().onChartUpdated();
+            }
+        });
+
+        adapter = new DynamicSpinnerAdapter(metadataProvider);
+        ySpinnerRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        ySpinnerRecycler.setAdapter(adapter);
     }
 
     private void setUpJoinViews() {
@@ -151,27 +175,6 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
 
             }
         });
-        ArrayAdapter<String> yValuesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, metadataProvider.getDataset1Metadata().getDbColumns());
-        yValuesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        yAxisValueSpinner.setAdapter(yValuesAdapter);
-        yAxisValueSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                metadataProvider.getChartMetadata().getyColumnIds().set(0, metadataProvider.getDataset1Metadata().getDbColumns().get(position));
-                metadataProvider.getChartMetadata().getyAlias().set(0, metadataProvider.getDataset1Metadata().getAliasColumns().get(position));
-                ChartUpdateInterface chartUpdateInterface = metadataProvider.getChartMetadata().getUpdateInterface();
-                if (chartUpdateInterface != null) {
-                    chartUpdateInterface.onChartUpdated();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-        yAxisValueSpinner.setSelection(yValuesAdapter.getCount() - 1);
-
         xRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         xRecyclerView.setAdapter(new XValuesAdapter(ColumnHolder.getColumnHoldersFromStrings(metadataProvider.getDataset1Metadata().getDbColumns()), this));
     }

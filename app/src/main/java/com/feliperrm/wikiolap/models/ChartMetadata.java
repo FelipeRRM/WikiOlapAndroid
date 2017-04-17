@@ -29,6 +29,7 @@ public class ChartMetadata implements Parcelable {
     private ArrayList<String> joing2;
     private ArrayList<String> yColumnIds;
     private ArrayList<String> yAlias;
+    private ArrayList<Integer> yColors;
     private AggregationFunctions aggregationFunction;
     private int chartType;
     private transient ChartUpdateInterface updateInterface;
@@ -39,6 +40,14 @@ public class ChartMetadata implements Parcelable {
     private String dataset1;
     private String dataset2;
 
+    public ArrayList<Integer> getyColors() {
+        return yColors;
+    }
+
+    public void setyColors(ArrayList<Integer> yColors) {
+        this.yColors = yColors;
+        update();
+    }
 
     public ArrayList<String> getyAlias() {
         return yAlias;
@@ -314,6 +323,8 @@ public class ChartMetadata implements Parcelable {
         dest.writeStringList(this.join1);
         dest.writeStringList(this.joing2);
         dest.writeStringList(this.yColumnIds);
+        dest.writeStringList(this.yAlias);
+        dest.writeList(this.yColors);
         dest.writeInt(this.aggregationFunction == null ? -1 : this.aggregationFunction.ordinal());
         dest.writeInt(this.chartType);
         dest.writeByte(this.drawXLines ? (byte) 1 : (byte) 0);
@@ -337,6 +348,9 @@ public class ChartMetadata implements Parcelable {
         this.join1 = in.createStringArrayList();
         this.joing2 = in.createStringArrayList();
         this.yColumnIds = in.createStringArrayList();
+        this.yAlias = in.createStringArrayList();
+        this.yColors = new ArrayList<Integer>();
+        in.readList(this.yColors, Integer.class.getClassLoader());
         int tmpAggregationFunction = in.readInt();
         this.aggregationFunction = tmpAggregationFunction == -1 ? null : AggregationFunctions.values()[tmpAggregationFunction];
         this.chartType = in.readInt();

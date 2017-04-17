@@ -9,7 +9,6 @@ import com.feliperrm.wikiolap.network.Network;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import java.text.Normalizer;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -121,8 +120,9 @@ public class DatasetPresenter {
     private static ArrayList<ArrayList<XYHolder>> formatChartData(ChartMetadata chartMetadata, JsonArray jsonArray) {
         ArrayList<ArrayList<XYHolder>> returnArray = new ArrayList<>();
         int size = jsonArray.size();
-        int i = 0;
-        for(String yValue: chartMetadata.getyColumnIds()) {
+        int i;
+        for (String yValue : chartMetadata.getyColumnIds()) {
+            i = 0;
             ArrayList<XYHolder> entryValues = new ArrayList<>();
             String yColunmName = chartMetadata.getAggregationFunction().toString() + "(" + yValue + ")";
             while (i < size) {
