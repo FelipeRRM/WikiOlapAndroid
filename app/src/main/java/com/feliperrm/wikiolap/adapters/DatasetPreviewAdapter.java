@@ -23,7 +23,7 @@ public class DatasetPreviewAdapter extends RecyclerView.Adapter<DatasetPreviewVi
 
     public DatasetPreviewAdapter(ArrayList<ArrayList<String>> data, DatasetMetadata datasetMetadata) {
         this.data = data;
-        this.numColumns = datasetMetadata.getOriginalColumns().size();
+        this.numColumns = datasetMetadata.getDbColumns().size();
         this.size = numColumns * data.size();
     }
 

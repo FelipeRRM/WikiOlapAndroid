@@ -19,15 +19,23 @@ public class ChartsAdapter extends RecyclerView.Adapter<ChartViewHolder> {
 
     ArrayList<ChartMetadata> chartMetadatas;
     ChartInterface chartInterface;
+    boolean isHorizontal;
 
-    public ChartsAdapter(ArrayList<ChartMetadata> chartMetadatas, ChartInterface chartInterface) {
+    public ChartsAdapter(ArrayList<ChartMetadata> chartMetadatas, boolean horizontal, ChartInterface chartInterface) {
         this.chartMetadatas = chartMetadatas;
         this.chartInterface = chartInterface;
+        this.isHorizontal = horizontal;
     }
 
     @Override
     public ChartViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.chart_item, parent, false);
+        View v;
+        if(!isHorizontal) {
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.chart_item_vertical, parent, false);
+        }
+        else{
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.chart_item_horizontal, parent, false);
+        }
         ChartViewHolder viewHolder = new ChartViewHolder(v);
         return viewHolder;
     }

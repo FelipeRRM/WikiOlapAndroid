@@ -23,6 +23,7 @@ import android.widget.ImageView;
 
 import com.feliperrm.wikiolap.BuildConfig;
 import com.feliperrm.wikiolap.R;
+import com.feliperrm.wikiolap.fragments.DatasetPreviewFragment;
 import com.feliperrm.wikiolap.fragments.DatasetPreviewPagerFragment;
 import com.feliperrm.wikiolap.fragments.SetUpVisualizationFragment;
 import com.feliperrm.wikiolap.interfaces.MetadataProvider;
@@ -40,7 +41,7 @@ import com.google.gson.Gson;
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 
-public class SetUpVisualizationActivity extends BaseActivity implements MetadataProvider {
+public class SetUpVisualizationActivity extends BaseActivity implements MetadataProvider, DatasetPreviewFragment.DatasetRemovedInterface {
 
     /**
      * Constants
@@ -132,7 +133,9 @@ public class SetUpVisualizationActivity extends BaseActivity implements Metadata
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 if (position == 0) {
-                    addDataset.show();
+                    if (dataset2 == null) {
+                        addDataset.show();
+                    }
                     saveVisualization.hide();
                 } else {
                     addDataset.hide();
@@ -199,13 +202,45 @@ public class SetUpVisualizationActivity extends BaseActivity implements Metadata
     }
 
     @Override
-    public DatasetMetadata getDatasetMetada() {
+    public DatasetMetadata getDataset1Metadata() {
         return adapter.frag2.getDataset1();
+    }
+
+    @Override
+    public DatasetMetadata getDataset2Metadata() {
+        return adapter.frag2.getDataset2();
     }
 
     @Override
     public ChartMetadata getChartMetadata() {
         return adapter.frag2.getChartMetadata();
+    }
+
+    @Override
+    public void onDatasetRemoved(DatasetMetadata datasetMetadata) {
+        addDataset.show();
+        if (datasetMetadata.getTableId().equals(dataset1.getTableId())) {
+            dataset1 = dataset2;
+            getChartMetadata().setTableId(dataset1.getTableId());
+            if (adapter != null) {
+                if (adapter.frag1 != null) {
+                    adapter.frag1.setDataset1(dataset1);
+                }
+                if (adapter.frag2 != null) {
+                    adapter.frag2.setDataset1(dataset1);
+                }
+            }
+        }
+        dataset2 = null;
+        getChartMetadata().setTable2Id(null);
+        if (adapter != null) {
+            if (adapter.frag1 != null) {
+                adapter.frag1.setDataset2(dataset2);
+            }
+            if (adapter.frag2 != null) {
+                adapter.frag2.setDataset2(dataset2);
+            }
+        }
     }
 
     class Adapter extends FragmentPagerAdapter {
@@ -263,6 +298,7 @@ public class SetUpVisualizationActivity extends BaseActivity implements Metadata
         if (resultCode == RESULT_OK) {
             if (requestCode == ADD_DATASET_REQUEST_CODE) {
                 if (data != null) {
+                    addDataset.hide();
                     dataset2 = (DatasetMetadata) data.getSerializableExtra(AddDatasetActivity.SELECTED_DATASET_KEY);
                     if (adapter != null) {
                         if (adapter.frag1 != null) {

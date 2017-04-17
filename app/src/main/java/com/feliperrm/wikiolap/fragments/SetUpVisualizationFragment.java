@@ -60,6 +60,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
     private DatasetMetadata dataset2;
     private ChartMetadata chartMetadata;
     private DatasetPresenter presenter;
+    private SetUpVisualizationAdapter adapter;
 
     public DatasetMetadata getDataset1() {
         return dataset1;
@@ -80,6 +81,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
 
     public void setDataset1(DatasetMetadata dataset1) {
         this.dataset1 = dataset1;
+        updateFragments();
     }
 
     public DatasetMetadata getDataset2() {
@@ -88,9 +90,19 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
 
     public void setDataset2(DatasetMetadata dataset2) {
         this.dataset2 = dataset2;
+        updateFragments();
     }
 
-    public SetUpVisualizationFragment() {
+    public void updateFragments() {
+        if (adapter != null) {
+            if (adapter.frag1 != null) {
+                adapter.frag1.metadataUpdated();
+            }
+            if (adapter.frag2 != null) {
+
+            }
+        }
+        setUpInitialValues();
     }
 
     @Override
@@ -140,16 +152,21 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
                 presenter.loadDatasetFormatted(chartMetadata);
             }
         });
-        viewPager.setAdapter(new SetUpVisualizationAdapter(getChildFragmentManager()));
+        adapter = new SetUpVisualizationAdapter(getChildFragmentManager());
+        viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }
 
     private void setUpInitialValues() {
         ArrayList<String> xValues = new ArrayList<>();
-        xValues.add(dataset1.getOriginalColumns().get(0));
+        xValues.add(dataset1.getDbColumns().get(0));
         chartMetadata.setxColumnIds(xValues);
-        chartMetadata.setyColumnId(dataset1.getOriginalColumns().get(dataset1.getOriginalColumns().size() - 1));
-        chartMetadata.setyColumnAlias(dataset1.getAliasColumns().get(dataset1.getAliasColumns().size() - 1));
+        ArrayList<String> yColumnsIDs = new ArrayList<>();
+        yColumnsIDs.add(dataset1.getDbColumns().get(dataset1.getDbColumns().size() - 1));
+        chartMetadata.setyColumnIds(yColumnsIDs);
+        ArrayList<String> yColumnsAlias = new ArrayList<>();
+        yColumnsAlias.add(dataset1.getAliasColumns().get(dataset1.getAliasColumns().size() - 1));
+        chartMetadata.setyAlias(yColumnsAlias);
         chartMetadata.setAggregationFunctionAsEnum(AggregationFunctions.FunctionSum);
     }
 
@@ -169,7 +186,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
     }
 
     @Override
-    public void onDataLoaded(ArrayList<XYHolder> dataset) {
+    public void onDataLoaded(ArrayList<ArrayList<XYHolder>> dataset) {
         chartHolder.removeAllViews();
         chartHolder.addView(ChartUtil.buildChart(getContext(), dataset, chartMetadata));
         chartHolder.setVisibility(View.VISIBLE);

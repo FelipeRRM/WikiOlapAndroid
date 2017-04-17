@@ -9,6 +9,7 @@ import com.feliperrm.wikiolap.network.Network;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -38,16 +39,16 @@ public class DatasetPresenter {
         if (loadDatasetFormattedCall != null) {
             loadDatasetFormattedCall.cancel();
         }
-        if (responseCache != null && lastSuccessfulRequest.equals(chartMetadata.getTableId() + chartMetadata.getGroupByString() + chartMetadata.getAggregationFunction() + chartMetadata.getyColumnId())) {
+        if (responseCache != null && lastSuccessfulRequest.equals(chartMetadata.getTableId() + chartMetadata.getGroupByString() + chartMetadata.getAggregationFunction() + chartMetadata.getAggregateString())) {
             callbacks.onDataLoaded(formatChartData(chartMetadata, responseCache.body()));
         } else {
-            loadDatasetFormattedCall = Network.getApiCalls().getDataAggregated(chartMetadata.getTableId(), chartMetadata.getGroupByString(), chartMetadata.getAggregationAsEnum(), chartMetadata.getyColumnId());
+            loadDatasetFormattedCall = Network.getApiCalls().getDataAggregated(chartMetadata.getTableId(), chartMetadata.getGroupByString(), chartMetadata.getAggregationAsEnum(), chartMetadata.getAggregateString());
             loadDatasetFormattedCall.enqueue(new Callback<JsonArray>() {
                 @Override
                 public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         responseCache = response;
-                        lastSuccessfulRequest = chartMetadata.getTableId() + chartMetadata.getGroupByString() + chartMetadata.getAggregationFunction() + chartMetadata.getyColumnId();
+                        lastSuccessfulRequest = chartMetadata.getTableId() + chartMetadata.getGroupByString() + chartMetadata.getAggregationFunction() + chartMetadata.getAggregateString();
                         callbacks.onDataLoaded(formatChartData(chartMetadata, response.body()));
                     } else {
                         onFailure(call, new Exception("Null Body or Server Error"));
@@ -117,26 +118,30 @@ public class DatasetPresenter {
         }
     }
 
-    private static ArrayList<XYHolder> formatChartData(ChartMetadata chartMetadata, JsonArray jsonArray) {
-        ArrayList<XYHolder> returnArray = new ArrayList<>();
+    private static ArrayList<ArrayList<XYHolder>> formatChartData(ChartMetadata chartMetadata, JsonArray jsonArray) {
+        ArrayList<ArrayList<XYHolder>> returnArray = new ArrayList<>();
         int size = jsonArray.size();
         int i = 0;
-        String yColunmName = chartMetadata.getAggregationFunction().toString() + "(" + chartMetadata.getyColumnId() + ")";
-        while (i < size) {
-            JsonObject object = jsonArray.get(i).getAsJsonObject();
-            Double x = Double.valueOf(i);//object.get(chartMetadata.getxColumnId()).getAsDouble();
-            Double y = object.get(yColunmName).getAsDouble();
-            String label = "";
-            StringBuilder builder = new StringBuilder(label);
-            for (String groupByX : chartMetadata.getxColumnIds()) {
-                builder.append(object.get(groupByX).getAsString());
-                builder.append("/");
+        for(String yValue: chartMetadata.getyColumnIds()) {
+            ArrayList<XYHolder> entryValues = new ArrayList<>();
+            String yColunmName = chartMetadata.getAggregationFunction().toString() + "(" + yValue + ")";
+            while (i < size) {
+                JsonObject object = jsonArray.get(i).getAsJsonObject();
+                Double x = Double.valueOf(i);//object.get(chartMetadata.getxColumnId()).getAsDouble();
+                Double y = object.get(yColunmName).getAsDouble();
+                String label = "";
+                StringBuilder builder = new StringBuilder(label);
+                for (String groupByX : chartMetadata.getxColumnIds()) {
+                    builder.append(object.get(groupByX).getAsString());
+                    builder.append("/");
+                }
+                label = builder.toString();
+                label = label.substring(0, label.length() - 1);
+                XYHolder holder = new XYHolder(x, y, label);
+                entryValues.add(holder);
+                i++;
             }
-            label = builder.toString();
-            label = label.substring(0, label.length() - 1);
-            XYHolder holder = new XYHolder(x, y, label);
-            returnArray.add(holder);
-            i++;
+            returnArray.add(entryValues);
         }
         return returnArray;
     }
@@ -146,11 +151,11 @@ public class DatasetPresenter {
         ArrayList<ArrayList<String>> returnValues = new ArrayList<>(size);
         returnValues.add(datasetMetadata.getAliasColumns());
         int i = 0;
-        int rowSize = datasetMetadata.getOriginalColumns().size();
+        int rowSize = datasetMetadata.getDbColumns().size();
         while (i < size) {
             ArrayList<String> row = new ArrayList<>(rowSize);
             JsonObject object = jsonArray.get(i).getAsJsonObject();
-            for (String column : datasetMetadata.getOriginalColumns()) {
+            for (String column : datasetMetadata.getDbColumns()) {
                 String strToAdd;
                 try {
                     strToAdd = object.get(column).toString();

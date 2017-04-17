@@ -92,7 +92,7 @@ public class ChartsMenuFragment extends BaseFrgment implements ChartsViewCallbac
     public void onDataLoaded(ArrayList<ChartMetadata> chartMetadatas) {
         progressBar.setVisibility(View.GONE);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false));
-        recyclerView.setAdapter(new ChartsAdapter(chartMetadatas, this));
+        recyclerView.setAdapter(new ChartsAdapter(chartMetadatas, false,  this));
         recyclerView.setVisibility(View.VISIBLE);
     }
 

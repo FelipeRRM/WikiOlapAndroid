@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
+import java.text.Normalizer;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +20,7 @@ public class DatasetMetadata implements Serializable, Parcelable {
     ArrayList<Hierarchy> hierarchies;
     String source;
     ArrayList<String> originalColumns;
+    ArrayList<String> dbColumns;
     // TODO: 23/02/2017 Verificar qual é o tipo desse array.
     ArrayList<Object> tags;
     TimeStamp created_at;
@@ -91,6 +93,20 @@ public class DatasetMetadata implements Serializable, Parcelable {
 
     public ArrayList<String> getOriginalColumns() {
         return originalColumns;
+    }
+
+    public ArrayList<String> getDbColumns(){
+        if(dbColumns == null){
+            dbColumns = new ArrayList<>();
+            for (String column : originalColumns){
+                column = column.toLowerCase();
+                column = column.replace(' ', '_');
+                column = Normalizer.normalize(column, Normalizer.Form.NFD);
+                column = column.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+                dbColumns.add(column);
+            }
+        }
+        return dbColumns;
     }
 
     public void setOriginalColumns(ArrayList<String> originalColumns) {

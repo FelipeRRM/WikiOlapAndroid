@@ -22,9 +22,13 @@ public class ChartMetadata implements Parcelable {
     private String description;
     private String thumbnail;
     private String tableId;
+    private String table2Id;
     private ArrayList<String> xColumnIds;
-    private String yColumnId;
-    private String yColumnAlias;
+    private ArrayList<String> x2ColumnIds;
+    private ArrayList<String> join1;
+    private ArrayList<String> joing2;
+    private ArrayList<String> yColumnIds;
+    private ArrayList<String> yAlias;
     private AggregationFunctions aggregationFunction;
     private int chartType;
     private transient ChartUpdateInterface updateInterface;
@@ -35,6 +39,57 @@ public class ChartMetadata implements Parcelable {
     private String dataset1;
     private String dataset2;
 
+
+    public ArrayList<String> getyAlias() {
+        return yAlias;
+    }
+
+    public void setyAlias(ArrayList<String> yAlias) {
+        this.yAlias = yAlias;
+        update();
+    }
+
+    public String getTable2Id() {
+        return table2Id;
+    }
+
+    public void setTable2Id(String table2Id) {
+        this.table2Id = table2Id;
+        update();
+    }
+
+    public ArrayList<String> getX2ColumnIds() {
+        return x2ColumnIds;
+    }
+
+    public void setX2ColumnIds(ArrayList<String> x2ColumnIds) {
+        this.x2ColumnIds = x2ColumnIds;
+    }
+
+    public ArrayList<String> getJoin1() {
+        return join1;
+    }
+
+    public void setJoin1(ArrayList<String> join1) {
+        this.join1 = join1;
+    }
+
+    public ArrayList<String> getJoing2() {
+        return joing2;
+    }
+
+    public void setJoing2(ArrayList<String> joing2) {
+        this.joing2 = joing2;
+    }
+
+    public ArrayList<String> getyColumnIds() {
+        return yColumnIds;
+    }
+
+    public void setyColumnIds(ArrayList<String> yColumnIds) {
+        this.yColumnIds = yColumnIds;
+        update();
+    }
 
     public String getDataset1() {
         return dataset1;
@@ -50,15 +105,6 @@ public class ChartMetadata implements Parcelable {
 
     public void setDataset2(String dataset2) {
         this.dataset2 = dataset2;
-    }
-
-    public String getyColumnAlias() {
-        return yColumnAlias;
-    }
-
-    public void setyColumnAlias(String yColumnAlias) {
-        this.yColumnAlias = yColumnAlias;
-        update();
     }
 
     public String getxTitle() {
@@ -156,15 +202,6 @@ public class ChartMetadata implements Parcelable {
     }
 
 
-    public String getyColumnId() {
-        return yColumnId;
-    }
-
-    public void setyColumnId(String yColumnId) {
-        this.yColumnId = yColumnId;
-        update();
-    }
-
     public String getTableId() {
         return tableId;
     }
@@ -243,6 +280,21 @@ public class ChartMetadata implements Parcelable {
         }
     }
 
+    public String getAggregateString() {
+        String returnString = "";
+        try {
+            StringBuilder builder = new StringBuilder(returnString);
+            for (String str : yColumnIds) {
+                builder.append(str);
+                builder.append(",");
+            }
+            returnString = builder.toString();
+            return returnString.substring(0, returnString.length() - 1);
+        } catch (Exception e) {
+            return returnString;
+        }
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -256,9 +308,12 @@ public class ChartMetadata implements Parcelable {
         dest.writeString(this.description);
         dest.writeString(this.thumbnail);
         dest.writeString(this.tableId);
+        dest.writeString(this.table2Id);
         dest.writeStringList(this.xColumnIds);
-        dest.writeString(this.yColumnId);
-        dest.writeString(this.yColumnAlias);
+        dest.writeStringList(this.x2ColumnIds);
+        dest.writeStringList(this.join1);
+        dest.writeStringList(this.joing2);
+        dest.writeStringList(this.yColumnIds);
         dest.writeInt(this.aggregationFunction == null ? -1 : this.aggregationFunction.ordinal());
         dest.writeInt(this.chartType);
         dest.writeByte(this.drawXLines ? (byte) 1 : (byte) 0);
@@ -276,9 +331,12 @@ public class ChartMetadata implements Parcelable {
         this.description = in.readString();
         this.thumbnail = in.readString();
         this.tableId = in.readString();
+        this.table2Id = in.readString();
         this.xColumnIds = in.createStringArrayList();
-        this.yColumnId = in.readString();
-        this.yColumnAlias = in.readString();
+        this.x2ColumnIds = in.createStringArrayList();
+        this.join1 = in.createStringArrayList();
+        this.joing2 = in.createStringArrayList();
+        this.yColumnIds = in.createStringArrayList();
         int tmpAggregationFunction = in.readInt();
         this.aggregationFunction = tmpAggregationFunction == -1 ? null : AggregationFunctions.values()[tmpAggregationFunction];
         this.chartType = in.readInt();

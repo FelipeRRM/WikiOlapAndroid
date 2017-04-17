@@ -161,8 +161,9 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
                 chartsPresenter.loadCharts(user);
             }
         });
-
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL));
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.HORIZONTAL);
+        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
 
     }
 
@@ -253,7 +254,7 @@ public class ProfileMenuFragment extends BaseFrgment implements UserViewCallback
         myVisProgress.setVisibility(View.GONE);
         myVisError.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
-        recyclerView.setAdapter(new ChartsAdapter(chartMetadatas, this));
+        recyclerView.setAdapter(new ChartsAdapter(chartMetadatas, true, this));
     }
 
     @Override

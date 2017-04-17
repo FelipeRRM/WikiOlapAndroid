@@ -1,6 +1,7 @@
 package com.feliperrm.wikiolap.fragments;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
@@ -46,6 +48,7 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
      * Contants
      */
     public static final String DATASET_KEY = "datasetkey";
+    private static final String HAS_OTHER_DATASET = "hasotherdataset";
 
     /**
      * Views
@@ -58,16 +61,20 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
     private TextView source;
     private TextView email;
     private TextView date;
+    private Button removeDataset;
 
     /**
      * Attributes
      */
     private DatasetMetadata datasetMetadata;
     private DatasetPresenter presenter;
+    private boolean hasOtherDataset;
+    private DatasetRemovedInterface datasetRemovedInterface;
 
-    public static DatasetPreviewFragment newInstance(DatasetMetadata datasetMetadata) {
+    public static DatasetPreviewFragment newInstance(DatasetMetadata datasetMetadata, boolean hasOtherDataset) {
         Bundle args = new Bundle();
         args.putSerializable(DATASET_KEY, datasetMetadata);
+        args.putBoolean(HAS_OTHER_DATASET, hasOtherDataset);
         DatasetPreviewFragment fragment = new DatasetPreviewFragment();
         fragment.setArguments(args);
         return fragment;
@@ -82,14 +89,22 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
 
     public void setDatasetMetadata(DatasetMetadata datasetMetadata) {
         this.datasetMetadata = datasetMetadata;
-        setUpViews();
-        presenter.loadDatasetRaw(this.datasetMetadata);
+        if(datasetMetadata!=null) {
+            setUpViews();
+            presenter.loadDatasetRaw(this.datasetMetadata);
+        }
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new DatasetPresenter(this);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        datasetRemovedInterface = (DatasetRemovedInterface) context;
     }
 
     @Override
@@ -109,6 +124,7 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
 
     private void recoverBundle(){
         datasetMetadata = (DatasetMetadata) getArguments().getSerializable(DATASET_KEY);
+        hasOtherDataset = (boolean) getArguments().getSerializable(HAS_OTHER_DATASET);
     }
 
     private void findViews(View v){
@@ -120,6 +136,7 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
         source = (TextView) v.findViewById(R.id.source);
         email = (TextView) v.findViewById(R.id.email);
         date = (TextView) v.findViewById(R.id.date);
+        removeDataset = (Button) v.findViewById(R.id.removeDataset);
     }
 
     private void setUpViews(){
@@ -131,7 +148,7 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
         });
         title.setText(datasetMetadata.getTitle());
         FixedGridLayoutManager fixedGridLayoutManager = new FixedGridLayoutManager();
-        fixedGridLayoutManager.setTotalColumnCount(datasetMetadata.getOriginalColumns().size());
+        fixedGridLayoutManager.setTotalColumnCount(datasetMetadata.getDbColumns().size());
         recyclerView.setLayoutManager(fixedGridLayoutManager);
         description.setText(datasetMetadata.getDescription());
         source.setText(datasetMetadata.getSource());
@@ -139,6 +156,18 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
         Date createdDate = new Date(datasetMetadata.getCreated_at().get$date());
         DateFormat df = DateFormat.getDateInstance(DateFormat.LONG, Locale.getDefault());
         date.setText(df.format(createdDate));
+        removeDataset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datasetRemovedInterface.onDatasetRemoved(datasetMetadata);
+            }
+        });
+        if(hasOtherDataset){
+            removeDataset.setVisibility(View.VISIBLE);
+        }
+        else{
+            removeDataset.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -157,7 +186,7 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
     }
 
     @Override
-    public void onDataLoaded(ArrayList<XYHolder> dataset) {
+    public void onDataLoaded(ArrayList<ArrayList<XYHolder>> dataset) {
         // NOT USED
     }
 
@@ -166,6 +195,10 @@ public class DatasetPreviewFragment extends Fragment implements DatasetViewCallb
         recyclerView.setAdapter(new DatasetPreviewAdapter(values, datasetMetadata));
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
+    }
+
+    public static interface DatasetRemovedInterface{
+        public void onDatasetRemoved(DatasetMetadata datasetMetadata);
     }
 
 }

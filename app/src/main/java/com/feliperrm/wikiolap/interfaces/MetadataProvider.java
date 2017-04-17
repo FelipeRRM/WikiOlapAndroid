@@ -8,7 +8,9 @@ import com.feliperrm.wikiolap.models.DatasetMetadata;
  */
 
 public interface MetadataProvider {
-    public DatasetMetadata getDatasetMetada();
+    public DatasetMetadata getDataset1Metadata();
+
+    public DatasetMetadata getDataset2Metadata();
 
     public ChartMetadata getChartMetadata();
 }

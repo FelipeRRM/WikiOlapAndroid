@@ -120,7 +120,7 @@ public class DatasetPreviewPagerFragment extends Fragment {
         } else {
             viewPager.setVisibility(View.GONE);
             tabLayout.setVisibility(View.GONE);
-            getChildFragmentManager().beginTransaction().replace(R.id.root, DatasetPreviewFragment.newInstance(dataset1)).commitAllowingStateLoss();
+            getChildFragmentManager().beginTransaction().replace(R.id.root, DatasetPreviewFragment.newInstance(dataset1, false)).commitAllowingStateLoss();
         }
 
     }
@@ -138,12 +138,12 @@ public class DatasetPreviewPagerFragment extends Fragment {
         public Fragment getItem(int position) {
             if (position == 0) {
                 if (frag1 == null) {
-                    frag1 = DatasetPreviewFragment.newInstance(dataset1);
+                    frag1 = DatasetPreviewFragment.newInstance(dataset1, true);
                 }
                 return frag1;
             } else {
                 if (frag2 == null) {
-                    frag2 = DatasetPreviewFragment.newInstance(dataset2);
+                    frag2 = DatasetPreviewFragment.newInstance(dataset2, true);
                 }
                 return frag2;
             }

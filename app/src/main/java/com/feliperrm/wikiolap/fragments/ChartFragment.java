@@ -146,7 +146,7 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks, 
     }
 
     @Override
-    public void onDataLoaded(ArrayList<XYHolder> dataset) {
+    public void onDataLoaded(ArrayList<ArrayList<XYHolder>> dataset) {
         chartHolder.removeAllViews();
         chartHolder.addView(ChartUtil.buildChart(getContext(), dataset, chartMetadata));
         chartHolder.setVisibility(View.VISIBLE);

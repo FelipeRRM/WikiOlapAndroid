@@ -54,4 +54,6 @@
     <string name="error">Error</string>
     <string name="uploading_error">An error happened while uploading your visualization. Please verify your connection and try again.</string>
     <string name="my_visualizations">My Visualizations:</string>
+    <string name="remove_dataset">Remove Dataset</string>
+    <string name="add_y_axis">Add Y Axis</string>
 </resources>
