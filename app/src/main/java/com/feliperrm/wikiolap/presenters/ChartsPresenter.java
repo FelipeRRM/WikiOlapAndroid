@@ -29,7 +29,7 @@ public class ChartsPresenter {
         this.callbacks = callbacks;
     }
 
-    public void loadCharts(String search) {
+    public void loadCharts(final String search) {
         callbacks.onLoadingStarted();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("charts");
@@ -40,7 +40,14 @@ public class ChartsPresenter {
                 GenericTypeIndicator<HashMap<String, ChartMetadata>> t = new GenericTypeIndicator<HashMap<String, ChartMetadata>>() {
                 };
                 HashMap<String, ChartMetadata> charts = dataSnapshot.getValue(t);
-                callbacks.onDataLoaded(new ArrayList<ChartMetadata>(charts.values()));
+                ArrayList<ChartMetadata> returnArray = new ArrayList<ChartMetadata>();
+                ArrayList<ChartMetadata> allCharts = new ArrayList<ChartMetadata>(charts.values());
+                for (ChartMetadata chartMetadata : allCharts) {
+                    if (chartMetadata.getTitle() != null && chartMetadata.getTitle().toLowerCase().contains(search.toLowerCase())) {
+                        returnArray.add(chartMetadata);
+                    }
+                }
+                callbacks.onDataLoaded(returnArray);
             }
 
             @Override
@@ -54,7 +61,7 @@ public class ChartsPresenter {
 
     }
 
-    public void loadCharts(User user) {
+    public void loadCharts(final User user) {
         callbacks.onLoadingStarted();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference myRef = database.getReference("charts");
@@ -65,7 +72,14 @@ public class ChartsPresenter {
                 GenericTypeIndicator<HashMap<String, ChartMetadata>> t = new GenericTypeIndicator<HashMap<String, ChartMetadata>>() {
                 };
                 HashMap<String, ChartMetadata> charts = dataSnapshot.getValue(t);
-                callbacks.onDataLoaded(new ArrayList<ChartMetadata>(charts.values()));
+                ArrayList<ChartMetadata> returnArray = new ArrayList<ChartMetadata>();
+                ArrayList<ChartMetadata> allCharts = new ArrayList<ChartMetadata>(charts.values());
+                for (ChartMetadata chartMetadata : allCharts) {
+                    if (chartMetadata.getCreator_id() != null && !chartMetadata.getCreator_id().isEmpty() && chartMetadata.getCreator_id().equals(user.getEmail())) {
+                        returnArray.add(chartMetadata);
+                    }
+                }
+                callbacks.onDataLoaded(returnArray);
             }
 
             @Override

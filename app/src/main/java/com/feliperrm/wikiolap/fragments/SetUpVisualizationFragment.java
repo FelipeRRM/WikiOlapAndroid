@@ -84,6 +84,8 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
 
     public void setDataset1(DatasetMetadata dataset1) {
         this.dataset1 = dataset1;
+        chartMetadata.setTableId(dataset1.getTableId());
+        setUpInitialValues();
         updateFragments();
     }
 
@@ -93,6 +95,13 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
 
     public void setDataset2(DatasetMetadata dataset2) {
         this.dataset2 = dataset2;
+        if(dataset2 != null){
+            chartMetadata.setTable2Id(dataset2.getTableId());
+        }
+        else{
+            chartMetadata.setTable2Id(null);
+        }
+        setUpInitialValues();
         updateFragments();
     }
 
@@ -138,6 +147,12 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         dataset1 = (DatasetMetadata) getArguments().getSerializable(DATASET1_KEY);
         dataset2 = (DatasetMetadata) getArguments().getSerializable(DATASET2_KEY);
         chartMetadata.setTableId(dataset1.getTableId());
+        if(dataset2 != null){
+            chartMetadata.setTable2Id(dataset2.getTableId());
+        }
+        else{
+            chartMetadata.setTable2Id(null);
+        }
         chartMetadata.setId(FirebaseUtil.encodeForFirebaseKey(MyApp.app.getLoggedUser().getEmail()) + String.valueOf(new Date().getTime()));
     }
 
@@ -189,7 +204,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         chartHolder.removeAllViews();
         progressBar.setVisibility(View.GONE);
         errorTextView.setVisibility(View.VISIBLE);
-        errorTextView.setText(message);
+        errorTextView.setText(getString(R.string.error_creating_visualization));
     }
 
     @Override
@@ -198,13 +213,13 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
         chartHolder.addView(ChartUtil.buildChart(getContext(), dataset, chartMetadata));
         chartHolder.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
+        errorTextView.setVisibility(View.GONE);
     }
 
     public Bitmap getChartSnapshot() {
         return ChartUtil.getChartSnapshot(chartHolder.getChildAt(0));
     }
 
-    ;
 
     @Override
     public void onRawDataLoaded(ArrayList<ArrayList<String>> values) {

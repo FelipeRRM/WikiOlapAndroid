@@ -81,6 +81,7 @@ public class ChartMetadata implements Parcelable {
 
     public void setJoin1(ArrayList<String> join1) {
         this.join1 = join1;
+        update();
     }
 
     public ArrayList<String> getJoin2() {
@@ -89,6 +90,7 @@ public class ChartMetadata implements Parcelable {
 
     public void setJoin2(ArrayList<String> join2) {
         this.join2 = join2;
+        update();
     }
 
     public ArrayList<String> getyColumnIds() {

@@ -36,6 +36,7 @@ public class ChartsMenuFragment extends BaseFrgment implements ChartsViewCallbac
     EditText searchEditText;
     ProgressBar progressBar;
     RecyclerView recyclerView;
+    TextView errorTextView;
 
     /**
      * Attributes
@@ -68,6 +69,7 @@ public class ChartsMenuFragment extends BaseFrgment implements ChartsViewCallbac
         searchEditText = (EditText) v.findViewById(R.id.searchEditText);
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+        errorTextView = (TextView) v.findViewById(R.id.errorTextView);
     }
 
     private void setUpViews() {
@@ -80,16 +82,24 @@ public class ChartsMenuFragment extends BaseFrgment implements ChartsViewCallbac
                 return false;
             }
         });
+        errorTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.loadCharts(searchEditText.getText().toString());
+            }
+        });
     }
 
     @Override
     public void onLoadingStarted() {
+        errorTextView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
     }
 
     @Override
     public void onDataLoaded(ArrayList<ChartMetadata> chartMetadatas) {
+        errorTextView.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(new ChartsAdapter(chartMetadatas, false,  this));
@@ -98,8 +108,9 @@ public class ChartsMenuFragment extends BaseFrgment implements ChartsViewCallbac
 
     @Override
     public void onError(String message) {
-        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.GONE);
+        errorTextView.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -7,6 +7,8 @@
     tools:context="com.feliperrm.wikiolap.fragments.ChartFragment">
 
     <FrameLayout
+        android:elevation="3dp"
+        android:background="@android:color/white"
         android:id="@+id/chart_root"
         android:layout_width="match_parent"
         android:layout_height="300dp">
@@ -38,6 +40,7 @@
     </FrameLayout>
 
     <ScrollView
+        android:background="@color/light_gray"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/chart_root"

@@ -48,7 +48,7 @@ public class DatasetPresenter {
         if (loadJoinDatasetFormattedCall != null) {
             loadJoinDatasetFormattedCall.cancel();
         }
-        if (joinResponseCache != null && joinLastSuccessfulRequest.equals(chartMetadata.getTableId() + chartMetadata.getGroupByString() + chartMetadata.getAggregationFunction() + chartMetadata.getAggregateString())) {
+        if (joinResponseCache != null && joinLastSuccessfulRequest.equals(chartMetadata.getTableId() + chartMetadata.getTable2Id() + chartMetadata.getJoin1String() + chartMetadata.getJoin2String() + chartMetadata.getGroupByString() + chartMetadata.getAggregationFunction() + chartMetadata.getAggregateString())) {
             callbacks.onDataLoaded(formatChartData(chartMetadata, joinResponseCache.body()));
         } else {
             loadJoinDatasetFormattedCall = Network.getApiCalls().getJoinedDataAggregated(chartMetadata.getTableId(), chartMetadata.getTable2Id(), chartMetadata.getJoin1String(), chartMetadata.getJoin2String(), chartMetadata.getGroupByString(), chartMetadata.getAggregationAsEnum(), chartMetadata.getAggregateString());
@@ -57,7 +57,7 @@ public class DatasetPresenter {
                 public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         joinResponseCache = response;
-                        joinLastSuccessfulRequest = chartMetadata.getTableId() + chartMetadata.getGroupByString() + chartMetadata.getAggregationFunction() + chartMetadata.getAggregateString();
+                        joinLastSuccessfulRequest = chartMetadata.getTableId() + chartMetadata.getTable2Id() + chartMetadata.getJoin1String() + chartMetadata.getJoin2String() + chartMetadata.getGroupByString() + chartMetadata.getAggregationFunction() + chartMetadata.getAggregateString();
                         callbacks.onDataLoaded(formatChartData(chartMetadata, response.body()));
                     } else {
                         onFailure(call, new Exception("Null Body or Server Error"));
@@ -172,29 +172,36 @@ public class DatasetPresenter {
 
     private static ArrayList<ArrayList<XYHolder>> formatChartData(ChartMetadata chartMetadata, JsonArray jsonArray) {
         ArrayList<ArrayList<XYHolder>> returnArray = new ArrayList<>();
-        int size = jsonArray.size();
-        int i;
-        for (String yValue : chartMetadata.getyColumnIds()) {
-            i = 0;
-            ArrayList<XYHolder> entryValues = new ArrayList<>();
-            String yColunmName = chartMetadata.getAggregationFunction().toString() + "(" + yValue + ")";
-            while (i < size) {
-                JsonObject object = jsonArray.get(i).getAsJsonObject();
-                Double x = Double.valueOf(i);//object.get(chartMetadata.getxColumnId()).getAsDouble();
-                Double y = object.get(yColunmName).getAsDouble();
-                String label = "";
-                StringBuilder builder = new StringBuilder(label);
-                for (String groupByX : chartMetadata.getxColumnIds()) {
-                    builder.append(object.get(groupByX).getAsString());
-                    builder.append("/");
+        try {
+            int size = jsonArray.size();
+            int i;
+            for (String yValue : chartMetadata.getyColumnIds()) {
+                i = 0;
+                ArrayList<XYHolder> entryValues = new ArrayList<>();
+                String yColunmName = chartMetadata.getAggregationFunction().toString() + "(" + yValue + ")";
+                while (i < size) {
+                    JsonObject object = jsonArray.get(i).getAsJsonObject();
+                    Double x = Double.valueOf(i);//object.get(chartMetadata.getxColumnId()).getAsDouble();
+                    Double y = object.get(yColunmName).getAsDouble();
+                    String label = "";
+                    StringBuilder builder = new StringBuilder(label);
+                    for (String groupByX : chartMetadata.getxColumnIds()) {
+                        builder.append(object.get(groupByX).getAsString());
+                        builder.append("/");
+                    }
+                    label = builder.toString();
+                    label = label.substring(0, label.length() - 1);
+                    XYHolder holder = new XYHolder(x, y, label);
+                    entryValues.add(holder);
+                    i++;
                 }
-                label = builder.toString();
-                label = label.substring(0, label.length() - 1);
-                XYHolder holder = new XYHolder(x, y, label);
-                entryValues.add(holder);
-                i++;
+                returnArray.add(entryValues);
             }
-            returnArray.add(entryValues);
+        }
+        catch (Exception e){
+            if(BuildConfig.DEBUG) {
+                e.printStackTrace();
+            }
         }
         return returnArray;
     }

@@ -28,6 +28,14 @@
         android:paddingRight="8dp"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/errorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="24dp"
+        android:clickable="true"
+        android:gravity="center" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         style="@android:style/Widget.DeviceDefault.ProgressBar"

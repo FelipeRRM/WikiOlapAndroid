@@ -48,7 +48,7 @@ public interface ApiCalls {
                                               @Path("agg_columns") String columns,
                                               @Path("limit") Integer limit);
 
-    @GET("joindata/{table1_id}/{table1_id}/{table1_join}/{table2_join}/{group_by}/{agg_func}/{agg_columns}")
+    @GET("joindata/{table1_id}/{table2_id}/{table1_join}/{table2_join}/{group_by}/{agg_func}/{agg_columns}")
     Call<JsonArray> getJoinedDataAggregated(@Path("table1_id") String table1Id,
                                             @Path("table2_id") String table2Id,
                                             @Path("table1_join") String table1Join,

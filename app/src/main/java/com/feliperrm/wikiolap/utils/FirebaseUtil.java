@@ -23,10 +23,9 @@ public class FirebaseUtil {
 
     public static void createUser(User user){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference("users");
-        Map<String, User> users = new HashMap<String, User>();
-        users.put(encodeForFirebaseKey(user.getEmail()), user);
-        myRef.setValue(users);
+        final DatabaseReference usersRef = database.getReference("users");
+        final DatabaseReference newUserRef = usersRef.child(encodeForFirebaseKey(user.getEmail()));
+        newUserRef.setValue(user);
     }
 
     public static String encodeForFirebaseKey(String s) {

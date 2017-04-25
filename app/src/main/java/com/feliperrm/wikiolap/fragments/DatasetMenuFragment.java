@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -19,7 +18,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.feliperrm.wikiolap.R;
-import com.feliperrm.wikiolap.activities.SetUpVisualizationActivity;
 import com.feliperrm.wikiolap.adapters.DatasetMetadataAdapter;
 import com.feliperrm.wikiolap.interfaces.DatasetMetadataViewCallbacks;
 import com.feliperrm.wikiolap.models.DatasetMetadata;
@@ -38,6 +36,7 @@ public class DatasetMenuFragment extends BaseFrgment implements DatasetMetadataV
     EditText searchEditText;
     ProgressBar progressBar;
     RecyclerView recyclerView;
+    TextView errorTextView;
 
     /**
      * Attriutes
@@ -77,6 +76,7 @@ public class DatasetMenuFragment extends BaseFrgment implements DatasetMetadataV
         searchEditText = (EditText) v.findViewById(R.id.searchEditText);
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+        errorTextView = (TextView) v.findViewById(R.id.errorTextView);
     }
 
     private void setUpViews() {
@@ -89,6 +89,12 @@ public class DatasetMenuFragment extends BaseFrgment implements DatasetMetadataV
                 return false;
             }
         });
+        errorTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.loadDatasets(searchEditText.getText().toString());
+            }
+        });
     }
 
 
@@ -96,16 +102,20 @@ public class DatasetMenuFragment extends BaseFrgment implements DatasetMetadataV
     public void onLoadingStarted() {
         progressBar.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
+        errorTextView.setVisibility(View.GONE);
     }
 
     @Override
     public void onError(String message) {
-        progressBar.setVisibility(View.VISIBLE);
+        errorTextView.setVisibility(View.VISIBLE);
+        errorTextView.setText(getString(R.string.error_loading_datasets));
+        progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.GONE);
     }
 
     @Override
     public void onDataLoaded(ArrayList<DatasetMetadata> dataSets) {
+        errorTextView.setVisibility(View.GONE);
         progressBar.setVisibility(View.GONE);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(new DatasetMetadataAdapter(dataSets, this));

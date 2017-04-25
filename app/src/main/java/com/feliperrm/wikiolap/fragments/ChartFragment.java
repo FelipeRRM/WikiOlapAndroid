@@ -1,6 +1,8 @@
 package com.feliperrm.wikiolap.fragments;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,7 +17,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.feliperrm.wikiolap.BuildConfig;
 import com.feliperrm.wikiolap.R;
+import com.feliperrm.wikiolap.activities.BottomBarActivity;
 import com.feliperrm.wikiolap.activities.SetUpVisualizationActivity;
 import com.feliperrm.wikiolap.interfaces.DatasetViewCallbacks;
 import com.feliperrm.wikiolap.interfaces.UserViewCallbacks;
@@ -26,6 +30,7 @@ import com.feliperrm.wikiolap.models.XYHolder;
 import com.feliperrm.wikiolap.presenters.DatasetPresenter;
 import com.feliperrm.wikiolap.presenters.UserPresenter;
 import com.feliperrm.wikiolap.utils.ChartUtil;
+import com.feliperrm.wikiolap.utils.MyApp;
 import com.google.gson.Gson;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
@@ -123,10 +128,21 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks, 
         btnDataset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Gson gson = new Gson();
-                DatasetMetadata dataset1 = gson.fromJson(chartMetadata.getDataset1(), DatasetMetadata.class);
-                DatasetMetadata dataset2 = gson.fromJson(chartMetadata.getDataset2(), DatasetMetadata.class);
-                startActivity(SetUpVisualizationActivity.getIntent(getContext(), dataset1, dataset2));
+                if(MyApp.app.getLoggedUser() == null){
+                    new AlertDialog.Builder(getActivity()).setTitle(getString(R.string.login_required)).setMessage(getString(R.string.login_required_message))
+                            .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            }).show();
+                }
+                else {
+                    Gson gson = new Gson();
+                    DatasetMetadata dataset1 = gson.fromJson(chartMetadata.getDataset1(), DatasetMetadata.class);
+                    DatasetMetadata dataset2 = gson.fromJson(chartMetadata.getDataset2(), DatasetMetadata.class);
+                    startActivity(SetUpVisualizationActivity.getIntent(getContext(), dataset1, dataset2));
+                }
             }
         });
     }
@@ -160,12 +176,21 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks, 
 
     @Override
     public void onDataLoaded(User user, String requestEmail) {
-        creatorLoader.setVisibility(View.GONE);
-        if(user!=null) {
-            profilePicture.setVisibility(View.VISIBLE);
-            Glide.with(getContext()).load(user.getPicture()).placeholder(R.drawable.profile_placeholder).dontAnimate().diskCacheStrategy(DiskCacheStrategy.ALL).into(profilePicture);
-            creatorName.setText(user.getName());
-            creatorName.setOnClickListener(null);
+        try {
+            creatorLoader.setVisibility(View.GONE);
+            if (user != null) {
+                profilePicture.setVisibility(View.VISIBLE);
+                if(isAdded()) {
+                    Glide.with(getContext()).load(user.getPicture()).placeholder(R.drawable.profile_placeholder).dontAnimate().diskCacheStrategy(DiskCacheStrategy.ALL).into(profilePicture);
+                    creatorName.setText(user.getName());
+                    creatorName.setOnClickListener(null);
+                }
+            }
+        }
+        catch (Exception e){
+            if(BuildConfig.DEBUG){
+                e.printStackTrace();
+            }
         }
     }
 

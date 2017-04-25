@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/welcome_text"
             android:layout_centerHorizontal="true"
-            android:layout_margin="16dp"
+            android:layout_margin="12dp"
             android:backgroundTint="@color/colorPrimary"
             android:text="@string/logout"
             android:textColor="@android:color/white" />

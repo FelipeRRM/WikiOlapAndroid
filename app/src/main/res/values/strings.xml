@@ -59,4 +59,7 @@
     <string name="remove">Remove</string>
     <string name="color">Color</string>
     <string name="x">X</string>
+    <string name="error_creating_visualization">Error creating the visualization. There\'s either something wrong with the configuration or your some problem with your Internet. Tap to try again.</string>
+    <string name="error_loading_datasets">Couldn\'t find any datasets. Try again or change the seach text.</string>
+    <string name="ok">Ok</string>
 </resources>

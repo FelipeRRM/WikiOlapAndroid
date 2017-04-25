@@ -124,16 +124,15 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
                     metadataProvider.getChartMetadata().getyColumnIds().add(metadataProvider.getDataset1Metadata().getDbColumns().get(0));
                     metadataProvider.getChartMetadata().getyAlias().add(metadataProvider.getDataset1Metadata().getAliasColumns().get(0));
                     metadataProvider.getChartMetadata().getyColors().add(Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256)));
-                    adapter.notifyDataSetChanged();
                     metadataProvider.getChartMetadata().getUpdateInterface().onChartUpdated();
                 } else {
                     String table1Id = metadataProvider.getDataset1Metadata().getTableId();
                     metadataProvider.getChartMetadata().getyColumnIds().add(table1Id + "_" + metadataProvider.getDataset1Metadata().getDbColumns().get(0));
                     metadataProvider.getChartMetadata().getyAlias().add(metadataProvider.getDataset1Metadata().getAliasColumns().get(0));
                     metadataProvider.getChartMetadata().getyColors().add(Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256)));
-                    adapter.notifyDataSetChanged();
                     metadataProvider.getChartMetadata().getUpdateInterface().onChartUpdated();
                 }
+                adapter.onItemAdded();
             }
         });
 

@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.feliperrm.wikiolap.R;
+import com.feliperrm.wikiolap.adapters.DynamicSpinnerAdapter;
 import com.feliperrm.wikiolap.interfaces.ChartUpdateInterface;
 import com.feliperrm.wikiolap.interfaces.MetadataProvider;
 
@@ -29,8 +30,9 @@ public class DynamicSpinnerViewHolder extends RecyclerView.ViewHolder {
     MetadataProvider metadataProvider;
     ItemChangedInterface itemChangedInterface;
     int position;
+    DynamicSpinnerAdapter.DynamicSpinnerItem activeItem;
 
-    public DynamicSpinnerViewHolder(final View itemView, final ChartUpdateInterface updateInterface, final MetadataProvider metaProvider, final ItemChangedInterface changedInterface) {
+    public DynamicSpinnerViewHolder(final View itemView, final ChartUpdateInterface updateInterface, MetadataProvider metaProvider, final ItemChangedInterface changedInterface) {
         super(itemView);
         this.metadataProvider = metaProvider;
         this.chartUpdateInterface = updateInterface;
@@ -47,18 +49,22 @@ public class DynamicSpinnerViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
                 int db1ColumnsSize = metadataProvider.getDataset1Metadata().getDbColumns().size();
+                activeItem.setPosition(pos);
                 String table1Id = metadataProvider.getDataset1Metadata().getTableId();
                 String table2Id;
                 if (metadataProvider.getDataset2Metadata() != null) {
-                    table2Id = metaProvider.getDataset2Metadata().getTableId();
+                    table2Id = metadataProvider.getDataset2Metadata().getTableId();
                     String prefix;
                     if (pos > db1ColumnsSize - 1) {
                         prefix = table2Id;
+                        int posOnSecond = pos - (db1ColumnsSize);
+                        metadataProvider.getChartMetadata().getyColumnIds().set(position, prefix + "_" + metadataProvider.getDataset2Metadata().getDbColumns().get(posOnSecond));
+                        metadataProvider.getChartMetadata().getyAlias().set(position, metadataProvider.getDataset2Metadata().getAliasColumns().get(posOnSecond));
                     } else {
                         prefix = table1Id;
+                        metadataProvider.getChartMetadata().getyColumnIds().set(position, prefix + "_" + metadataProvider.getDataset1Metadata().getDbColumns().get(pos));
+                        metadataProvider.getChartMetadata().getyAlias().set(position, metadataProvider.getDataset1Metadata().getAliasColumns().get(pos));
                     }
-                    metadataProvider.getChartMetadata().getyColumnIds().set(position, prefix + "_" + metadataProvider.getDataset1Metadata().getDbColumns().get(pos));
-                    metadataProvider.getChartMetadata().getyAlias().set(position, metadataProvider.getDataset1Metadata().getAliasColumns().get(pos));
                 } else {
                     metadataProvider.getChartMetadata().getyColumnIds().set(position, metadataProvider.getDataset1Metadata().getDbColumns().get(pos));
                     metadataProvider.getChartMetadata().getyAlias().set(position, metadataProvider.getDataset1Metadata().getAliasColumns().get(pos));
@@ -78,9 +84,9 @@ public class DynamicSpinnerViewHolder extends RecyclerView.ViewHolder {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                metaProvider.getChartMetadata().getyColumnIds().remove(position);
-                metaProvider.getChartMetadata().getyAlias().remove(position);
-                metaProvider.getChartMetadata().getyColors().remove(position);
+                metadataProvider.getChartMetadata().getyColumnIds().remove(position);
+                metadataProvider.getChartMetadata().getyAlias().remove(position);
+                metadataProvider.getChartMetadata().getyColors().remove(position);
                 itemChangedInterface.onItemRemoved(position);
                 chartUpdateInterface.onChartUpdated();
             }
@@ -89,7 +95,7 @@ public class DynamicSpinnerViewHolder extends RecyclerView.ViewHolder {
         btnColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AmbilWarnaDialog(itemView.getContext(), metaProvider.getChartMetadata().getyColors().get(position), true, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+                new AmbilWarnaDialog(itemView.getContext(), metadataProvider.getChartMetadata().getyColors().get(position), true, new AmbilWarnaDialog.OnAmbilWarnaListener() {
                     @Override
                     public void onCancel(AmbilWarnaDialog dialog) {
 
@@ -97,7 +103,7 @@ public class DynamicSpinnerViewHolder extends RecyclerView.ViewHolder {
 
                     @Override
                     public void onOk(AmbilWarnaDialog dialog, int color) {
-                        metaProvider.getChartMetadata().getyColors().set(position, color);
+                        metadataProvider.getChartMetadata().getyColors().set(position, color);
                         btnColor.setSupportBackgroundTintList(ColorStateList.valueOf(metadataProvider.getChartMetadata().getyColors().get(position)));
                         updateInterface.onChartUpdated();
                     }
@@ -106,15 +112,39 @@ public class DynamicSpinnerViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void bind(String s, int position, int itemCount) {
-        int length = metadataProvider.getDataset1Metadata().getDbColumns().size();
-        int i;
-        for (i = 0; i < length; i++) {
-            if (s.equals(metadataProvider.getDataset1Metadata().getDbColumns().get(i))) {
-                break;
-            }
-        }
-        spinner.setSelection(i);
+    public void bind(DynamicSpinnerAdapter.DynamicSpinnerItem item, int position, int itemCount) {
+//        int i = 0;
+//        if(metadataProvider.getDataset2Metadata() != null){
+//            String table1Id = metadataProvider.getDataset1Metadata().getTableId();
+//            String table2Id = metadataProvider.getDataset2Metadata().getTableId();
+//            int db1ColumnsSize = metadataProvider.getDataset1Metadata().getDbColumns().size();
+//            String prefix;
+//            int length = metadataProvider.getDataset1Metadata().getDbColumns().size() + metadataProvider.getDataset2Metadata().getDbColumns().size();
+//            for (i = 0; i < length; i++) {
+//                if (i > db1ColumnsSize - 1) {
+//                    prefix = table2Id;
+//                    int posOnSecond = i - (db1ColumnsSize);
+//                    if (s.equals(prefix + "_" + metadataProvider.getDataset2Metadata().getDbColumns().get(posOnSecond))) {
+//                        break;
+//                    }
+//                } else {
+//                    prefix = table1Id;
+//                    if (s.equals(prefix + "_" + metadataProvider.getDataset1Metadata().getDbColumns().get(i))) {
+//                        break;
+//                    }
+//                }
+//            }
+//        }
+//        else {
+//            int length = metadataProvider.getDataset1Metadata().getDbColumns().size();
+//            for (i = 0; i < length; i++) {
+//                if (s.equals(metadataProvider.getDataset1Metadata().getDbColumns().get(i))) {
+//                    break;
+//                }
+//            }
+//        }
+        activeItem = item;
+        spinner.setSelection(item.getPosition());
         this.position = position;
         if (itemCount > 1) {
             btnDelete.setVisibility(View.VISIBLE);
