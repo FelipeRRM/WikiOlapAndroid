@@ -47,4 +47,23 @@ public interface ApiCalls {
                                               @Path("agg_func") AggregationFunctions aggregationFunction,
                                               @Path("agg_columns") String columns,
                                               @Path("limit") Integer limit);
+
+    @GET("joindata/{table1_id}/{table1_id}/{table1_join}/{table2_join}/{group_by}/{agg_func}/{agg_columns}")
+    Call<JsonArray> getJoinedDataAggregated(@Path("table1_id") String table1Id,
+                                            @Path("table2_id") String table2Id,
+                                            @Path("table1_join") String table1Join,
+                                            @Path("table2_join") String table2Join,
+                                      @Path("group_by") String groupBy,
+                                      @Path("agg_func") AggregationFunctions aggregationFunction,
+                                      @Path("agg_columns") String columns);
+
+    @GET("joindata/{table1_id}/{table1_id}/{table1_join}/{table2_join}/{group_by}/{agg_func}/{agg_columns}/{limit}")
+    Call<JsonArray> getJoinedDataAggregated(@Path("table1_id") String table1Id,
+                                            @Path("table2_id") String table2Id,
+                                            @Path("table1_join") String table1Join,
+                                            @Path("table2_join") String table2Join,
+                                            @Path("group_by") String groupBy,
+                                            @Path("agg_func") AggregationFunctions aggregationFunction,
+                                            @Path("agg_columns") String columns,
+                                            @Path("limit") Integer limit);
 }

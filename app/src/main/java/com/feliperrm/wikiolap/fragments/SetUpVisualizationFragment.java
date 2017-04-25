@@ -136,7 +136,7 @@ public class SetUpVisualizationFragment extends Fragment implements DatasetViewC
 
     private void recoverBundle() {
         dataset1 = (DatasetMetadata) getArguments().getSerializable(DATASET1_KEY);
-        dataset2 = (DatasetMetadata) getArguments().getSerializable(DATASET1_KEY);
+        dataset2 = (DatasetMetadata) getArguments().getSerializable(DATASET2_KEY);
         chartMetadata.setTableId(dataset1.getTableId());
         chartMetadata.setId(FirebaseUtil.encodeForFirebaseKey(MyApp.app.getLoggedUser().getEmail()) + String.valueOf(new Date().getTime()));
     }

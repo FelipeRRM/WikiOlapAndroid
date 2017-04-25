@@ -58,4 +58,5 @@
     <string name="add_y_axis">Add Y Axis</string>
     <string name="remove">Remove</string>
     <string name="color">Color</string>
+    <string name="x">X</string>
 </resources>

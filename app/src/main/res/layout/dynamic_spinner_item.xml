@@ -16,20 +16,19 @@
         android:layout_alignWithParentIfMissing="true"
         android:id="@+id/btnColor"
         android:layout_toLeftOf="@+id/btnDelete"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_centerVertical="true"
         android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="@string/color"
         android:textColor="@android:color/white" />
 
     <android.support.v7.widget.AppCompatButton
         android:visibility="visible"
         android:id="@+id/btnDelete"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
@@ -37,7 +36,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="@string/remove"
+        android:text="@string/x"
         android:textColor="@android:color/white" />
 
 </RelativeLayout>

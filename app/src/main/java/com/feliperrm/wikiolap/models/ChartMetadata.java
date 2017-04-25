@@ -26,7 +26,7 @@ public class ChartMetadata implements Parcelable {
     private ArrayList<String> xColumnIds;
     private ArrayList<String> x2ColumnIds;
     private ArrayList<String> join1;
-    private ArrayList<String> joing2;
+    private ArrayList<String> join2;
     private ArrayList<String> yColumnIds;
     private ArrayList<String> yAlias;
     private ArrayList<Integer> yColors;
@@ -83,12 +83,12 @@ public class ChartMetadata implements Parcelable {
         this.join1 = join1;
     }
 
-    public ArrayList<String> getJoing2() {
-        return joing2;
+    public ArrayList<String> getJoin2() {
+        return join2;
     }
 
-    public void setJoing2(ArrayList<String> joing2) {
-        this.joing2 = joing2;
+    public void setJoin2(ArrayList<String> join2) {
+        this.join2 = join2;
     }
 
     public ArrayList<String> getyColumnIds() {
@@ -274,6 +274,36 @@ public class ChartMetadata implements Parcelable {
         this.updateInterface = updateInterface;
     }
 
+    public String getJoin1String() {
+        String returnString = "";
+        try {
+            StringBuilder builder = new StringBuilder(returnString);
+            for (String str : join1) {
+                builder.append(str);
+                builder.append(",");
+            }
+            returnString = builder.toString();
+            return returnString.substring(0, returnString.length() - 1);
+        } catch (Exception e) {
+            return returnString;
+        }
+    }
+
+    public String getJoin2String() {
+        String returnString = "";
+        try {
+            StringBuilder builder = new StringBuilder(returnString);
+            for (String str : join2) {
+                builder.append(str);
+                builder.append(",");
+            }
+            returnString = builder.toString();
+            return returnString.substring(0, returnString.length() - 1);
+        } catch (Exception e) {
+            return returnString;
+        }
+    }
+
     public String getGroupByString() {
         String returnString = "";
         try {
@@ -321,7 +351,7 @@ public class ChartMetadata implements Parcelable {
         dest.writeStringList(this.xColumnIds);
         dest.writeStringList(this.x2ColumnIds);
         dest.writeStringList(this.join1);
-        dest.writeStringList(this.joing2);
+        dest.writeStringList(this.join2);
         dest.writeStringList(this.yColumnIds);
         dest.writeStringList(this.yAlias);
         dest.writeList(this.yColors);
@@ -346,7 +376,7 @@ public class ChartMetadata implements Parcelable {
         this.xColumnIds = in.createStringArrayList();
         this.x2ColumnIds = in.createStringArrayList();
         this.join1 = in.createStringArrayList();
-        this.joing2 = in.createStringArrayList();
+        this.join2 = in.createStringArrayList();
         this.yColumnIds = in.createStringArrayList();
         this.yAlias = in.createStringArrayList();
         this.yColors = new ArrayList<Integer>();

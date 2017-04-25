@@ -1,38 +1,68 @@
 package com.feliperrm.wikiolap.models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  * Created by felip on 23/03/2017.
  */
 
 public class ColumnHolder implements Serializable {
-    private String id;
+    private String column1Id;
+    private String column1DisplayName;
+    private String column2Id;
+    private String column2DisplayName;
+    private int spinnerSelection;
     private boolean isSelected;
     private int order;
 
-    public ColumnHolder(String id, boolean isSelected, int order) {
-        this.id = id;
+    public ColumnHolder(String column1Id, String column1DisplayName, String column2Id, String column2DisplayName, int spinnerSelection, boolean isSelected, int order) {
+        this.column1Id = column1Id;
+        this.column1DisplayName = column1DisplayName;
+        this.column2Id = column2Id;
+        this.column2DisplayName = column2DisplayName;
+        this.spinnerSelection = spinnerSelection;
         this.isSelected = isSelected;
         this.order = order;
     }
 
-    public static ArrayList<ColumnHolder> getColumnHoldersFromStrings(ArrayList<String> strings){
-        int i;
-        ArrayList<ColumnHolder> columnHolders = new ArrayList<>();
-        for(i = 0; i<strings.size(); i++){
-            columnHolders.add(new ColumnHolder(strings.get(i), i == 0, i));
-        }
-        return columnHolders;
+    public String getColumn1Id() {
+        return column1Id;
     }
 
-    public String getId() {
-        return id;
+    public void setcolumn1Id(String column1Id) {
+        this.column1Id = column1Id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getColumn2Id() {
+        return column2Id;
+    }
+
+    public void setColumn2Id(String column2Id) {
+        this.column2Id = column2Id;
+    }
+
+    public String getColumn1DisplayName() {
+        return column1DisplayName;
+    }
+
+    public void setColumn1DisplayName(String column1DisplayName) {
+        this.column1DisplayName = column1DisplayName;
+    }
+
+    public String getColumn2DisplayName() {
+        return column2DisplayName;
+    }
+
+    public void setColumn2DisplayName(String column2DisplayName) {
+        this.column2DisplayName = column2DisplayName;
+    }
+
+    public int getSpinnerSelection() {
+        return spinnerSelection;
+    }
+
+    public void setSpinnerSelection(int spinnerSelection) {
+        this.spinnerSelection = spinnerSelection;
     }
 
     public boolean isSelected() {

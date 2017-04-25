@@ -32,7 +32,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SetUpAppearanceFragment extends Fragment implements XValuesAdapter.XValuesInterface {
+public class SetUpAppearanceFragment extends Fragment {
 
     /**
      * Views
@@ -165,8 +165,4 @@ public class SetUpAppearanceFragment extends Fragment implements XValuesAdapter.
         });
     }
 
-    @Override
-    public void onXValuesChanged(ArrayList<String> xValues) {
-        metadataProvider.getChartMetadata().setxColumnIds(xValues);
-    }
 }

@@ -12,6 +12,8 @@ import com.feliperrm.wikiolap.R;
 import com.feliperrm.wikiolap.interfaces.ChartUpdateInterface;
 import com.feliperrm.wikiolap.interfaces.MetadataProvider;
 
+import java.util.ArrayList;
+
 import yuku.ambilwarna.AmbilWarnaDialog;
 
 /**
@@ -34,14 +36,33 @@ public class DynamicSpinnerViewHolder extends RecyclerView.ViewHolder {
         this.chartUpdateInterface = updateInterface;
         this.itemChangedInterface = changedInterface;
         spinner = (Spinner) itemView.findViewById(R.id.yValueSpinner);
-        ArrayAdapter<String> yValuesAdapter = new ArrayAdapter<>(itemView.getContext(), android.R.layout.simple_spinner_item, metaProvider.getDataset1Metadata().getDbColumns());
+        ArrayList<String> dbColumns = new ArrayList<>(metadataProvider.getDataset1Metadata().getAliasColumns());
+        if (metadataProvider.getDataset2Metadata() != null) {
+            dbColumns.addAll(metadataProvider.getDataset2Metadata().getAliasColumns());
+        }
+        ArrayAdapter<String> yValuesAdapter = new ArrayAdapter<>(itemView.getContext(), android.R.layout.simple_spinner_item, dbColumns);
         yValuesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(yValuesAdapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-                metadataProvider.getChartMetadata().getyColumnIds().set(position, metadataProvider.getDataset1Metadata().getDbColumns().get(pos));
-                metadataProvider.getChartMetadata().getyAlias().set(position, metadataProvider.getDataset1Metadata().getAliasColumns().get(pos));
+                int db1ColumnsSize = metadataProvider.getDataset1Metadata().getDbColumns().size();
+                String table1Id = metadataProvider.getDataset1Metadata().getTableId();
+                String table2Id;
+                if (metadataProvider.getDataset2Metadata() != null) {
+                    table2Id = metaProvider.getDataset2Metadata().getTableId();
+                    String prefix;
+                    if (pos > db1ColumnsSize - 1) {
+                        prefix = table2Id;
+                    } else {
+                        prefix = table1Id;
+                    }
+                    metadataProvider.getChartMetadata().getyColumnIds().set(position, prefix + "_" + metadataProvider.getDataset1Metadata().getDbColumns().get(pos));
+                    metadataProvider.getChartMetadata().getyAlias().set(position, metadataProvider.getDataset1Metadata().getAliasColumns().get(pos));
+                } else {
+                    metadataProvider.getChartMetadata().getyColumnIds().set(position, metadataProvider.getDataset1Metadata().getDbColumns().get(pos));
+                    metadataProvider.getChartMetadata().getyAlias().set(position, metadataProvider.getDataset1Metadata().getAliasColumns().get(pos));
+                }
                 ChartUpdateInterface chartUpdateInterface = metadataProvider.getChartMetadata().getUpdateInterface();
                 if (chartUpdateInterface != null) {
                     chartUpdateInterface.onChartUpdated();
