@@ -3,7 +3,6 @@ package com.feliperrm.wikiolap.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,7 +18,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.feliperrm.wikiolap.BuildConfig;
 import com.feliperrm.wikiolap.R;
-import com.feliperrm.wikiolap.activities.BottomBarActivity;
 import com.feliperrm.wikiolap.activities.SetUpVisualizationActivity;
 import com.feliperrm.wikiolap.interfaces.DatasetViewCallbacks;
 import com.feliperrm.wikiolap.interfaces.UserViewCallbacks;
@@ -102,11 +100,11 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks, 
         userPresenter.loadUser(chartMetadata.getCreator_id());
     }
 
-    private void recoverBundle(){
+    private void recoverBundle() {
         chartMetadata = getArguments().getParcelable(CHART_KEY);
     }
 
-    private void findViews(View v){
+    private void findViews(View v) {
         progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         errorTextView = (TextView) v.findViewById(R.id.errorTextView);
         chartHolder = (FrameLayout) v.findViewById(R.id.chartHolder);
@@ -117,7 +115,7 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks, 
         btnDataset = (Button) v.findViewById(R.id.btn_dataset);
     }
 
-    private void setUpViews(){
+    private void setUpViews() {
         errorTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,7 +126,7 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks, 
         btnDataset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(MyApp.app.getLoggedUser() == null){
+                if (MyApp.app.getLoggedUser() == null) {
                     new AlertDialog.Builder(getActivity()).setTitle(getString(R.string.login_required)).setMessage(getString(R.string.login_required_message))
                             .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                                 @Override
@@ -136,8 +134,7 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks, 
                                     dialogInterface.dismiss();
                                 }
                             }).show();
-                }
-                else {
+                } else {
                     Gson gson = new Gson();
                     DatasetMetadata dataset1 = gson.fromJson(chartMetadata.getDataset1(), DatasetMetadata.class);
                     DatasetMetadata dataset2 = gson.fromJson(chartMetadata.getDataset2(), DatasetMetadata.class);
@@ -156,17 +153,33 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks, 
 
     @Override
     public void onError(String message) {
-        progressBar.setVisibility(View.GONE);
-        errorTextView.setVisibility(View.VISIBLE);
-        errorTextView.setText(message);
+        try {
+            if (isAdded()) {
+                progressBar.setVisibility(View.GONE);
+                errorTextView.setVisibility(View.VISIBLE);
+                errorTextView.setText(message);
+            }
+        } catch (Exception e) {
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void onDataLoaded(ArrayList<ArrayList<XYHolder>> dataset) {
-        chartHolder.removeAllViews();
-        chartHolder.addView(ChartUtil.buildChart(getContext(), dataset, chartMetadata));
-        chartHolder.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
+        try {
+            if (isAdded()) {
+                chartHolder.removeAllViews();
+                chartHolder.addView(ChartUtil.buildChart(getContext(), dataset, chartMetadata));
+                chartHolder.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -180,15 +193,14 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks, 
             creatorLoader.setVisibility(View.GONE);
             if (user != null) {
                 profilePicture.setVisibility(View.VISIBLE);
-                if(isAdded()) {
+                if (isAdded()) {
                     Glide.with(getContext()).load(user.getPicture()).placeholder(R.drawable.profile_placeholder).dontAnimate().diskCacheStrategy(DiskCacheStrategy.ALL).into(profilePicture);
                     creatorName.setText(user.getName());
                     creatorName.setOnClickListener(null);
                 }
             }
-        }
-        catch (Exception e){
-            if(BuildConfig.DEBUG){
+        } catch (Exception e) {
+            if (BuildConfig.DEBUG) {
                 e.printStackTrace();
             }
         }
@@ -201,14 +213,22 @@ public class ChartFragment extends BaseFrgment implements DatasetViewCallbacks, 
 
     @Override
     public void onUserError(String message) {
-        creatorLoader.setVisibility(View.GONE);
-        profilePicture.setVisibility(View.GONE);
-        creatorName.setText(message);
-        creatorName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                userPresenter.loadUser(chartMetadata.getCreator_id());
+        try {
+            if (isAdded()) {
+                creatorLoader.setVisibility(View.GONE);
+                profilePicture.setVisibility(View.GONE);
+                creatorName.setText(message);
+                creatorName.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        userPresenter.loadUser(chartMetadata.getCreator_id());
+                    }
+                });
             }
-        });
+        } catch (Exception e) {
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace();
+            }
+        }
     }
 }

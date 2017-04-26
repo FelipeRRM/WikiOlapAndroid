@@ -39,109 +39,114 @@ public class ChartUtil {
     public static final int LINE_CHART = 1;
 
     public static View buildChart(Context context, ArrayList<ArrayList<XYHolder>> dataset, ChartMetadata chartMetadata) {
-
-        View viewToReturn = LayoutInflater.from(context).inflate(R.layout.chart_with_titles, null);
-        TextView xTitle = (TextView) viewToReturn.findViewById(R.id.xTitle);
-        TextView yTitle = (TextView) viewToReturn.findViewById(R.id.yTitle);
-        xTitle.setText(chartMetadata.getxTitle());
-        yTitle.setText(chartMetadata.getyTitle());
-        FrameLayout container = (FrameLayout) viewToReturn.findViewById(R.id.container);
         try {
-            View chartView;
-            if (chartMetadata.getChartType() == BAR_CHART) {
-                ArrayList<String> labels = new ArrayList<>();
-                BarChart chart = new BarChart(context);
-                List<IBarDataSet> sets = new ArrayList<>();
-                int size = dataset.size();
-                for (int i = 0; i < size; i++) {
-                    ArrayList<XYHolder> XYHolders = dataset.get(i);
-                    ArrayList<BarEntry> entries = new ArrayList<>();
-                    for (XYHolder xyHolder : XYHolders) {
-                        BarEntry barEntry = new BarEntry((float) (xyHolder.getX()), (float) (xyHolder.getY()), xyHolder.getLabel());
-                        entries.add(barEntry);
-                        labels.add(xyHolder.getLabel());
+            View viewToReturn = LayoutInflater.from(context).inflate(R.layout.chart_with_titles, null);
+            TextView xTitle = (TextView) viewToReturn.findViewById(R.id.xTitle);
+            TextView yTitle = (TextView) viewToReturn.findViewById(R.id.yTitle);
+            xTitle.setText(chartMetadata.getxTitle());
+            yTitle.setText(chartMetadata.getyTitle());
+            FrameLayout container = (FrameLayout) viewToReturn.findViewById(R.id.container);
+            try {
+                View chartView;
+                if (chartMetadata.getChartType() == BAR_CHART) {
+                    ArrayList<String> labels = new ArrayList<>();
+                    BarChart chart = new BarChart(context);
+                    List<IBarDataSet> sets = new ArrayList<>();
+                    int size = dataset.size();
+                    for (int i = 0; i < size; i++) {
+                        ArrayList<XYHolder> XYHolders = dataset.get(i);
+                        ArrayList<BarEntry> entries = new ArrayList<>();
+                        for (XYHolder xyHolder : XYHolders) {
+                            BarEntry barEntry = new BarEntry((float) (xyHolder.getX()), (float) (xyHolder.getY()), xyHolder.getLabel());
+                            entries.add(barEntry);
+                            labels.add(xyHolder.getLabel());
+                        }
+                        String lbl;
+                        if (chartMetadata.getyAlias() != null && chartMetadata.getyAlias().get(i) != null) {
+                            lbl = chartMetadata.getyAlias().get(i);
+                        } else {
+                            lbl = chartMetadata.getyColumnIds().get(i);
+                        }
+                        BarDataSet set = new BarDataSet(entries, lbl);
+                        set.setColor(chartMetadata.getyColors().get(i));
+                        sets.add(set);
                     }
-                    String lbl;
-                    if (chartMetadata.getyAlias() != null && chartMetadata.getyAlias().get(i) != null) {
-                        lbl = chartMetadata.getyAlias().get(i);
-                    } else {
-                        lbl = chartMetadata.getyColumnIds().get(i);
+                    BarData barData = new BarData(sets);
+                    chart.setData(barData);
+                    XAxis xAxis = chart.getXAxis();
+                    xAxis.setDrawGridLines(chartMetadata.isDrawXLines());
+                    xAxis.setGranularity(1f);
+                    xAxis.setGranularityEnabled(true);
+                    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                    xAxis.setDrawLabels(true);
+                    xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+
+                    YAxis yAxis1 = chart.getAxisLeft();
+                    YAxis yAxis2 = chart.getAxisRight();
+                    yAxis1.setDrawGridLines(chartMetadata.isDrawYLines());
+                    yAxis2.setDrawGridLines(chartMetadata.isDrawYLines());
+
+                    chart.getDescription().setText("");
+                    chart.invalidate();
+                    chart.setVisibility(View.VISIBLE);
+                    chartView = chart;
+                } else {
+                    ArrayList<String> labels = new ArrayList<>();
+                    LineChart chart = new LineChart(context);
+                    List<ILineDataSet> sets = new ArrayList<>();
+                    int size = dataset.size();
+                    for (int i = 0; i < size; i++) {
+                        ArrayList<XYHolder> XYHolders = dataset.get(i);
+                        ArrayList<Entry> entries = new ArrayList<>();
+                        for (XYHolder xyHolder : XYHolders) {
+                            Entry entry = new Entry((float) (xyHolder.getX()), (float) (xyHolder.getY()), xyHolder.getLabel());
+                            entries.add(entry);
+                            labels.add(xyHolder.getLabel());
+                        }
+                        String lbl;
+                        if (chartMetadata.getyAlias() != null && chartMetadata.getyAlias().get(i) != null) {
+                            lbl = chartMetadata.getyAlias().get(i);
+                        } else {
+                            lbl = chartMetadata.getyColumnIds().get(i);
+                        }
+                        LineDataSet set = new LineDataSet(entries, lbl);
+                        set.setCircleColor(chartMetadata.getyColors().get(i));
+                        set.setColor(chartMetadata.getyColors().get(i));
+                        sets.add(set);
                     }
-                    BarDataSet set = new BarDataSet(entries, lbl);
-                    set.setColor(chartMetadata.getyColors().get(i));
-                    sets.add(set);
+                    LineData data = new LineData(sets);
+                    chart.setData(data);
+                    XAxis xAxis = chart.getXAxis();
+                    xAxis.setDrawGridLines(chartMetadata.isDrawXLines());
+                    xAxis.setGranularity(1f);
+                    xAxis.setGranularityEnabled(true);
+                    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                    xAxis.setDrawLabels(true);
+                    xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+
+                    YAxis yAxis1 = chart.getAxisLeft();
+                    YAxis yAxis2 = chart.getAxisRight();
+                    yAxis1.setDrawGridLines(chartMetadata.isDrawYLines());
+                    yAxis2.setDrawGridLines(chartMetadata.isDrawYLines());
+
+                    chart.getDescription().setText("");
+                    chart.invalidate();
+                    chart.setVisibility(View.VISIBLE);
+                    chartView = chart;
                 }
-                BarData barData = new BarData(sets);
-                chart.setData(barData);
-                XAxis xAxis = chart.getXAxis();
-                xAxis.setDrawGridLines(chartMetadata.isDrawXLines());
-                xAxis.setGranularity(1f);
-                xAxis.setGranularityEnabled(true);
-                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                xAxis.setDrawLabels(true);
-                xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
-
-                YAxis yAxis1 = chart.getAxisLeft();
-                YAxis yAxis2 = chart.getAxisRight();
-                yAxis1.setDrawGridLines(chartMetadata.isDrawYLines());
-                yAxis2.setDrawGridLines(chartMetadata.isDrawYLines());
-
-                chart.getDescription().setText("");
-                chart.invalidate();
-                chart.setVisibility(View.VISIBLE);
-                chartView = chart;
-            } else {
-                ArrayList<String> labels = new ArrayList<>();
-                LineChart chart = new LineChart(context);
-                List<ILineDataSet> sets = new ArrayList<>();
-                int size = dataset.size();
-                for (int i = 0; i < size; i++) {
-                    ArrayList<XYHolder> XYHolders = dataset.get(i);
-                    ArrayList<Entry> entries = new ArrayList<>();
-                    for (XYHolder xyHolder : XYHolders) {
-                        Entry entry = new Entry((float) (xyHolder.getX()), (float) (xyHolder.getY()), xyHolder.getLabel());
-                        entries.add(entry);
-                        labels.add(xyHolder.getLabel());
-                    }
-                    String lbl;
-                    if (chartMetadata.getyAlias() != null && chartMetadata.getyAlias().get(i) != null) {
-                        lbl = chartMetadata.getyAlias().get(i);
-                    } else {
-                        lbl = chartMetadata.getyColumnIds().get(i);
-                    }
-                    LineDataSet set = new LineDataSet(entries, lbl);
-                    set.setCircleColor(chartMetadata.getyColors().get(i));
-                    set.setColor(chartMetadata.getyColors().get(i));
-                    sets.add(set);
+                container.addView(chartView);
+            } catch (Exception e) {
+                if (BuildConfig.DEBUG) {
+                    e.printStackTrace();
                 }
-                LineData data = new LineData(sets);
-                chart.setData(data);
-                XAxis xAxis = chart.getXAxis();
-                xAxis.setDrawGridLines(chartMetadata.isDrawXLines());
-                xAxis.setGranularity(1f);
-                xAxis.setGranularityEnabled(true);
-                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                xAxis.setDrawLabels(true);
-                xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
-
-                YAxis yAxis1 = chart.getAxisLeft();
-                YAxis yAxis2 = chart.getAxisRight();
-                yAxis1.setDrawGridLines(chartMetadata.isDrawYLines());
-                yAxis2.setDrawGridLines(chartMetadata.isDrawYLines());
-
-                chart.getDescription().setText("");
-                chart.invalidate();
-                chart.setVisibility(View.VISIBLE);
-                chartView = chart;
             }
-            container.addView(chartView);
-        }
-        catch (Exception e){
-            if(BuildConfig.DEBUG){
+            return viewToReturn;
+        } catch (Exception e) {
+            if (BuildConfig.DEBUG) {
                 e.printStackTrace();
             }
+            return null;
         }
-        return viewToReturn;
     }
 
     public static ArrayList<String> getChartTypes(Context context) {

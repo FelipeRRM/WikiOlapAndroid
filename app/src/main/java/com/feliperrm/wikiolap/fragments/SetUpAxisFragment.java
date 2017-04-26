@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.feliperrm.wikiolap.R;
 import com.feliperrm.wikiolap.adapters.DynamicSpinnerAdapter;
@@ -42,6 +43,7 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
     private RadioButton radioAverage;
     private Button addYAxis;
     private RecyclerView ySpinnerRecycler;
+    private TextView dataset1Title, dataset2Title;
 
     /**
      * Attributes
@@ -87,6 +89,8 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
         radioAverage = (RadioButton) v.findViewById(R.id.radio_average);
         addYAxis = (Button) v.findViewById(R.id.button_add_y);
         ySpinnerRecycler = (RecyclerView) v.findViewById(R.id.spinnerRecycler);
+        dataset1Title = (TextView) v.findViewById(R.id.dataset1Title);
+        dataset2Title = (TextView) v.findViewById(R.id.dataset2Title);
     }
 
     public void metadataUpdated() {
@@ -135,6 +139,17 @@ public class SetUpAxisFragment extends Fragment implements XValuesAdapter.XValue
                 adapter.onItemAdded();
             }
         });
+
+        if(metadataProvider.getDataset2Metadata() == null){
+            dataset1Title.setVisibility(View.GONE);
+            dataset2Title.setVisibility(View.GONE);
+        }
+        else{
+            dataset1Title.setText(metadataProvider.getDataset1Metadata().getTitle());
+            dataset2Title.setText(metadataProvider.getDataset2Metadata().getTitle());
+            dataset1Title.setVisibility(View.VISIBLE);
+            dataset2Title.setVisibility(View.VISIBLE);
+        }
 
         adapter = new DynamicSpinnerAdapter(metadataProvider);
         ySpinnerRecycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));

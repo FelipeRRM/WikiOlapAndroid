@@ -32,7 +32,7 @@
     <string name="draw_x_lines">Desenhar Linhas em X</string>
     <string name="draw_y_lines">Desenhar Linhas em Y</string>
     <string name="dataset_number">Dataset %1$d</string>
-    <string name="chose_dataset_to_join">Escolha um dataset para juntar</string>
+    <string name="chose_dataset_to_join">Escolha outro dataset</string>
     <string name="visualization_creator">Criador da visualização:</string>
     <string name="description">Descrição:</string>
     <string name="view_dataset_used">Ver datasets utilizados</string>
@@ -62,4 +62,11 @@
     <string name="error_creating_visualization">Erro ao criar visualização. Há alguma configuração errada ou um problema com sua Internet. Toque para tentar novamente.</string>
     <string name="error_loading_datasets">Não foi possível achar nenhum dataset. Toque para tentar novamente ou pesquise por outro texto.</string>
     <string name="ok">Ok</string>
+    <string name="and">e</string>
+    <string name="welcome_to_wikiolap">Bem-vindo ao WikiOLAP Android!</string>
+    <string name="view_vis_onboarding">-Para acessar as visualizações disponíveis, vá para a primeira aba, \"Visualizações\", e busque por um termo!</string>
+    <string name="create_vis_onboarding">-Na segunda aba, \"Datasets\", você poderá pesquisar por datasets e acessar seus detalhes. É dentro da tela de detalhes do dataset que você conseguirá criar visualizações!</string>
+    <string name="login_onboarding">-Na útlima aba, \"Conta\", você conseguirá autenticar seu acesso na plataforma. Só então será possível criar uma visualização!</string>
+    <string name="access_system">Acesar o Sistema</string>
+
 </resources>

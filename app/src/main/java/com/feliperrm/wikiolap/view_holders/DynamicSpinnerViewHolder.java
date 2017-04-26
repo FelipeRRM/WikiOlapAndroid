@@ -38,9 +38,18 @@ public class DynamicSpinnerViewHolder extends RecyclerView.ViewHolder {
         this.chartUpdateInterface = updateInterface;
         this.itemChangedInterface = changedInterface;
         spinner = (Spinner) itemView.findViewById(R.id.yValueSpinner);
-        ArrayList<String> dbColumns = new ArrayList<>(metadataProvider.getDataset1Metadata().getAliasColumns());
-        if (metadataProvider.getDataset2Metadata() != null) {
-            dbColumns.addAll(metadataProvider.getDataset2Metadata().getAliasColumns());
+        ArrayList<String> dbColumns;
+        if (metadataProvider.getDataset2Metadata() == null) {
+            dbColumns = new ArrayList<>(metadataProvider.getDataset1Metadata().getAliasColumns());
+        } else {
+            dbColumns = new ArrayList<>();
+            for (String str : metadataProvider.getDataset1Metadata().getAliasColumns()) {
+                dbColumns.add(str + " (" + metadataProvider.getDataset1Metadata().getTitle() + ")");
+            }
+            for (String str : metadataProvider.getDataset2Metadata().getAliasColumns()) {
+                dbColumns.add(str + " (" + metadataProvider.getDataset2Metadata().getTitle() + ")");
+            }
+
         }
         ArrayAdapter<String> yValuesAdapter = new ArrayAdapter<>(itemView.getContext(), android.R.layout.simple_spinner_item, dbColumns);
         yValuesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

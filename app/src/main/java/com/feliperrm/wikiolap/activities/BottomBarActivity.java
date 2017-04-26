@@ -10,7 +10,10 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.feliperrm.wikiolap.BuildConfig;
 import com.feliperrm.wikiolap.R;
@@ -40,6 +43,8 @@ public class BottomBarActivity extends BaseActivity implements DatasetMetadataAd
      */
     BottomBar bottomBar;
     FrameLayout contentContainer;
+    Button closeButtom;
+    LinearLayout onboardingView;
 
 
     @Override
@@ -56,6 +61,8 @@ public class BottomBarActivity extends BaseActivity implements DatasetMetadataAd
     private void findViews() {
         bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         contentContainer = (FrameLayout) findViewById(R.id.contentContainer);
+        closeButtom = (Button) findViewById(R.id.closeBtn);
+        onboardingView = (LinearLayout) findViewById(R.id.onboardingView);
     }
 
     private void setUpViews() {
@@ -78,6 +85,12 @@ public class BottomBarActivity extends BaseActivity implements DatasetMetadataAd
                     }
                     changeContentView(profileMenuFragment);
                 }
+            }
+        });
+        closeButtom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onboardingView.setVisibility(View.GONE);
             }
         });
     }

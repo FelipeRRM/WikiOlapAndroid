@@ -62,4 +62,10 @@
     <string name="error_creating_visualization">Error creating the visualization. There\'s either something wrong with the configuration or your some problem with your Internet. Tap to try again.</string>
     <string name="error_loading_datasets">Couldn\'t find any datasets. Try again or change the seach text.</string>
     <string name="ok">Ok</string>
+    <string name="and">and</string>
+    <string name="welcome_to_wikiolap">Welcome to WikiOLAP Android!</string>
+    <string name="view_vis_onboarding">-To access our available visualizations, go to the first tab \"Visualizations\" and search for a name!</string>
+    <string name="create_vis_onboarding">-On the second tab, you can search for datasets and access their details. It\'s insise the dataset\'s detail that you\'ll be able to create visualizations!</string>
+    <string name="login_onboarding">-On the last tab, \"Account\", you\'ll be able to login. Only then will it be possible to create a visualization!</string>
+    <string name="access_system">Access the System</string>
 </resources>

@@ -29,13 +29,13 @@ public class XValuesAdapter extends RecyclerView.Adapter<XValueViewHolder> imple
         this.xValuesInterface = xValuesInterface;
         this.columns = new ArrayList<>();
         int size = dataset1.getDbColumns().size();
-        for(int i = 0; i<size;i++){
+        for (int i = 0; i < size; i++) {
             String db1 = dataset1.getDbColumns().get(i);
             String alias1 = dataset1.getAliasColumns().get(i);
             String db2 = null;
             String alias2 = null;
-            if(dataset2 != null){
-                if(dataset2.getDbColumns().size() > 0){
+            if (dataset2 != null) {
+                if (dataset2.getDbColumns().size() > 0) {
                     db2 = dataset2.getDbColumns().get(0);
                     alias2 = dataset2.getAliasColumns().get(0);
                 }
@@ -84,7 +84,7 @@ public class XValuesAdapter extends RecyclerView.Adapter<XValueViewHolder> imple
         for (ColumnHolder columnHolder : columns) {
             if (columnHolder.isSelected()) {
                 x1Values.add(columnHolder.getColumn1Id());
-                if(x2values != null && columnHolder.getColumn2Id() != null){
+                if (x2values != null && columnHolder.getColumn2Id() != null) {
                     x2values.add(columnHolder.getColumn2Id());
                 }
             }

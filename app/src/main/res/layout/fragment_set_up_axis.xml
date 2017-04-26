@@ -1,8 +1,6 @@
-<ScrollView
-    android:layout_below="@+id/top_layout"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,82 +8,105 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_marginTop="8dp"
             style="@style/create_chart_items_style"
-            android:text="@string/chart_type"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/chart_type" />
 
         <Spinner
-            style="@style/create_chart_items_style"
             android:id="@+id/chartTypeSpinner"
+            style="@style/create_chart_items_style"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <TextView
             style="@style/create_chart_items_style"
-            android:text="@string/y_axis"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/y_axis" />
 
         <android.support.v7.widget.RecyclerView
-            android:nestedScrollingEnabled="false"
             android:id="@+id/spinnerRecycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false" />
 
         <Button
             android:id="@+id/button_add_y"
             style="@style/create_chart_items_style"
-            android:text="@string/add_y_axis"
-            android:textColor="@android:color/white"
-            android:backgroundTint="@color/colorPrimary"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/add_y_axis"
+            android:textColor="@android:color/white" />
 
         <TextView
             style="@style/create_chart_items_style"
-            android:text="@string/x_axis"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/x_axis" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/dataset1Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="20dp" />
+
+            <TextView
+                android:id="@+id/dataset2Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="100dp"
+                android:layout_marginTop="20dp" />
+
+        </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:nestedScrollingEnabled="false"
             android:id="@+id/xRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false" />
 
         <TextView
             style="@style/create_chart_items_style"
-            android:text="@string/aggregation_function"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/aggregation_function" />
 
 
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/radio_sum"
-                android:checked="true"
                 style="@style/create_chart_items_style"
-                android:text="@string/sum"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/sum" />
 
             <RadioButton
                 android:id="@+id/radio_average"
                 style="@style/create_chart_items_style"
-                android:text="@string/average"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/average" />
 
         </RadioGroup>
 
     </LinearLayout>
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>
 
