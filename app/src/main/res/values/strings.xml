@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WikiOlap</string>
+    <string name="app_name">WikiOLAP Android</string>
     <string name="charts_menu_title">Charts</string>
     <string name="dataset_title">Dataset Title:</string>
     <string name="dataset_menu_title">Datasets</string>
